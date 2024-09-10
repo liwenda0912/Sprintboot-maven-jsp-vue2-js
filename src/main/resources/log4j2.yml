@@ -1,0 +1,44 @@
+Configuration:
+  status: info
+
+  Properties: # ??????
+    Property: # ????????????????????VM?????????
+      #???-Dlog.level.console=warn -Dlog.level.xjj=trace
+      #???-Dlog.level.console=warn -Dlog.level.xjj=info
+      - name: log.level.console
+        value: info
+      - name: log.path
+        value: ./${project.name}_log
+      - name: project.name
+        value: travel-platform-api
+
+  Appenders:
+    Console:  #??????
+      name: CONSOLE
+      target: SYSTEM_OUT
+      ThresholdFilter:
+        level: ${sys:log.level.console} # ?sys:??????VM?????????????????????????????
+        onMatch: ACCEPT
+        onMismatch: DENY
+      PatternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS}:%4p %t (%F:%L) - %m%n"
+    RollingFile: # ????????128MB??
+      - name: ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/${project.name}.log
+        filePattern: "${log.path}/$${date:yyyy-MM}/${project.name}-%d{yyyy-MM-dd}-%i.log.gz"
+        PatternLayout:
+          pattern: "%d{yyyy-MM-dd HH:mm:ss,SSS}: %4p %t (%F:%L) - %m%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: "128 MB"
+        DefaultRolloverStrategy:
+          max: 1000
+
+  Loggers:
+    Root:
+      # ??8????????????ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF  ??all????????
+      level: INFO
+      AppenderRef:
+        - ref: CONSOLE
+        - ref: ROLLING_FILE

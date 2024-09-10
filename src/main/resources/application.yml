@@ -1,0 +1,110 @@
+#spring.application.name=WebProject
+#spring.mvc.view.prefix=/WEB-INF/jsp/
+#spring.mvc.view.suffix=.jsp
+#server.port=8090
+#spring.mvc.static-path-pattern=/**
+#spring.web.resources.static-locations=classpath:/static/
+#
+#
+#
+##---------------数据库连接配置--------------
+## 用户名
+#spring.datasource.username=root
+## 密码
+#spring.datasource.password=root
+## 连接url
+#spring.datasource.url=jdbc:mysql://localhost:3306/school?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true
+## 驱动名称
+#spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+
+
+#mybatis plus 配置
+
+mybatis-plus:
+  mapper-locations:
+      classpath*:/mapper/*.xml
+  configuration:
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+    call-setters-on-nulls: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      logic-delete-field: state
+      logic-delete-value: 0 # 逻辑删除
+      logic-not-delete-value: 1 # 正常
+      table-prefix: tp_ #sql中表名前缀
+  configuration-properties:
+    prefix: tp_ #自定义sql中表名前缀
+
+#logging:
+#  config: classpath:log4j2.yml
+
+#pagehelper:
+#  helperDialect: mysql # 指定数据库类型，如mysql
+#  reasonable: true # 是否启用分页合理化
+#  supportMethodsArguments: true # 分页插件是否从查询方法的参数值中自动取值进行分页
+#  params: count=countSql # 用于从对象中根据属性名取值，可以配置pageNum, pageSize, count, pageSizeZero, reasonable等参数
+#
+
+
+server:
+  port: 8090
+
+spring:
+  main:
+    allow-circular-references: true
+  mvc:
+    static-path-pattern: /**
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  web:
+    resources:
+      static-locations: classpath:/static/
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/testRunningdata?useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+#  datasource:
+#      driver-class-name: com.mysql.jdbc.Driver
+###    type: com.alibaba.druid.pool.DruidDataSource
+#
+#      druid:
+#        url: jdbc:mysql://localhost:3306/testRunningdata
+#        username: root
+#        password: 123456
+#        driver-class-name: com.mysql.jdbc.Driver
+#        max-active: 100
+#        initial-size: 1
+#        max-wait: 60000
+#        min-idle: 1
+#        time-between-eviction-runs-millis: 60000
+#        min-evictable-idle-time-millis: 300000
+#        validation-query: select 'x'
+#        test-while-idle: true
+#        test-on-borrow: false
+#        test-on-return: false
+#        pool-prepared-statements: true
+#        max-open-prepared-statements: 50
+#        max-pool-prepared-statement-per-connection-size: 20
+#        stat-view-servlet:
+#          enabled: true
+#          url-pattern: /druid/*
+#          reset-enable: false
+#          login-username: admin
+#          login-password: admin
+#          allow: 127.0.0.1
+
+
+
+
+#spring.mvc.static-path-pattern=/**
+#spring.web.resources.static-locations=classpath:/static/
+#spring:
+#    view:
+#      prefix: /
+#      suffix: .jsp

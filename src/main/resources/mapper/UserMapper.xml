@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.webproject.mapper.UserMapper">
+    <select id="findAll" resultType="com.example.webproject.entity.User">
+        select *
+        from user
+            ${ew.customSqlSegment}
+    </select>
+    <update id="upDataUser" parameterType="com.example.webproject.entity.User">
+        update user
+        <set>
+            <if test="username != null and username  != '' ">
+                username = #{username}
+            </if>
+            ,address = #{address}
+            ,phone =#{phone}
+            ,zip =#{zip}
+            ,province=#{province}
+            ,city = #{city}
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+</mapper>
