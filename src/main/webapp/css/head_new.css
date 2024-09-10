@@ -1,0 +1,24 @@
+
+.head_element .el-menu--horizontal .el-menu-item{
+    height: 68px;
+    display: flex;
+    align-items: center;
+}
+ul.el-menu-demo .el-menu--horizontal .el-menu{
+    height: 68px;
+}
+.head_element .el-menu--horizontal>.el-submenu .el-submenu__title {
+    height: 68px;
+    display: flex;
+    align-items: center;
+}
+.head_element .el-menu--horizontal el-menu .el-menu-item .el-menu--horizontal .el-menu .el-submenu__title{
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+#app_head{
+    /*border: 1px solid white;*/
+    box-shadow: 0 0 20px #2d2323;
+    list-style: none;
+}

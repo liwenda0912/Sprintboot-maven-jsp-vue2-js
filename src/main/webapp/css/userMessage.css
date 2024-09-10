@@ -1,0 +1,12 @@
+.table-style{
+    margin-left: 40%;
+}
+.table-style td{
+    padding: 0 20px;
+    text-align: center;
+}
+.table-style th{
+    padding:0 20px;
+    background-color: grey;
+    border: 1px solid black;
+}

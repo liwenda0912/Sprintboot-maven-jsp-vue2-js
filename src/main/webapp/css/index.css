@@ -1,0 +1,97 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.all-style{
+    margin: auto;
+    background-color: whitesmoke;
+    width: 1243px;
+
+}
+
+.header{
+    padding-bottom: 40px;
+    height: 60px;
+}
+.border-bar{
+    height: 300px;
+    width: 1200px;
+    background-color: white;
+    margin: auto;
+    border:2px solid white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px grey;
+}
+.border-pie-1{
+    float: left;
+    width: 600px;
+    height: 200px;
+    margin-left: 60px;
+    margin-top: 80px;
+}
+.border-bar-2{
+    width: 400px;
+    height: 220px;
+    margin-left: 740px;
+    margin-top: 80px;
+}
+#black{
+    height: 500px;
+}
+input {
+    border:2px solid white;
+    border-radius: 10px;
+    box-shadow:0 0 10px grey;
+    background-color: #b8b5b5;
+    color:darkblue;
+    text-indent: 10px;
+
+}
+.border-msg-2{
+    margin-top: 10px;
+    width: 1245px;
+    height: 300px;
+}
+#input-msg{
+    float: right;
+    height: 300px;
+    width: 360px;
+    background-color: white;
+    margin-right: 20px;
+    border:2px solid white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px grey;
+}
+#show-msg{
+    width: 800px;
+    height: 300px;
+    background-color: white;
+    border:2px solid white;
+    border-radius: 20px;
+    margin-top:20px;
+    margin-left: 20px;
+    box-shadow: 0 0 10px grey;
+}
+#input-name{
+    padding-left: 20px;
+    width: 260px;
+
+}
+#input-passwd{
+    padding-left: 20px;
+    width: 260px;
+}
+#black{
+    display: block;
+    width: 1203px;
+    height: 150px;
+    background-color: white;
+    border: 2px solid white;
+    box-shadow: 0 0 10px grey;
+    margin: 20px 20px;
+    border-radius: 10px;
+}
+a{
+    text-decoration: white;
+    color: black;
+}

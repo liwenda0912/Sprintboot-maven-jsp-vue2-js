@@ -1,0 +1,80 @@
+/* 隐藏所有tab内容 */
+*{
+    padding: 0;
+    margin: 0;
+}
+
+
+/* 显示当前活动的tab内容 */
+.active {
+    display: block;
+    border: none;
+    background-color: white;
+}
+.body-tab{
+    margin: auto;
+    background-color: whitesmoke;
+    width: 1243px;
+    height: 100%;
+    box-shadow: 0 0 10px whitesmoke;
+}
+.bottom_show{
+    display: block;
+}
+.body_table{
+    height: 100%
+}
+
+button{
+    float: left;
+    display: block;
+    width: 100px;
+    height: 60px;
+    border: none;
+}
+button:hover{
+    background-color: grey;
+    color: skyblue;
+    font-size: x-large;
+}
+.body-button{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+.tab-content{
+    float: left;
+    width: 100%;
+    height: 500px;
+    background-color: white;
+}
+/*.head-data{*/
+/*    padding-left: 15px;*/
+/*    margin: 0;*/
+/*    width: 1260px;*/
+/*}*/
+table{
+    margin: auto;
+    padding:0;
+    border:grey;
+}
+div .tr-th-name{
+    padding: 20px 30px;
+    background: grey;
+    border-color: grey;
+    margin: 0;
+}
+tbody{
+    text-align: center;
+}
+
+tfoot{
+    text-align: center;
+}
+
+.table-style{
+ margin-top: 10px;
+}
+.table-message{
+    margin: auto;
+}

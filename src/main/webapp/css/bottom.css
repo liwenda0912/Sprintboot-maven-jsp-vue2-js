@@ -1,0 +1,10 @@
+.bottom{
+    background-color: #545c64;
+    height: 100px;
+    width: 1243px;
+    /*margin: auto;*/
+    text-align: center;
+    line-height: 50px;
+    list-style: none;
+    margin-top: 20px;
+}
