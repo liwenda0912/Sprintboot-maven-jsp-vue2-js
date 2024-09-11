@@ -8,20 +8,11 @@
         from user
             ${ew.customSqlSegment}
     </select>
-    <update id="upDataUser" parameterType="com.example.webproject.entity.User">
+    <update id="EditUser" parameterType="com.example.webproject.entity.User">
         update user
-        <set>
-            <if test="username != null and username  != '' ">
-                username = #{username}
-            </if>
-            ,address = #{address}
-            ,phone =#{phone}
-            ,zip =#{zip}
-            ,province=#{province}
-            ,city = #{city}
-        </set>
-        <where>
-            id = #{id}
-        </where>
+        set
+            ${ew.sqlSet}
+        where
+            ${ew.sqlSegment}
     </update>
 </mapper>

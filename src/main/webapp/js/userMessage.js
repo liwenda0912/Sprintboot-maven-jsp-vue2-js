@@ -66,12 +66,12 @@ var User =new Vue({
             if (val.length === 2){
                 var name = window.parent.document.getElementsByClassName("border");
                 for (var i =0;i<name.length;i++) {
-                    name[i].style.height = "110%";
+                    name[i].style.height = "108%";
                 }
             } else{
                 var name = window.parent.document.getElementsByClassName("border");
                 for (var i =0;i<name.length;i++) {
-                    name[i].style.height = "104%";
+                    name[i].style.height = "103%";
                 }
             }
         },
@@ -92,28 +92,26 @@ var User =new Vue({
         // iframe的父传递信息给子页面传递数据的方法
         send(data){
             let frame_pagination= document.getElementById("iframe_pagination");
-            frame_pagination.contentWindow.postMessage(data,'http://localhost:8086/mavenproject_war_exploded/pagination.jsp');
+            frame_pagination.contentWindow.postMessage(data,'http://127.0.0.1:8090/page/public/pagination.jsp');
             frame_pagination.onload=function (){
-                frame_pagination.contentWindow.postMessage(data,'http://localhost:8086/mavenproject_war_exploded/pagination.jsp');
-                // frame_pagination.contentWindow.alert("jjjjdsf")
+                frame_pagination.contentWindow.postMessage(data,'http://127.0.0.1:8090/page/public/pagination.jsp\n');
             }
         },
         // 编辑保持方法
         EditTable(type){
+            this.dialogVisible = false
             request({
                 method: 'Post',
-                url: 'DataServlet',
-                params: {
-                    dbname:"user",
-                },
+                url: '/User/edit',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                        'Content-Type': 'application/json',
+                        "Authorization":'Access-Control-Request-Headers'
                 },
                 data:type
             }).then(res=>{
-                console.log(res.code)
+                console.log(res.data)
                 let  self = this
-                if (res.data.code==="200"){
+                if (res.data.code===200){
                     self.dialogVisible=false;
                     self.$message({
                         type:"success",
@@ -141,8 +139,8 @@ var User =new Vue({
         },
         //页面加载就获取数据
         onshow(){
-            this.dialogVisible=false;
-            this.dialogFormVisible=false;
+            // this.dialogVisible=false;
+            // this.dialogFormVisible=false;
             let self =this
             request({
                 method: 'Post',
@@ -158,12 +156,12 @@ var User =new Vue({
             }).then(res=>{
                 //获取用户servlet的登录请求响应
                 // var data = res.data;
-                // this.send(data[data.length-1]);
                 // for (var i =0;i<data.length-1;i++){
                 //     this.test.push(data[i]);
                 // }
-                console.log(res.data.data)
                 this.test=res.data.data.list
+                this.send(res.data.data.total);
+                console.log(res.data.data.total)
                 setTimeout(() => {
                     this.loading=false;
                 }, 2000);

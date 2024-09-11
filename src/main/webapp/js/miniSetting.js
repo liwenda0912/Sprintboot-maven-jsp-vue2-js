@@ -89,7 +89,8 @@ var User =new Vue({
                     }
                 },err=>{
                     console.log(err.message);
-                    let self = this
+                this.loading=false;
+                let self = this
                     // this.onshow();
                     // this.req(self.$data.pageShowNum,self.$data.pageNum_1);
                     this.$message({
@@ -156,8 +157,7 @@ var User =new Vue({
                     this.loading=false;
                 }, 2000);
             },err=>{
-                console.log(err.message);
-                // this.req(size,pageNum);
+                this.loading=false;
                 this.$message({
                     message:err.message,
                     type:"error",

@@ -89,15 +89,15 @@ public class CommonResult<T> {
 //    public static <T> CommonResult<T> failed(ResultCode errorCode, String message) {
 //        return new CommonResult<>(errorCode.getCode(), message);
 //    }
-//
-//    /**
-//     * 失败返回结果
-//     *
-//     */
-//    public static <T> CommonResult<T> failed(String msg) {
-//        return new CommonResult<>(ResultCode.FAILED.getCode(), msg);
-//    }
-//
+
+    /**
+     * 失败返回结果
+     *
+     */
+    public static <T> CommonResult<T> failed(String msg) {
+        return new CommonResult<>(501, msg);
+    }
+
 //    /**
 //     * 失败返回结果
 //     *

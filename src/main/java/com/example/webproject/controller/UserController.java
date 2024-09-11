@@ -28,7 +28,18 @@ public class UserController {
     @RequestMapping(value="/list",method = RequestMethod.POST)
     public CommonResult<CommonPage<User>> User(@RequestBody RowBounds rowBounds)  {
         List<User> touserList = userService.findInfos(rowBounds);
-        System.out.print(CommonPage.restPage(touserList));
         return CommonResult.success(CommonPage.restPage(touserList));
     }
+    @RequestMapping(value="/edit",method = RequestMethod.POST)
+    public CommonResult<CommonPage<Integer>>  EditUser(@RequestBody User user)  {
+        System.out.print(user);
+        int result_code = userService.editUser(user);
+        if (result_code>0){
+            return CommonResult.success("操作成功");
+        }
+        else {
+            return CommonResult.failed("操作成功");
+        }
+    }
+
 }

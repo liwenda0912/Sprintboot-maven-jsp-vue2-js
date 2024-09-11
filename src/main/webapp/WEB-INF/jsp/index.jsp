@@ -27,21 +27,21 @@
 <body>
 <div class="all-style">
     <div class="header">
-        <%@ include file="public/head_new.jsp"%>
+        <%@ include file="../../page/public/head_new.jsp"%>
     </div>
     <div id="index_app" class="border">
         <div class="index" v-if="index_show">
             <iframe id="index_iframe" src="../../page/index_import.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%"></iframe>
         </div>
         <div class="work_platform_data" v-else-if="test_data">
-            <iframe src="../../page/data.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%"></iframe>
+            <iframe src="../../page/data.jsp" scrolling="no" style="border: 0;width: 100%;height: 104%"></iframe>
         </div>
         <div v-else-if="userMessage">
-            <iframe src="../../page/userMessage.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%"></iframe>
+            <iframe src="../../page/userMessage.jsp" scrolling="no" style="border: 0;width: 100%;height: 103%"></iframe>
         </div>
     </div>
     <div class="bottom">
-        <%@ include file="public/bottom.jsp"%>
+        <%@ include file="../../page/public/bottom.jsp"%>
     </div>
 </div>
 </body>

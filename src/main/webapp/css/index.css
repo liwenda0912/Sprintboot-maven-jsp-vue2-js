@@ -25,15 +25,15 @@
 .border-pie-1{
     float: left;
     width: 600px;
-    height: 200px;
+    /*height: 200px;*/
     margin-left: 60px;
-    margin-top: 80px;
+    margin-top: 60px;
 }
 .border-bar-2{
     width: 400px;
     height: 220px;
     margin-left: 740px;
-    margin-top: 80px;
+    margin-top: 60px;
 }
 #black{
     height: 500px;
