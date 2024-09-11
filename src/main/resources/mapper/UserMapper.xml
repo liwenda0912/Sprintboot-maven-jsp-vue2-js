@@ -8,6 +8,7 @@
         from user
             ${ew.customSqlSegment}
     </select>
+    <!-- 更新数据 -->
     <update id="EditUser" parameterType="com.example.webproject.entity.User">
         update user
         set

@@ -8,13 +8,13 @@ window.addEventListener("message", function (e) {
         login.$data.stateCode = e.data;
         console.log(e.data); // message
     } else if (e.data === 2) {
-        test.$data.dialogCode = e.data;
+        register.$data.dialogCode = e.data;
         console.log("申请注册" + e.data); // message
     } else if (e.data === 3) {
-        test.$data.dialogCode = e.data;
+        register.$data.dialogCode = e.data;
         console.log("取消注册" + e.data); // message
     } else if (e.data === 4) {
-        test.$data.dialogCode = e.data;
+        register.$data.dialogCode = e.data;
         console.log("取消注册" + e.data); // message
     }
 }, false);
@@ -89,19 +89,20 @@ var login = new Vue({
 
 
 // 注册弹窗js
-var test = new Vue({
+var register = new Vue({
     data() {
         return {
             dialogFormVisible: false,
             dialogCode: 0,
             type_data: {
-                phone: "",
                 address: "",
                 city: "",
                 province: "",
                 ruleForm: {
-                    user_name: '',
-                    register_passwd: '',
+                    phone: "",
+                    zip:'',
+                    username: '',
+                    password: '',
                     region: '',
                     delivery: false,
                     type: [],
@@ -111,10 +112,14 @@ var test = new Vue({
             },
             // 输入框校验规则
             rules: {
-                user_name: [
+                phone:[{
+                    pattern:/^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/, message: '手机号码不合法', trigger: 'blur'
+                }],
+                zip:[{min: 6, max: 6, message: '邮政编码只能填写6位', trigger: 'blur'}],
+                username: [
                     {required: true, message: '账户不能为空', trigger: 'blur'},
                 ],
-                register_passwd: [
+                password: [
                     {required: true, message: '密码不能为空', trigger: 'blur'},
                     {min: 8, max: 16, message: '密码长度为8到16位！', trigger: 'blur'}
                 ]
@@ -147,41 +152,28 @@ var test = new Vue({
                     //调用servlet服务
                     axios({
                         method: 'Post',
-                        url: 'RegisterServlet',
-                        params: {
-                            username: self.type_data.ruleForm.user_name,
-                            passwd: self.type_data.ruleForm.register_passwd
-                        },
+                        url: '/User/insert',
                         headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Content-Type': 'application/json',
+                            "Authorization":'Access-Control-Request-Headers'
                         },
                         data: this.type_data
                     }).then(res => {
                         //获取servlet响应的信息
-                        var data = res.data;
+                        let data = res.data;
                         console.log(data)
-                        switch (data.code) {
-                            case 1:
-                                this.$message({
-                                    message: data.message,
-                                    center: true,
-                                    type: "success"
-                                });
-                                break
-                            case 0:
-                                this.$message({
-                                    message: data.message,
-                                    center: true,
-                                    type: 'error'
-                                });
-                                break
-                            case 500:
-                                this.$message({
-                                    message: data.message,
-                                    center: true,
-                                    type: 'error'
-                                });
-                                break
+                        if (data.code===200){
+                            this.$message({
+                                message: data.message,
+                                center: true,
+                                type: "success"
+                            });
+                        }else {
+                            this.$message({
+                                message: data.message,
+                                center: true,
+                                type: 'error'
+                            });
                         }
                     }, err => {
                         console.log(err.message);
@@ -223,6 +215,12 @@ var test = new Vue({
             // 给父页面通讯
             window.top.postMessage("quit", '*')
             self.$data.dialogFormVisible = false;
+            this.$refs.passwd.clear();
+            this.$refs.user.clear();
+            this.$refs.city.clear();
+            this.$refs.address.clear();
+            this.$refs.province.clear();
+            this.$refs.phone.clear();
             this.$message({
                 message: '取消注册成功！',
                 center: true

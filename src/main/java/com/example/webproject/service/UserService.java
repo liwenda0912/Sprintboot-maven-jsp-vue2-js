@@ -1,14 +1,17 @@
 package com.example.webproject.service;
+
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
+import com.example.webproject.dto.UserDto;
 import com.github.pagehelper.page.PageMethod;
 import com.example.webproject.core.Utils.GetTime;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.webproject.entity.User;
 import com.example.webproject.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.stereotype.Service;
 import com.example.webproject.dto.RowBounds;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.List;
 
@@ -16,16 +19,28 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserMapper userMapper;
-    public List<User> findInfos(RowBounds rowBounds){
-        if (rowBounds.getPageNum()!=null){
-            PageMethod.startPage(rowBounds.getPageNum(),rowBounds.getPageSize());
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    public User queryById(Integer id) {
+        return userMapper.selectById(id);
+    }
+
+    public List<User> findInfos(RowBounds rowBounds) {
+        if (rowBounds.getPageNum() != null) {
+            PageMethod.startPage(rowBounds.getPageNum(), rowBounds.getPageSize());
         }
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-//        wrapper.eq("id",1);
         return userMapper.findAll(wrapper);
     }
-    public int editUser(User user){
-        GetTime getTime =new GetTime();
+
+    public User editUser(User user) {
+        GetTime getTime = new GetTime();
+        user.setDate_(getTime.getTime());
         if (user.getId()>0){
             UpdateWrapper<User> wrapper = new UpdateWrapper<>();
             wrapper.eq("id",user.getId())
@@ -36,12 +51,36 @@ public class UserService {
                     .set("alias",user.getAlias())
                     .set("province",user.getProvince())
                     .set("zip",user.getZip())
-                    .set("date",getTime.getTime())
-            ;
-            return userMapper.EditUser(wrapper);
+                    .set("date_",getTime.getTime());
+            if (userMapper.EditUser(wrapper) > 0) {
+                return queryById(user.getId());
+            } else {
+                return null;
+            }
         }
         else {
+            return null;
+        }
+
+    }
+
+    public int insertUser(UserDto userDto) {
+        GetTime getTime = new GetTime();
+        User user_ = new User();
+        if (userDto.getRuleForm().getUsername() != null) {
+            user_.setUsername(userDto.getRuleForm().getUsername());
+            user_.setPassword(userDto.getRuleForm().getPassword());
+            user_.setAlias(userDto.getAlias());
+            user_.setCity(userDto.getCity());
+            user_.setPhone(userDto.getPhone());
+            user_.setProvince(userDto.getProvince());
+            user_.setZip(userDto.getZip());
+            user_.setDate_(getTime.getTime());
+            user_.setAddress(userDto.getAddress());
+            return userMapper.insert(user_);
+        } else {
             return 0;
         }
+
     }
 }

@@ -1,6 +1,8 @@
 package com.example.webproject.controller;
+import com.example.webproject.core.Utils.Json;
 import com.example.webproject.core.common.CommonPage;
 import com.example.webproject.core.common.CommonResult;
+import com.example.webproject.dto.UserDto;
 import com.github.pagehelper.PageInfo;
 import com.example.webproject.dto.RowBounds;
 import com.example.webproject.entity.User;
@@ -31,14 +33,25 @@ public class UserController {
         return CommonResult.success(CommonPage.restPage(touserList));
     }
     @RequestMapping(value="/edit",method = RequestMethod.POST)
-    public CommonResult<CommonPage<Integer>>  EditUser(@RequestBody User user)  {
-        System.out.print(user);
-        int result_code = userService.editUser(user);
+    public CommonResult<User> EditUser(@RequestBody User user)  {
+        User result_code = userService.editUser(user);
+        if (result_code!=null){
+            return CommonResult.success(result_code,"操作成功");
+        }
+        else {
+            return CommonResult.failed("操作失败");
+        }
+    }
+    @RequestMapping(value="/insert",method = RequestMethod.POST)
+    public CommonResult<Integer> insertUser(@RequestBody UserDto userDto)  {
+//        Json json = new Json();
+//        Object user_=json.getObject(String.valueOf(user.getRuleForm()));
+        int result_code = userService.insertUser(userDto);
         if (result_code>0){
             return CommonResult.success("操作成功");
         }
         else {
-            return CommonResult.failed("操作成功");
+            return CommonResult.failed("操作失败");
         }
     }
 

@@ -22,7 +22,7 @@
 
 mybatis-plus:
   mapper-locations:
-      classpath*:/mapper/*.xml
+    classpath*:/mapper/*.xml
   configuration:
     # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
     map-underscore-to-camel-case: true
@@ -54,6 +54,16 @@ server:
   port: 8090
 
 spring:
+  #热部署默认会重启
+  devtools:
+    #添加那个目录的文件需要restart
+    restart:
+      additional-paths:
+              src/main/java,src/main/resource,src/main/webapp
+      enabled: true
+      #排除那个目录的文件不需要restart
+
+  #      exclude=static/**,public/**
   main:
     allow-circular-references: true
   mvc:
@@ -69,6 +79,9 @@ spring:
     url: jdbc:mysql://localhost:3306/testRunningdata?useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: 123456
+
+
+
 #  datasource:
 #      driver-class-name: com.mysql.jdbc.Driver
 ###    type: com.alibaba.druid.pool.DruidDataSource

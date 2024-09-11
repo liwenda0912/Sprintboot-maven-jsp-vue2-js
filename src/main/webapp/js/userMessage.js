@@ -124,6 +124,7 @@ var User =new Vue({
                         center: true,
                         message:res.data.message,
                     })
+                    this.reload()
                 }
             },err=>{
                 console.log(err.message);
@@ -132,9 +133,7 @@ var User =new Vue({
                     type:"error",
                     center:true
                 })
-                setTimeout(()=>{
-                    window.location.reload();
-                },3000)
+                this.reload()
             });
         },
         //页面加载就获取数据
@@ -162,9 +161,7 @@ var User =new Vue({
                 this.test=res.data.data.list
                 this.send(res.data.data.total);
                 console.log(res.data.data.total)
-                setTimeout(() => {
-                    this.loading=false;
-                }, 2000);
+                this.loading_false()
             }).catch(error=>{
                 this.$message({
                     message:error.message,

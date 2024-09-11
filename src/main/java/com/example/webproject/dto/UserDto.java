@@ -1,16 +1,12 @@
-package com.example.webproject.entity;
+package com.example.webproject.dto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.webproject.dto.UserRuleForm;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-@TableName("user")
-public class User {
+public class UserDto {
     private String username;
     private String password;
     @TableId(type = IdType.AUTO)
@@ -21,7 +17,7 @@ public class User {
     private String address;
     private String phone;
     private String alias;
-    private Date date_;
+    private UserRuleForm ruleForm;
 //    public String getUsername() {
 //        return username;
 //    }

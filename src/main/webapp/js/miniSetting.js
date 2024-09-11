@@ -86,6 +86,7 @@ var User =new Vue({
                             center: true,
                             message:res.data.message,
                         })
+                        this.reload()
                     }
                 },err=>{
                     console.log(err.message);
@@ -98,9 +99,7 @@ var User =new Vue({
                         type:"error",
                         center:true
                     })
-                    setTimeout(()=>{
-                        window.location.reload();
-                    },3000)
+                    this.reload()
                     console.log(this.$data.test)
                 }
             )
@@ -153,9 +152,7 @@ var User =new Vue({
                 for (var i =0;i<data.length-1;i++){
                     this.test.push(data[i]);
                 }
-                setTimeout(() => {
-                    this.loading=false;
-                }, 2000);
+                this.loading_false()
             },err=>{
                 this.loading=false;
                 this.$message({
