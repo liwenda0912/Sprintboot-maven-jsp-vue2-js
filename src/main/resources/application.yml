@@ -53,7 +53,15 @@ mybatis-plus:
 server:
   port: 8090
 
+
 spring:
+  servlet:
+      multipart:
+        max-file-size: 128KB
+        max-request-size: 128KB
+        enabled: false
+
+
   #热部署默认会重启
   devtools:
     #添加那个目录的文件需要restart

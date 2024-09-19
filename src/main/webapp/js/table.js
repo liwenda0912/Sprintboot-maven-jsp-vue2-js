@@ -1,8 +1,34 @@
+
 var Main = {
     methods: {
-        handleClick(row) {
-            console.log(row);
-
+        handleClick(tab,event) {
+            console.log(tab)
+            switch (tab._uid){
+                case 3:
+                    this.miniSetting=true,
+                        this.userManage=false,
+                        this.roleManage=false,
+                        this.time_=false
+                    break;
+                case 4:
+                    this.miniSetting=false,
+                        this.userManage=true,
+                        this.roleManage=false,
+                        this.time_=false
+                    break;
+                case 5:
+                    this.miniSetting=false,
+                        this.userManage=false,
+                        this.roleManage=true,
+                        this.time_=false
+                    break;
+                case 6:
+                    this.miniSetting=false,
+                        this.userManage=false,
+                        this.roleManage=false,
+                        this.time_=true
+                    break;
+            }
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
@@ -21,6 +47,11 @@ var Main = {
     },
     data() {
         return {
+            activeName: 'first',
+            miniSetting:true,
+            userManage:false,
+            roleManage:false,
+            time_:false,
             currentPage4:5,
             loading:"",
             tableData: [{

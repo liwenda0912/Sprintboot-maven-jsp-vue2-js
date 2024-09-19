@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 <html>
-<link rel="stylesheet" type="text/css" href="../../css/index.css">
+<link rel="stylesheet" type="text/css" href="../css/index.css">
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<link rel="stylesheet" type="text/css" href="../../css/head_new.css">
+<link rel="stylesheet" type="text/css" href="../css/head_new.css">
 <script src="https://cdn.bootcdn.net/ajax/libs/vue-router/2.6.0/vue-router.js"></script>
 <!-- import Vue before Element -->
 <%--    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>--%>
@@ -27,24 +27,32 @@
 <body>
 <div class="all-style">
     <div class="header">
-        <%@ include file="../../page/public/head_new.jsp"%>
+        <%@ include file="public/head_new.jsp"%>
     </div>
     <div id="index_app" class="border">
         <div class="index" v-if="index_show">
-            <iframe id="index_iframe" src="../../page/index_import.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%"></iframe>
+            <iframe id="index_iframe" src="index_import.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%"></iframe>
         </div>
-        <div class="work_platform_data" v-else-if="test_data">
-            <iframe src="../../page/data.jsp" scrolling="no" style="border: 0;width: 100%;height: 104%"></iframe>
+        <div class="work_platform_data" v-if="test_data">
+            <iframe src="DataPage/TestDataTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 109%"></iframe>
         </div>
-        <div v-else-if="userMessage">
-            <iframe src="../../page/userMessage.jsp" scrolling="no" style="border: 0;width: 100%;height: 103%"></iframe>
+        <div v-if="userMessage">
+            <iframe src="userMessage.jsp" scrolling="no" style="border: 0;width: 100%;height: 109%"></iframe>
+        </div>
+        <div v-if="SeleniumResult">
+            <iframe src="SeleniumResult/ResultTableTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 115%"></iframe>
         </div>
     </div>
-    <div class="bottom">
-        <%@ include file="../../page/public/bottom.jsp"%>
-    </div>
+    <el-container>
+        <el-footer>
+            <div class="bottom" style="border-top: 20px">
+                <%@ include file="public/bottom.jsp"%>
+            </div>
+        </el-footer>
+    </el-container>
+
 </div>
 </body>
-<script src="../../js/indexpageshow.js"></script>
+<script type="text/javascript" src="../js/indexpageshow.js"></script>
 </html>
 

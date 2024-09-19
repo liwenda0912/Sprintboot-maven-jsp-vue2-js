@@ -114,19 +114,26 @@ var User =new Vue({
             ;
         },
         handleChange(val) {
-            console.log(val);
+            var name_ = window.top.document.getElementsByClassName("border");
             var name_id = window.parent.document.getElementsByClassName("app_tabs_");
             var name = window.parent.document.getElementsByClassName("el-tabs el-tabs--top el-tabs--border-card");
             if (val.length === 2){
-                for (var i =0;i<name.length;i++) {
+                console.log("asdada")
+                for (let i =0;i<name.length;i++) {
                     name[i].style.height = "780px";
                 }
-                for (var i =0;i<name.length;i++) {
-                    name_id[i].style.margin = "20px 20px 60px 20px";
+                for (let j =0;j<name.length;j++) {
+                    name_id[j].style.margin = "20px 20px 60px 20px";
+                }
+                for (let e =0;e<name_.length;e++) {
+                    name_[e].style.height = "110%";
                 }
             } else{
-                for (var i =0;i<name.length;i++) {
+                for (let i =0;i<name.length;i++) {
                     name[i].style.height = "760px";
+                }
+                for (let j =0;j<name_.length;j++) {
+                    name_[j].style.height = "100%";
                 }
             }
         },
@@ -152,8 +159,10 @@ var User =new Vue({
                 for (var i =0;i<data.length-1;i++){
                     this.test.push(data[i]);
                 }
-                this.loading_false()
-            },err=>{
+                setTimeout(() => {
+                    this.loading=false
+                }, 2000);
+                },err=>{
                 this.loading=false;
                 this.$message({
                     message:err.message,

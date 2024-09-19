@@ -1,5 +1,8 @@
 //监听iframe父页面传递的数据
 import {request} from "./utils/request.js";
+import {reload, openFullScreen2} from "./utils/reload.js";
+import {height_adjust} from "./utils/height_adjust.js";
+
 
 window.addEventListener("message",function(e) {
     console.log(e.data.split(":")[1])
@@ -60,20 +63,13 @@ var User =new Vue({
         this.onshow();
     },
     methods: {
+
         //控制列表的页面样式的方法
         handleChange(val) {
-            console.log(val);
-            if (val.length === 2){
-                var name = window.parent.document.getElementsByClassName("border");
-                for (var i =0;i<name.length;i++) {
-                    name[i].style.height = "108%";
-                }
-            } else{
-                var name = window.parent.document.getElementsByClassName("border");
-                for (var i =0;i<name.length;i++) {
-                    name[i].style.height = "103%";
-                }
-            }
+            var name_ = window.top.document.getElementsByClassName("border");
+            var name_id = window.parent.document.getElementsByClassName("app_tabs_");
+            var name = window.parent.document.getElementsByClassName("el-tabs el-tabs--top el-tabs--border-card");
+            height_adjust(val,name,[],[])
         },
         //页面查看按钮的方法
         handleClick(row) {
@@ -124,7 +120,7 @@ var User =new Vue({
                         center: true,
                         message:res.data.message,
                     })
-                    this.reload()
+                    reload()
                 }
             },err=>{
                 console.log(err.message);
@@ -133,11 +129,12 @@ var User =new Vue({
                     type:"error",
                     center:true
                 })
-                this.reload()
+                reload()
             });
         },
         //页面加载就获取数据
         onshow(){
+
             // this.dialogVisible=false;
             // this.dialogFormVisible=false;
             let self =this
@@ -161,8 +158,11 @@ var User =new Vue({
                 this.test=res.data.data.list
                 this.send(res.data.data.total);
                 console.log(res.data.data.total)
-                this.loading_false()
+                setTimeout(() => {
+                    this.loading=false;
+                }, 2000);
             }).catch(error=>{
+                this.loading=false
                 this.$message({
                     message:error.message,
                     type:"error",
