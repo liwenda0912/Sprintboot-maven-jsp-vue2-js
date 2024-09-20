@@ -44,14 +44,14 @@ public class UserController {
     }
     @RequestMapping(value="/insert",method = RequestMethod.POST)
     public CommonResult<Integer> insertUser(@RequestBody UserDto userDto)  {
-//        Json json = new Json();
-//        Object user_=json.getObject(String.valueOf(user.getRuleForm()));
         int result_code = userService.insertUser(userDto);
         if (result_code>0){
             return CommonResult.success("操作成功");
         }
-        else {
+        else if (result_code==0) {
             return CommonResult.failed("操作失败");
+        }else {
+            return CommonResult.failed(409,"用户已存在！");
         }
     }
 

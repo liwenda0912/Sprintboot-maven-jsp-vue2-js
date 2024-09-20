@@ -68,19 +68,26 @@ public class UserService {
         GetTime getTime = new GetTime();
         User user_ = new User();
         if (userDto.getRuleForm().getUsername() != null) {
-            user_.setUsername(userDto.getRuleForm().getUsername());
-            user_.setPassword(userDto.getRuleForm().getPassword());
-            user_.setAlias(userDto.getAlias());
-            user_.setCity(userDto.getCity());
-            user_.setPhone(userDto.getPhone());
-            user_.setProvince(userDto.getProvince());
-            user_.setZip(userDto.getZip());
-            user_.setDate_(getTime.getTime());
-            user_.setAddress(userDto.getAddress());
-            return userMapper.insert(user_);
+            QueryWrapper<User> wrapper = new QueryWrapper<>();
+            wrapper.eq("username",userDto.getRuleForm().getUsername());
+            List<User> user_lot= userMapper.findAll(wrapper);
+            System.out.print(user_lot);
+            if (user_lot.size() == 0){
+                user_.setUsername(userDto.getRuleForm().getUsername());
+                user_.setPassword(userDto.getRuleForm().getPassword());
+                user_.setAlias(userDto.getAlias());
+                user_.setCity(userDto.getCity());
+                user_.setPhone(userDto.getPhone());
+                user_.setProvince(userDto.getProvince());
+                user_.setZip(userDto.getZip());
+                user_.setDate_(getTime.getTime());
+                user_.setAddress(userDto.getAddress());
+                return userMapper.insert(user_);
+            }else {
+                return -1;
+            }
         } else {
             return 0;
         }
-
     }
 }

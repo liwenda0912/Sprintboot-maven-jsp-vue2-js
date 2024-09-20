@@ -97,6 +97,9 @@ public class CommonResult<T> {
     public static <T> CommonResult<T> failed(String msg) {
         return new CommonResult<>(500, msg);
     }
+    public static <T> CommonResult<T> failed(Integer code ,String msg) {
+        return new CommonResult<>(code, msg);
+    }
 
 //    /**
 //     * 失败返回结果
