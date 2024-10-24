@@ -37,7 +37,7 @@ var Min = new Vue({
         },
         login_(){
             let self_ = this;
-            window.location.href = ("../../page/public/Result.jsp?data=" + 1 + "&message=" + 5555)
+            window.location.href = ("../../page/public/Result.jsp?data=" + 1 + "&message=" + "登录成功")
                 // 向登录servlet请求登录申请
                 // request({
                 //     method: 'Post',

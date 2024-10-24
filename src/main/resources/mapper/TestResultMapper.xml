@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.webproject.mapper.TestResultMapper">
+    <select id="find" resultType="com.example.webproject.entity.TestResult">
+        select *
+        from test_result
+                 ${ew.customSqlSegment}
+    </select>
+    <!-- 更新数据 -->
+    <update id="Edit" parameterType="com.example.webproject.entity.TestResult">
+        update test_result
+        set
+            ${ew.sqlSet}
+        where
+            ${ew.sqlSegment}
+    </update>
+</mapper>

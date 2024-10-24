@@ -21,7 +21,7 @@ public class User {
     private String address;
     private String phone;
     private String alias;
-    private Date date_;
+    private String Time;
 //    public String getUsername() {
 //        return username;
 //    }

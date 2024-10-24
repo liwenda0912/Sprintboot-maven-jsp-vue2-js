@@ -1,7 +1,6 @@
 package com.example.webproject.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
 import com.example.webproject.dto.UserDto;
 import com.github.pagehelper.page.PageMethod;
 import com.example.webproject.core.Utils.GetTime;
@@ -11,7 +10,6 @@ import com.example.webproject.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.webproject.dto.RowBounds;
-import cn.hutool.core.util.StrUtil;
 
 import java.util.List;
 
@@ -39,8 +37,7 @@ public class UserService {
     }
 
     public User editUser(User user) {
-        GetTime getTime = new GetTime();
-        user.setDate_(getTime.getTime());
+        user.setTime(GetTime.getTime());
         if (user.getId()>0){
             UpdateWrapper<User> wrapper = new UpdateWrapper<>();
             wrapper.eq("id",user.getId())
@@ -51,7 +48,7 @@ public class UserService {
                     .set("alias",user.getAlias())
                     .set("province",user.getProvince())
                     .set("zip",user.getZip())
-                    .set("date_",getTime.getTime());
+                    .set("Time", GetTime.getTime());
             if (userMapper.EditUser(wrapper) > 0) {
                 return queryById(user.getId());
             } else {
@@ -65,7 +62,6 @@ public class UserService {
     }
 
     public int insertUser(UserDto userDto) {
-        GetTime getTime = new GetTime();
         User user_ = new User();
         if (userDto.getRuleForm().getUsername() != null) {
             QueryWrapper<User> wrapper = new QueryWrapper<>();
@@ -80,7 +76,7 @@ public class UserService {
                 user_.setPhone(userDto.getPhone());
                 user_.setProvince(userDto.getProvince());
                 user_.setZip(userDto.getZip());
-                user_.setDate_(getTime.getTime());
+                user_.setTime(GetTime.getTime());
                 user_.setAddress(userDto.getAddress());
                 return userMapper.insert(user_);
             }else {

@@ -42,6 +42,7 @@
         <div v-if="SeleniumResult">
             <iframe src="SeleniumResult/ResultTableTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 115%"></iframe>
         </div>
+
     </div>
     <el-container>
         <el-footer>

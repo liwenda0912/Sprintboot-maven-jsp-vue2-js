@@ -15,15 +15,6 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>uploadFile</title>
 </head>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: 10260
-  Date: 2024/2/4
-  Time: 11:17
-  To change this template use File | Settings | File Templates.
---%>
-
 <style>
     .login_ {
         background-image: url('https://img.picui.cn/free/2024/09/18/66ea365e2ba3d.jpg'); /* 设置背景图片 */

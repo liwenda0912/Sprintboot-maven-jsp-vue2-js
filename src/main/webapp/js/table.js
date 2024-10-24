@@ -1,32 +1,31 @@
-
 var Main = {
     methods: {
-        handleClick(tab,event) {
+        handleClick(tab, event) {
             console.log(tab)
-            switch (tab._uid){
+            switch (tab._uid) {
                 case 3:
-                    this.miniSetting=true,
-                        this.userManage=false,
-                        this.roleManage=false,
-                        this.time_=false
+                    this.miniSetting = true,
+                        this.userManage = false,
+                        this.roleManage = false,
+                        this.time_ = false
                     break;
                 case 4:
-                    this.miniSetting=false,
-                        this.userManage=true,
-                        this.roleManage=false,
-                        this.time_=false
+                    this.miniSetting = false,
+                        this.userManage = true,
+                        this.roleManage = false,
+                        this.time_ = false
                     break;
                 case 5:
-                    this.miniSetting=false,
-                        this.userManage=false,
-                        this.roleManage=true,
-                        this.time_=false
+                    this.miniSetting = false,
+                        this.userManage = false,
+                        this.roleManage = true,
+                        this.time_ = false
                     break;
                 case 6:
-                    this.miniSetting=false,
-                        this.userManage=false,
-                        this.roleManage=false,
-                        this.time_=true
+                    this.miniSetting = false,
+                        this.userManage = false,
+                        this.roleManage = false,
+                        this.time_ = true
                     break;
             }
         },
@@ -37,23 +36,22 @@ var Main = {
             console.log(`当前页: ${val}`);
         },
         onshow() {
-            let self =this;
-            self.loading=true
-            setTimeout({
-            },5000)
-            self.loading=false
+            let self = this;
+            self.loading = true
+            setTimeout({}, 5000)
+            self.loading = false
         },
 
     },
     data() {
         return {
             activeName: 'first',
-            miniSetting:true,
-            userManage:false,
-            roleManage:false,
-            time_:false,
-            currentPage4:5,
-            loading:"",
+            miniSetting: true,
+            userManage: false,
+            roleManage: false,
+            time_: false,
+            currentPage4: 5,
+            loading: "",
             tableData: [{
                 date: '2016-05-02',
                 name: '王小虎',

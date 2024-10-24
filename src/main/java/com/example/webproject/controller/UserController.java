@@ -49,7 +49,7 @@ public class UserController {
             return CommonResult.success("操作成功");
         }
         else if (result_code==0) {
-            return CommonResult.failed("操作失败");
+            return CommonResult.failed(501,"操作失败");
         }else {
             return CommonResult.failed(409,"用户已存在！");
         }

@@ -49,5 +49,5 @@
     }
 
 </style>
-<script src="../../js/table.js"></script>
+<script type="text/javascript" src="../../js/table.js"></script>
 </html>

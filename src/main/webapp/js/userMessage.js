@@ -18,29 +18,6 @@ var User =new Vue({
     el:"#app_tabs",
     data() {
         return {
-            // //时间选择器的数据
-            // pickerOptions: {
-            //     shortcuts: [{
-            //         text: '今天',
-            //         onClick(picker) {
-            //             picker.$emit('pick', new Date());
-            //         }
-            //     }, {
-            //         text: '昨天',
-            //         onClick(picker) {
-            //             const date = new Date();
-            //             date.setTime(date.getTime() - 3600 * 1000 * 24);
-            //             picker.$emit('pick', date);
-            //         }
-            //     }, {
-            //         text: '一周前',
-            //         onClick(picker) {
-            //             const date = new Date();
-            //             date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-            //             picker.$emit('pick', date);
-            //         }
-            //     }]
-            // },
             activeNames:"",
             value3:"",
             input1:"",
@@ -56,6 +33,8 @@ var User =new Vue({
             form:{
             },
             test:[],
+            index_:null,
+            te_:[]
         }
     },
     mounted(){
@@ -63,7 +42,6 @@ var User =new Vue({
         this.onshow();
     },
     methods: {
-
         //控制列表的页面样式的方法
         handleChange(val) {
             var name_ = window.top.document.getElementsByClassName("border");
@@ -73,17 +51,17 @@ var User =new Vue({
         },
         //页面查看按钮的方法
         handleClick(row) {
-            let self = this
-            console.log(row);
-            self.$data.type=row;
+            let self_ = this
+            self_.$data.type=row;
             this.dialogFormVisible=true;
         },
         //页面编辑按钮的方法
-        edit(row){
-            let self = this
-            console.log(row);
-            self.$data.type=row;
-            this.dialogVisible=true;
+        edit(row,index){
+            let self_ = this
+            // self_.$data.type=row
+            self_.$data.type=JSON.parse(JSON.stringify(row));
+            self_.dialogVisible=true;
+            self_.index_=index
         },
         // iframe的父传递信息给子页面传递数据的方法
         send(data){
@@ -95,7 +73,8 @@ var User =new Vue({
         },
         // 编辑保持方法
         EditTable(type){
-            this.dialogVisible = false
+            let self_ = this
+            self_.dialogVisible = false
             request({
                 method: 'Post',
                 url: '/User/edit',
@@ -105,31 +84,30 @@ var User =new Vue({
                 },
                 data:type
             }).then(res=>{
-                console.log(res.data)
-                let  self = this
+                console.log(res.data.data)
                 if (res.data.code===200){
-                    self.dialogVisible=false;
-                    self.$message({
+                    self_.dialogVisible=false;
+                    self_.$message({
                         type:"success",
                         center: true,
                         message:res.data.message,
-                    })
+                    });
+                    //修改table的数组数据并同步渲染
+                    self_.$set(self_.test, self_.$data.index_, res.data.data);
                 }else {
-                    self.$message({
+                    self_.$message({
                         type:"error",
                         center: true,
                         message:res.data.message,
                     })
-                    reload()
                 }
             },err=>{
                 console.log(err.message);
-                this.$message({
+                self_.$message({
                     message:err.message,
                     type:"error",
                     center:true
                 })
-                reload()
             });
         },
         //页面加载就获取数据
@@ -137,13 +115,13 @@ var User =new Vue({
 
             // this.dialogVisible=false;
             // this.dialogFormVisible=false;
-            let self =this
+            let self_ =this
             request({
                 method: 'Post',
                 url: '/User/list',
                 data: {
-                    pageNum:self.$data.pageNum_1,
-                    pageSize:self.$data.pageShowNum
+                    pageNum:self_.$data.pageNum_1,
+                    pageSize:self_.$data.pageShowNum
                 },
                 headers: {
                     'Content-Type': 'application/json',
@@ -155,15 +133,14 @@ var User =new Vue({
                 // for (var i =0;i<data.length-1;i++){
                 //     this.test.push(data[i]);
                 // }
-                this.test=res.data.data.list
-                this.send(res.data.data.total);
-                console.log(res.data.data.total)
+                self_.test=res.data.data.list
+                self_.send(res.data.data.total);
                 setTimeout(() => {
-                    this.loading=false;
+                    self_.loading=false;
                 }, 2000);
             }).catch(error=>{
-                this.loading=false
-                this.$message({
+                self_.loading=false
+                self_.$message({
                     message:error.message,
                     type:"error",
                     center:true
@@ -175,23 +152,23 @@ var User =new Vue({
     watch:{
         //监听列表展示的数
         pageNum_1: function (newData,oldData){
+            let self_ =this
             console.log(newData)
             if(newData!==oldData){
-                this.loading=true
-                this.test=[];
-                this.onshow();
+                self_.loading=true
+                self_.test=[];
+                self_.onshow();
                 console.log("new num")
             }
         },
         //监听列表页数
         pageShowNum:function (newData,oldData){
+            let self_ =this
             console.log(newData)
             if(newData!==oldData){
-                this.test=[];
-                this.onshow();
-                console.log("new pagenum")
+                self_.test=[];
+                self_.onshow();
             }
         }
     },
-
 })
