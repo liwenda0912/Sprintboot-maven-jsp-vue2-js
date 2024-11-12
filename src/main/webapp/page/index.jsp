@@ -11,7 +11,6 @@
 <link rel="stylesheet" type="text/css" href="../css/index.css">
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <link rel="stylesheet" type="text/css" href="../css/head_new.css">
-<script src="https://cdn.bootcdn.net/ajax/libs/vue-router/2.6.0/vue-router.js"></script>
 <!-- import Vue before Element -->
 <%--    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>--%>
 <%--    <!-- import JavaScript -->--%>
@@ -20,6 +19,7 @@
 <script src="//unpkg.com/element-ui@2.15.14/lib/index.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue-router@4"></script>
+
 <head>
     <title>www.webapp.Controller.pop.com</title>
 
@@ -37,7 +37,7 @@
             <iframe src="DataPage/TestDataTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 109%"></iframe>
         </div>
         <div v-if="userMessage">
-            <iframe src="userMessage.jsp" scrolling="no" style="border: 0;width: 100%;height: 109%"></iframe>
+            <iframe src="userMessage.jsp" scrolling="no" style="border: 0;width: 100%;height: 92%"></iframe>
         </div>
         <div v-if="SeleniumResult">
             <iframe src="SeleniumResult/ResultTableTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 115%"></iframe>

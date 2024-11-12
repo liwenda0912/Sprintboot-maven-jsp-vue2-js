@@ -2,6 +2,7 @@ package com.example.webproject.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.webproject.dto.UserDto;
+import com.example.webproject.entity.UserLogin;
 import com.github.pagehelper.page.PageMethod;
 import com.example.webproject.core.Utils.GetTime;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -10,6 +11,8 @@ import com.example.webproject.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.webproject.dto.RowBounds;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,6 +37,18 @@ public class UserService {
         }
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         return userMapper.findAll(wrapper);
+    }
+
+    @Transactional
+    public UserLogin login(UserLogin UserLogin){
+        QueryWrapper<UserLogin> wrapper = new QueryWrapper<>();
+        wrapper.eq("username",UserLogin.getUsername())
+                .eq("password",UserLogin.getPassword());
+        System.out.print(userMapper.login(wrapper));
+        if (userMapper.login(wrapper)!=null){
+            return userMapper.login(wrapper);
+        }
+        throw  new RuntimeException("登录失败!");
     }
 
     public User editUser(User user) {
@@ -67,7 +82,6 @@ public class UserService {
             QueryWrapper<User> wrapper = new QueryWrapper<>();
             wrapper.eq("username",userDto.getRuleForm().getUsername());
             List<User> user_lot= userMapper.findAll(wrapper);
-            System.out.print(user_lot);
             if (user_lot.size() == 0){
                 user_.setUsername(userDto.getRuleForm().getUsername());
                 user_.setPassword(userDto.getRuleForm().getPassword());

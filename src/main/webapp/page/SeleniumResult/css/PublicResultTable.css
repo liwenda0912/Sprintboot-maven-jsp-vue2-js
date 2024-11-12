@@ -1,0 +1,30 @@
+
+.el-table .warning-row {
+    background: red;
+}
+
+.el-table .success-row {
+    background: green;
+}
+div.cell_button{
+    width:200px;
+    margin:0;
+}
+.el-button+.el-button{
+    margin-left: 0;
+}
+.el-table--border th.el-table__cell{
+    background-color: #DDDDDD;
+}
+.demo-input-size{
+    float: right;
+}
+.el-input.el-input--suffix{
+    width: 200px;
+}
+.el-input.el-input--medium.el-input--suffix{
+    width: 200px;
+}
+.el-collapse-item__content{
+    height: 30px;
+}

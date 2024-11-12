@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 @Service
-public class UploadFileServer {
+public class UploadFileService {
     public String UploadFile(HttpServletRequest request) throws IOException, FileUploadException {
         readExcelUtils readExcelUtils = new readExcelUtils();
         UploadFileUtils uploadFileUtils = new UploadFileUtils();

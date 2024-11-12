@@ -1,4 +1,4 @@
-// import axios from 'axios';
+
 export  function request(config) {
     return new Promise((resolve, reject) => {
         //1.创建axios的实例
@@ -7,6 +7,8 @@ export  function request(config) {
             timeout:5000,
             withCredentials: true,
             headers: {
+                'Content-Type': 'application/json',
+                "Authorization":'Access-Control-Request-Headers',
                 // 设置后端需要的传参类型
                 'content-type': 'application/json; charset=utf-8',
                 // "Lux-mateApiNonce": uuid, //每次调取接口生成的uuid

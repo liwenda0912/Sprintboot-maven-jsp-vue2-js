@@ -125,7 +125,6 @@ var APPLE = new Vue({
 window.addEventListener("message", function (e) {
     var frame = document.getElementById('index_iframe');
     //给iframe的id为index_iframe的子页面进行通信传参
-    console.log(e.data)
     switch (e.data) {
         // case 'login':
         //     frame.contentWindow.postMessage(1);

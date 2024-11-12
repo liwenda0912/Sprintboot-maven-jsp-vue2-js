@@ -55,46 +55,47 @@
                     fixed
                     prop="testCaseName"
                     label="用例集"
-                    width="150">
+                    width="220">
             </el-table-column>
             <el-table-column
                     prop="caseTotal"
                     label="用例条数"
-                    width="120">
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="testCaseSuccess"
                     label="成功条数"
-                    width="120">
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="testCaseFail"
                     label="失败条数"
-                    width="300">
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="testCaseError"
                     label="错误条数"
-                    width="120">
+                    width="100">
             </el-table-column>
             <el-table-column
                     prop="startTime"
+                    :formatter='dateFormat'
                     label="开始时间"
-                    width="120">
+                    width="200">
             </el-table-column>
             <el-table-column
                     prop="endTime"
+                    :formatter='dateFormat'
                     label="结束时间"
-                    width="120">
+                    width="200">
             </el-table-column>
             <el-table-column
                     fixed="right"
                     label="操作"
-                    width="200">
+                    width="120">
                 <template slot-scope="scope">
                     <div class="cell_button">
-                        <el-button @click="handleClick(scope.row)" type="text" size="small" icon="el-icon-search" >查看</el-button>
-                        <el-button type="text" size="small" icon="el-icon-edit" @click="edit(scope.row)">详情</el-button>
+                        <el-button type="text" size="small" icon="el-icon-edit" @click="ShowDetail(scope.row)">详情</el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -102,53 +103,11 @@
         <div style="height: 60px;">
             <iframe id="iframe_seleniumTestCase_pagination" src="../public/pagination.jsp" scrolling="no" style="width: 11960px;border: 0;position: fixed;height: 200px"></iframe>
         </div>
-
         <!-- dialog-->
-        <el-dialog title="测试结果详情" :visible.sync="dialogFormVisible" >
-            <el-descriptions title="垂直带边框列表" direction="vertical" :column="4" border>
-                <el-descriptions-item label="用例集">{{type.testCaseName}}</el-descriptions-item>
-                <el-descriptions-item label="用例条数">{{type.caseTotal}}</el-descriptions-item>
-                <el-descriptions-item label="成功条数" >{{type.testCaseSuccess}}</el-descriptions-item>
-                <el-descriptions-item label="失败条数" >{{type.testCaseFail}}</el-descriptions-item>
-                <el-descriptions-item label="错误条数">{{type.testCaseError}}</el-descriptions-item>
-                <el-descriptions-item label="开始时间">{{type.startTime}}</el-descriptions-item>
-                <el-descriptions-item label="结束时间">{{type.endTime}}</el-descriptions-item>
-            </el-descriptions>
+        <el-dialog title="测试结果详情" :visible.sync="dialogVisible">
+               <iframe v-if="dialogVisible" src="../../page/SeleniumResult/PublicResultTable.jsp" scrolling="no" style="width: 100%;height: 100%;border: 0"></iframe>
+        </el-dialog>
 
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-            </div>
-        </el-dialog>
-        <el-dialog title="修改测试集信息" :visible.sync="dialogVisible">
-            <el-form :model="form">
-                <el-form-item label="testCaseName：" :label-width="formLabelWidth">
-                    <el-input v-model="type.testCaseName" autocomplete="off" :disabled="true"></el-input>
-                </el-form-item>
-                <el-form-item label="caseTotal：" :label-width="formLabelWidth">
-                    <el-input v-model="type.caseTotal" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="TestCaseSuccess：" :label-width="formLabelWidth">
-                    <el-input v-model="type.testCaseSuccess" autocomplete="off" ></el-input>
-                </el-form-item>
-                <el-form-item label="TestCaseFail：" :label-width="formLabelWidth">
-                    <el-input v-model="type.testCaseFail" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="TestCaseError：" :label-width="formLabelWidth">
-                    <el-input v-model="type.testCaseError" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="startTime：" :label-width="formLabelWidth">
-                    <el-input v-model="type.startTime" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="endTime：" :label-width="formLabelWidth">
-                    <el-input v-model="type.endTime" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="editButtom(type)">确 定</el-button>
-            </div>
-        </el-dialog>
     </div>
 </div>
 <style>
@@ -158,6 +117,9 @@
 
     .el-table .success-row {
         background: green;
+    }
+    .el-table .fail-row {
+        background: yellow;
     }
     div.cell_button{
         width:200px;
@@ -181,7 +143,14 @@
     .el-collapse-item__content{
         height: 30px;
     }
+    .el-dialog{
+        margin-top: 10vh !important;
+        width: 80%;
+        height: 100%;
+    }
 </style >
+<script type="module" src="../../js/utils/formatTime.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script type="text/javascript" src="../../js/utils/TimePickerOption.js"></script>
 <script type="module" src="../../js/utils/height_adjust.js"></script>
 <script type="module" src="js/PublicTestCaseTable.js">

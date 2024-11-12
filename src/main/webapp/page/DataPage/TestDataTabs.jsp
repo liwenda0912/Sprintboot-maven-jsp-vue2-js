@@ -38,7 +38,7 @@
     }
     #app_tabs{
         margin: 20px 20px 20px 20px;
-        box-shadow: 0 0 5px grey;
+        box-shadow: 0 0 20px grey;
 
     }
     .el-tabs.el-tabs--top.el-tabs--border-card{

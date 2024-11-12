@@ -1,13 +1,10 @@
 package com.example.webproject.controller;
 
 import com.example.webproject.core.common.CommonResult;
-import com.example.webproject.entity.User;
-import com.example.webproject.service.UploadFileServer;
-import com.example.webproject.service.UserService;
+import com.example.webproject.service.UploadFileService;
 import org.apache.commons.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.io.IOException;
 @RestController
 public class UploadFileController {
     @Autowired
-    private UploadFileServer uploadFileServer;
+    private UploadFileService uploadFileServer;
     @RequestMapping(value="/upload",method = RequestMethod.POST)
     public CommonResult<String> UploadFile(HttpServletRequest request) throws IOException, FileUploadException {
         String msg =  uploadFileServer.UploadFile(request);

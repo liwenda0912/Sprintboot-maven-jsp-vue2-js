@@ -1,11 +1,8 @@
 package com.example.webproject.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.example.webproject.core.Utils.GetTime;
 import com.example.webproject.dto.RowBounds;
 import com.example.webproject.entity.TestResult;
-import com.example.webproject.entity.User;
 import com.example.webproject.mapper.TestResultMapper;
 import com.github.pagehelper.page.PageMethod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TestResultServer {
+public class TestResultService {
     @Autowired
     private TestResultMapper testResultMapper;
 

@@ -1,5 +1,6 @@
 import {request} from "./utils/request.js";
-
+import {setCookie} from "./utils/Cookie.js"
+// vue2中的设置方式
 var Min = new Vue({
     el: '#APP_input',
     data() {
@@ -37,34 +38,52 @@ var Min = new Vue({
         },
         login_(){
             let self_ = this;
-            window.location.href = ("../../page/public/Result.jsp?data=" + 1 + "&message=" + "登录成功")
+            // window.location.href = ("../../page/public/Result.jsp?data=" + 1 + "&message=" + "登录成功")
                 // 向登录servlet请求登录申请
-                // request({
-                //     method: 'Post',
-                //     url: 'LoginServlet',
-                //     params: {
-                //         username: self_.username,
-                //         passwd: self_.password,
-                //     }
-                // }).then(res => {
-                //     //获取登录servlet的登录请求响应
-                //     var data = res.data;
-                //     window.location.href = ("Result.jsp?data=" + data.code + "&message=" + data.message)
-                // }, err => {
-                //     console.log(err.message);
-                //     self_.$message({
-                //         message: err.message,
-                //         type: "error",
-                //         center: true
-                //     })
-                // }).catch(error => {
-                //     console.error(error.message);
-                //     self_.$message({
-                //         message: error.message,
-                //         type: "error",
-                //         center: true
-                //     })
-                // });
+            request({
+                method: 'Post',
+                url: '/User/login',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization":'Access-Control-Request-Headers'
+                },
+                data: {
+                    username:self_.$data.ruleForm.input,
+                    password:self_.$data.ruleForm.input_passwd
+                },
+            }).then(res => {
+                    //获取登录servlet的登录请求响应
+                    var data = res.data;
+                    if(res.data.data.state===true&&res.data.data.state!=null){
+                        setCookie(res.data.data.token,res.data.data.refresh_token)
+                        console.log(res.data.data.token)
+                        console.log(res.data.data.refresh_token)
+                        setTimeout(r=>{
+                            window.location.href = ("page/public/Result.jsp?data=" + data.code + "&message=" +res.data.data.msg)
+                        },2000)
+                    }
+                    else {
+                        self_.$message({
+                            message: "登陆失败",
+                            type: "error",
+                            center: true
+                        })
+                    }
+                }, err => {
+                    console.log(err.message);
+                    self_.$message({
+                        message: err.message,
+                        type: "error",
+                        center: true
+                    })
+                }).catch(error => {
+                    console.error(error.message);
+                    self_.$message({
+                        message: error.message,
+                        type: "error",
+                        center: true
+                    })
+                });
          }
         }
 });
@@ -205,7 +224,5 @@ var dialog_ = new Vue({
                 center: true
             });
         },
-
-
     }
 });

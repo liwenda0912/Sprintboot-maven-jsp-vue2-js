@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.webproject.dto.UserRuleForm;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 @TableName("user")
 public class User {
     private String username;
+    @JsonIgnore
     private String password;
     @TableId(type = IdType.AUTO)
     private int id;
