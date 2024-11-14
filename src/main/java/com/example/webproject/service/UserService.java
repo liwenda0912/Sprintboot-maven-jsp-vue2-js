@@ -27,10 +27,11 @@ public class UserService {
      * @param id 主键
      * @return 实例对象
      */
+    @Transactional
     public User queryById(Integer id) {
         return userMapper.selectById(id);
     }
-
+    @Transactional
     public List<User> findInfos(RowBounds rowBounds) {
         if (rowBounds.getPageNum() != null) {
             PageMethod.startPage(rowBounds.getPageNum(), rowBounds.getPageSize());
@@ -51,6 +52,7 @@ public class UserService {
         throw  new RuntimeException("登录失败!");
     }
 
+    @Transactional
     public User editUser(User user) {
         user.setTime(GetTime.getTime());
         if (user.getId()>0){
@@ -75,7 +77,7 @@ public class UserService {
         }
 
     }
-
+    @Transactional
     public int insertUser(UserDto userDto) {
         User user_ = new User();
         if (userDto.getRuleForm().getUsername() != null) {

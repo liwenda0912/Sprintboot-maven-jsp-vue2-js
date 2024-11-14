@@ -1,7 +1,6 @@
 var Main = {
     methods: {
         handleClick(tab, event) {
-            console.log(tab)
             switch (tab._uid) {
                 case 3:
                     this.miniSetting = true,
@@ -38,7 +37,8 @@ var Main = {
         onshow() {
             let self = this;
             self.loading = true
-            setTimeout({}, 5000)
+            setTimeout({
+            }, 5000)
             self.loading = false
         },
 

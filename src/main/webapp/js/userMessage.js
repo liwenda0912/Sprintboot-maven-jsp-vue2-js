@@ -1,13 +1,12 @@
 //监听iframe父页面传递的数据
 import {request} from "./utils/request.js";
-import {reload, openFullScreen2} from "./utils/reload.js";
 import {height_adjust} from "./utils/height_adjust.js";
-
+import {reloadLogin} from "./utils/reloadLogin.js";
+import {getCookie} from "./utils/Cookie.js";
 
 window.addEventListener("message",function(e) {
     console.log(e.data.split(":")[1])
     if(e.data.split(":")[0]==="page"){
-        // User.$data.pageNum_1 =e.data.split(":")[1]
         User.$data.pageNum_1=e.data.split(":")[1]
     }else {
         User.$data.pageShowNum = parseInt(e.data.split(":")[1])
@@ -128,16 +127,28 @@ var User =new Vue({
                     "Authorization":'Access-Control-Request-Headers'
                 },
             }).then(res=>{
-                //获取用户servlet的登录请求响应
-                // var data = res.data;
-                // for (var i =0;i<data.length-1;i++){
-                //     this.test.push(data[i]);
-                // }
-                self_.test=res.data.data.list
-                self_.send(res.data.data.total);
-                setTimeout(() => {
+                console.log(getCookie())
+                if(res.data.code===200&&res.data.message!=null&&res.data.message.indexOf("过期")){
                     self_.loading=false;
-                }, 2000);
+                    self_.$message({
+                        message:res.data.message,
+                        type:"error",
+                        center:true
+                    })
+                }else if(res.data.code===200&&res.data.message===null){
+                    self_.test=res.data.data.list
+                    self_.send(res.data.data.total);
+                    setTimeout(() => {
+                        self_.loading=false;
+                    }, 2000);
+                }else{
+                    self_.$message({
+                        message:res.data.message,
+                        type:"error",
+                        center:true
+                    });
+                    // reloadLogin();
+                }
             }).catch(error=>{
                 self_.loading=false
                 self_.$message({

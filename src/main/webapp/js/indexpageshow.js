@@ -1,4 +1,5 @@
 // 回显对应的导航页面处理
+
 var APPLE = new Vue({
     el: '#index_app',
     data() {
@@ -7,10 +8,18 @@ var APPLE = new Vue({
             index_code: 0,
             test_data: false,
             userMessage: false,
-            SeleniumResult:false
+            SeleniumResult:false,
+            loading:'',
         }
     },
+    mounted() {
+        // this.onshow();
+        console.log("5555")
+    },
     methods: {
+        onshow() {
+            let self = this;
+        },
         created: function () {
             let self = this
             self.$data.index_show = "index"
@@ -126,24 +135,8 @@ window.addEventListener("message", function (e) {
     var frame = document.getElementById('index_iframe');
     //给iframe的id为index_iframe的子页面进行通信传参
     switch (e.data) {
-        // case 'login':
-        //     frame.contentWindow.postMessage(1);
-        //     break;
-        // case 'LoginError':
-        //     frame.contentWindow.postMessage(0);
-        //     break;
-        // case "register":
-        //     frame.contentWindow.postMessage(2);
-        //     break;
-        // case  "quit" :
-        //     frame.contentWindow.postMessage(3);
-        //     break
-        // case "resetState":
-        //     frame.contentWindow.postMessage(4);
-        //     break;
         //监听导航栏的传参
         default:
             APPLE.index_code = e.data
-            console.log(e.data)
     }
 }, false);

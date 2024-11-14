@@ -40,71 +40,7 @@ let publicTestCase_tabs = new Vue({
     methods: {
         onshow() {
             let self = this;
-            if (authDentifiy()!==false){
-                self.data_()
-            }
-            // tokenDetect(getCookie()).then(r => {
-            //     if (r === false) {
-            //         tokenDetect(getCookieRefresh()).then(res => {
-            //             if ( res=== false) {
-            //
-            //             } else {
-            //                 request({
-            //                     method: 'Post',
-            //                     url: '/User/login',
-            //                     headers: {
-            //                         'Content-Type': 'application/json',
-            //                         "Authorization": 'Access-Control-Request-Headers'
-            //                     },
-            //                     data: {
-            //                         token: getCookie(),
-            //                         refresh: getCookieRefresh()
-            //                     }
-            //                 }).then(res => {
-            //                     if (res.data.data.state === true && res.data.data.state != null) {
-            //                         console.log("获取到")
-            //                         setCookie(res.data.data.token, res.data.data.refresh_token)
-            //                         this.onshow()
-            //                     }
-            //                 }).catch(e => {
-            //                     self.loading = false
-            //                     self.$message({
-            //                         message: e.message,
-            //                         type: "error",
-            //                         center: true
-            //                     })
-            //                 })
-            //             }
-            //         });
-            //     } else {
-            //         console.log("888888")
-            //         // request({
-            //         //     method: 'Post',
-            //         //     url: '/testCaseTotal',
-            //         //     // headers: {
-            //         //     //     'Content-Type': 'application/json',
-            //         //     //     "Authorization":'Access-Control-Request-Headers'
-            //         //     // },
-            //         //     data: {
-            //         //         pageNum: self.$data.pageNum,
-            //         //         pageSize: self.$data.pageShowNum
-            //         //     },
-            //         // }).then(res => {
-            //         //     self.tableData = res.data.data.list
-            //         //     self.send(res.data.data.total);
-            //         //     setTimeout(() => {
-            //         //         self.loading = false;
-            //         //     }, 2000);
-            //         // }).catch(error => {
-            //         //     self.loading = false
-            //         //     self.$message({
-            //         //         message: error.message,
-            //         //         type: "error",
-            //         //         center: true
-            //         //     })
-            //         // });
-            //     }
-            // })
+            self.data_();
         },
         handleChange(val) {
             var name_ = window.top.document.getElementsByClassName("border");

@@ -40,6 +40,7 @@ mybatis-plus:
       table-prefix: tp_ #sql中表名前缀
   configuration-properties:
     prefix: tp_ #自定义sql中表名前缀
+#  config-location: classpath:mybatis/config.xml
 
 #logging:
 #  config: classpath:log4j2.yml

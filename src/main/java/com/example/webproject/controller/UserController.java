@@ -67,13 +67,11 @@ public class UserController {
             // 是否重新请求获取最新的token
             if (UserLogin.getToken()!=null && ! UserLogin.getToken().isEmpty()){
                 // 获取token的信息
-                System.out.print(UserLogin.getToken());
                 DecodedJWT verify = JWTUtils.verify(UserLogin.getRefresh());
                 // 是否存在用户信息
                 if (verify.getClaim("id").asString() !=null && verify.getClaim("name").asString()!=null){
                     payload.put("id", String.valueOf(verify.getClaim("id").asInt()));
                     payload.put("name", verify.getClaim("name").asString());
-                    System.out.print(String.valueOf(verify.getClaim("id").asInt()));
                     refresh_token = UserLogin.getRefresh();
                 }
                 else{

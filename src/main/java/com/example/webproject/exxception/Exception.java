@@ -1,4 +1,4 @@
-package com.config.exxception;
+package com.example.webproject.exxception;
 
 
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ public class Exception<S> {
     public static <T> Exception <String>exception(HttpStatus code , String message) {
         return new Exception<>(code, message);
     }
-    public static <T> Exception <String>exception(int code ,String message) {
+    public static <T> Exception <String>exception(int code,String message) {
         return new Exception<>(code,message);
     }
 

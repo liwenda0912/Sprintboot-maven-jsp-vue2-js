@@ -54,6 +54,6 @@
 
 </div>
 </body>
-<script type="text/javascript" src="../js/indexpageshow.js"></script>
+<script type="module" src="../js/indexpageshow.js"></script>
 </html>
 

@@ -1,18 +1,13 @@
-package com.config.exxception;
+package com.example.webproject.exxception;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 //import org.apache.shiro.ShiroException;
 //import org.apache.shiro.authz.UnauthenticatedException;
 //import org.apache.shiro.authz.UnauthorizedException;
 import com.sun.xml.internal.ws.handler.HandlerException;
-import org.apache.tomcat.websocket.AuthenticationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpServerErrorException;
-
-import java.io.IOException;
 
 /***
  * #全局异常处理
@@ -25,7 +20,7 @@ import java.io.IOException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(HttpServerErrorException.GatewayTimeout.class)
     public Exception<String> httpServerErrorException(HttpServerErrorException E) {
-        return Exception.exception(E.getStatusCode(), E.getMessage());
+        return Exception.exception(200, E.getMessage());
     }
 
     @ExceptionHandler(HandlerException.class)
@@ -47,11 +42,15 @@ public class GlobalExceptionHandler {
 //    }
     @ExceptionHandler(value = java.lang.Exception.class)
     public Exception<String> allException(java.lang.Exception e) {
-        return Exception.exception(500, "服务端异常");
+        return Exception.exception(500, "服务端异常!!!");
     }
     @ExceptionHandler(value = TokenExpiredException.class)
-    public Exception<String> handler(TokenExpiredException e) throws IOException {
-        return Exception.exception(501,"token已经过期，请重新登录");
+    public Exception<String> handler(TokenExpiredException e) {
+        return Exception.exception(200,"token已经过期，请重新登录!");
     }
+    @ExceptionHandler(value = ArrayIndexOutOfBoundsException.class)
+    public Exception<String> array(ArrayIndexOutOfBoundsException e){
+        return Exception.exception(500,"服务端异常");
 
+    }
 }
