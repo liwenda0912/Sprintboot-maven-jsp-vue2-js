@@ -42,27 +42,30 @@ public class RequestInterceptor implements HandlerInterceptor {
         //判断从前端传来的头部信息中AUTH-TOKEN的值是否与我们后台定义的token值一致
         if(request.getHeader("Cookie")!=null){
             //获取token和refresh_token
-            String TOKEN;
-            if(request.getHeader("Cookie").split(";")[0].contains("cookies=")){
-                TOKEN  = request.getHeader("Cookie").split(";")[0].split("=")[1].split("[?]")[1];
-            }else {
-                TOKEN  = request.getHeader("Cookie").split(";")[1].split("=")[1].split("[?]")[1];
+            String TOKEN = null;
+            String REFRESH_TOKEN = null;
+            // 判断”cookies=“在数组哪个位置,并获取token和刷新token值
+            for(String i:request.getHeader("Cookie").split(";")){
+                if (i.contains("cookies=")){
+                    TOKEN  = i.split("=")[1].split("[?]")[1];
+                    REFRESH_TOKEN  = i.split("=")[1].split("[?]")[0];
+                }
             }
-            String REFRESH_TOKEN  = request.getHeader("Cookie").split(";")[0].split("=")[1].split("[?]")[0];
+            //校验token是否有效
             Map token_ = userAging(TOKEN);
             Map refresh_token_ = userAging(REFRESH_TOKEN);
-            System.out.print(TOKEN);
             if (token_.get("state").toString().equals("false")){
-                System.out.print("4444");
                 if(refresh_token_.get("state").toString().equals("false")){
                     throw new  TokenExpiredException("token已经过期，请重新登录");
                 }else {
                     Map<String, String> payload = new HashMap<>();
                     // 是否存在用户信息
                     if (refresh_token_.get("id") !=null && refresh_token_.get("name")!=null){
+                        // 获取用户信息并生成token
                         payload.put("id", refresh_token_.get("id").toString());
                         payload.put("name", refresh_token_.get("name").toString());
                         String token = JWTUtils.getToken(payload);
+                        // 设置新的token值并在response里面传到前端
                         setCookie(request,response,token);
                         return true;
                     }
@@ -73,9 +76,7 @@ public class RequestInterceptor implements HandlerInterceptor {
             }
             return true;
     }else{
-
-            return false;
-//
+            throw new JWTDecodeException("token无效！");//
         }
     }
 
@@ -93,6 +94,13 @@ public class RequestInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
     }
+
+    /**
+     *
+     * @param token
+     * @return
+     * 校验token
+     */
 
     public Map userAging(String token){
         Map<String,Object> map = new HashMap<>();
@@ -121,8 +129,15 @@ public class RequestInterceptor implements HandlerInterceptor {
         map.put("state",false);
             return map;
     }
+
+    /**
+     *
+     * @param request
+     * @param response
+     * @param token
+     * 设置最新的token
+     */
     public void setCookie(HttpServletRequest request,HttpServletResponse response,String token){
-//        String TOKEN  = request.getHeader("Cookie").split(";")[0].split("=")[1].split("[?]")[1];
         String REFRESH_TOKEN  = request.getHeader("Cookie").split(";")[0].split("=")[1].split("[?]")[0];
         String string = REFRESH_TOKEN + "?" + token;
         System.out.print(string);

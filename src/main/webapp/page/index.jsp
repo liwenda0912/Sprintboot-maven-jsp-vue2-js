@@ -37,7 +37,7 @@
             <iframe src="DataPage/TestDataTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 109%"></iframe>
         </div>
         <div v-if="userMessage">
-            <iframe src="userMessage.jsp" scrolling="no" style="border: 0;width: 100%;height: 92%"></iframe>
+            <iframe src="userMessage.jsp" scrolling="no" style="border: 0;width: 100%;height: 102%"></iframe>
         </div>
         <div v-if="SeleniumResult">
             <iframe src="SeleniumResult/ResultTableTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 115%"></iframe>

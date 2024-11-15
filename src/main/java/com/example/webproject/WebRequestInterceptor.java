@@ -34,7 +34,9 @@ public class WebRequestInterceptor implements WebMvcConfigurer {
                  .addPathPatterns("/User/**")
                  .addPathPatterns("/testCaseTotal/**")
 //                 .addPathPatterns("/test/queryUser")
-                 .excludePathPatterns("/User/login");
+                 .excludePathPatterns("/User/login")
+                 .excludePathPatterns("/User/userAging");
+         ;
      }
     /**
      * 跨域支持 比如说vue 的axios访问
