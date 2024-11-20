@@ -8,28 +8,26 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page import="javax.servlet.http.HttpServletRequest" %>
 <html>
-<link rel="stylesheet" type="text/css" href="../css/index.css">
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<link rel="stylesheet" type="text/css" href="../css/head_new.css">
-<!-- import Vue before Element -->
-<%--    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>--%>
-<%--    <!-- import JavaScript -->--%>
-<%--    <script src="https://unpkg.com/element-ui/lib/index.js"></script>--%>
-<script src="//unpkg.com/vue@2/dist/vue.js"></script>
-<script src="//unpkg.com/element-ui@2.15.14/lib/index.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/vue-router@4"></script>
-
 <head>
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/head_new.css">
+    <!-- import Vue before Element -->
+    <%--    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>--%>
+    <%--    <!-- import JavaScript -->--%>
+    <%--    <script src="https://unpkg.com/element-ui/lib/index.js"></script>--%>
+    <script src="//unpkg.com/vue@2/dist/vue.js"></script>
+    <script src="//unpkg.com/element-ui@2.15.14/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
     <title>www.webapp.Controller.pop.com</title>
-
 </head>
 <body>
 <div class="all-style">
     <div class="header">
         <%@ include file="public/head_new.jsp"%>
     </div>
-    <div id="index_app" class="border">
+    <div id="index_app" class="border"  >
         <div class="index" v-if="index_show">
             <iframe id="index_iframe" src="index_import.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%"></iframe>
         </div>
@@ -41,6 +39,9 @@
         </div>
         <div v-if="SeleniumResult">
             <iframe src="SeleniumResult/ResultTableTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 115%"></iframe>
+        </div>
+        <div v-if="test_case">
+            <iframe src="table/TestCaseTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%;box-shadow: 0 0 20px grey;"></iframe>
         </div>
 
     </div>

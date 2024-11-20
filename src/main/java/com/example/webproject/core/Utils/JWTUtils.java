@@ -37,7 +37,7 @@ public class JWTUtils {
     public static String getRefreshToken(Map<String, String> map) {
 
         Calendar instance = Calendar.getInstance();
-        // 默认1天过期
+        // 默认7天过期
         instance.add(Calendar.DATE, 7);
 
         //创建jwt builder

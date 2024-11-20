@@ -1,8 +1,7 @@
 package com.example.webproject.core.common;
 
 
-
-
+import com.example.webproject.core.enums.ResultCode;
 
 /**
  * 通用返回对象
@@ -44,7 +43,7 @@ public class CommonResult<T> {
      * @param data 获取的数据
      */
     public static <T> CommonResult<T> success(T data) {
-        return new CommonResult<>(200, null, data);
+        return new CommonResult<>(ResultCode.SUCCESS.getCode(), null, data);
     }
 
     /**
@@ -54,21 +53,21 @@ public class CommonResult<T> {
      * @param message 提示信息
      */
     public static <T> CommonResult<T> success(T data, String message) {
-        return new CommonResult<>(200, message, data);
+        return new CommonResult<>(ResultCode.SUCCESS.getCode(), message, data);
     }
 
     /**
      * 成功返回结果
      */
     public static <T> CommonResult<T> success() {
-        return new CommonResult<>(200,null);
+        return new CommonResult<>(ResultCode.SUCCESS.getCode(),null);
     }
 
     /**
      * 成功返回消息
      */
     public static <T> CommonResult<T> success(String message) {
-        return new CommonResult<>(200,message);
+        return new CommonResult<>(ResultCode.SUCCESS.getCode(),message);
     }
 //
 //    /**
@@ -95,7 +94,7 @@ public class CommonResult<T> {
      *
      */
     public static <T> CommonResult<T> failed(String msg) {
-        return new CommonResult<>(500, msg);
+        return new CommonResult<>(ResultCode.EXCEPTION.getCode(), msg);
     }
     public static <T> CommonResult<T> failed(Integer code ,String msg) {
         return new CommonResult<>(code, msg);

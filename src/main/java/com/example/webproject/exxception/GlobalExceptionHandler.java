@@ -1,13 +1,21 @@
 package com.example.webproject.exxception;
-import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.exceptions.*;
 //import org.apache.shiro.ShiroException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 //import org.apache.shiro.authz.UnauthenticatedException;
 //import org.apache.shiro.authz.UnauthorizedException;
+import com.example.webproject.core.Utils.MapUtils;
+import com.example.webproject.core.common.CommonResult;
+import com.example.webproject.core.enums.ResultCode;
 import com.sun.xml.internal.ws.handler.HandlerException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpServerErrorException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /***
  * #全局异常处理
@@ -18,6 +26,9 @@ import org.springframework.web.client.HttpServerErrorException;
 @ResponseBody
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    Map<String, Object> map = new HashMap<>();
+    MapUtils mapUtils = new MapUtils();
+
     @ExceptionHandler(HttpServerErrorException.GatewayTimeout.class)
     public Exception<String> httpServerErrorException(HttpServerErrorException E) {
         return Exception.exception(200, E.getMessage());
@@ -42,15 +53,39 @@ public class GlobalExceptionHandler {
 //    }
     @ExceptionHandler(value = java.lang.Exception.class)
     public Exception<String> allException(java.lang.Exception e) {
-        return Exception.exception(500, "服务端异常!!!");
+        return Exception.exception(ResultCode.EXCEPTION.getCode(), ResultCode.EXCEPTION.getMessage());
     }
     @ExceptionHandler(value = TokenExpiredException.class)
-    public Exception<String> handler(TokenExpiredException e) {
-        return Exception.exception(200,"token已经过期，请重新登录!");
+    public CommonResult<Map> handler(TokenExpiredException e) {
+       return CommonResult.success(mapUtils.getErrorToken(e.getMessage()));
     }
     @ExceptionHandler(value = ArrayIndexOutOfBoundsException.class)
     public Exception<String> array(ArrayIndexOutOfBoundsException e){
-        return Exception.exception(500,"服务端异常");
-
+        return Exception.exception(ResultCode.EXCEPTION.getCode(),"服务端异常");
     }
+    @ExceptionHandler(value = SignatureVerificationException.class)
+    public CommonResult<Map> SignatureVerification(SignatureVerificationException e){
+        return CommonResult.success( mapUtils.getErrorToken("无效签名！"));
+    }
+    @ExceptionHandler(value = AlgorithmMismatchException.class)
+    public CommonResult<Map> AlgorithmMismatch(AlgorithmMismatchException e){
+        return CommonResult.success( mapUtils.getErrorToken("算法不一致"));
+    }
+    @ExceptionHandler(value = JWTDecodeException.class)
+    public CommonResult<Map> JWTDecode(JWTDecodeException e){
+        return CommonResult.success(mapUtils.getErrorToken("token无效！"));
+    }
+    @ExceptionHandler(value = RuntimeException.class)
+    public CommonResult<Map> RuntimeException(RuntimeException e){
+        return CommonResult.success( mapUtils.getErrorToken(e.getMessage()));
+    }
+    @ExceptionHandler(value = NullPointerException.class)
+    public Exception<String> NullPointer(NullPointerException e){
+        return Exception.exception(400,"请求错误!");
+    }
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public Exception<String> MissingServletRequestParameter(MissingServletRequestParameterException e){
+        return Exception.exception(412,"缺少请求参数！");
+    }
+
 }

@@ -4,10 +4,11 @@ import {request} from "./request.js";
 
 // 原生js设置cookie
 export function setCookie(token,refresh) {
-    const date = new Date();
-    date.setTime(date.getTime() + (24 * 60 * 60 * 1000));// 1天后过期
+    var date = new Date();
+    date.setTime(date.getTime() + (daysUntilExpire * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + date.toUTCString();
     let string = refresh + "?" + token
-    document.cookie = "cookies=" + string + "; expires=" + date.toUTCString() + "; path=/";
+    document.cookie = "cookies=" + string + "; expires=" + expires + "; path=/";
 }
 
 //获取token

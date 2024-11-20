@@ -1,5 +1,6 @@
 import {request} from "./utils/request.js";
 import {setCookie} from "./utils/Cookie.js"
+import {operations} from "./utils/message.js";
 // vue2中的设置方式
 var Min = new Vue({
     el: '#APP_input',
@@ -36,58 +37,43 @@ var Min = new Vue({
                 }
             });
         },
-        login_(){
+        login_() {
             let self_ = this;
             // window.location.href = ("../../page/public/Result.jsp?data=" + 1 + "&message=" + "登录成功")
-                // 向登录servlet请求登录申请
+            // 向登录servlet请求登录申请
             request({
                 method: 'Post',
                 url: '/User/login',
                 headers: {
                     'Content-Type': 'application/json',
-                    "Authorization":'Access-Control-Request-Headers'
+                    "Authorization": 'Access-Control-Request-Headers'
                 },
                 data: {
-                    username:self_.$data.ruleForm.input,
-                    password:self_.$data.ruleForm.input_passwd
+                    username: self_.$data.ruleForm.input,
+                    password: self_.$data.ruleForm.input_passwd
                 },
             }).then(res => {
-                    //获取登录servlet的登录请求响应
-                    var data = res.data;
-                    if(res.data.data.state===true&&res.data.data.state!=null){
-                        setCookie(res.data.data.token,res.data.data.refresh_token)
-                        console.log(res.data.data.token)
-                        console.log(res.data.data.refresh_token)
-                        setTimeout(r=>{
-                            window.location.href = ("page/public/Result.jsp?data=" + data.code + "&message=" +res.data.data.msg)
-                        },2000)
-                    }
-                    else {
-                        self_.$message({
-                            message: "登陆失败",
-                            type: "error",
-                            center: true
-                        })
-                    }
-                }, err => {
-                    console.log(err.message);
-                    self_.$message({
-                        message: err.message,
-                        type: "error",
-                        center: true
-                    })
-                }).catch(error => {
-                    console.error(error.message);
-                    self_.$message({
-                        message: error.message,
-                        type: "error",
-                        center: true
-                    })
-                });
-         }
+                //获取登录servlet的登录请求响应
+                var data = res.data;
+                console.log(res)
+                if (res.data.code===200 &&res.data.data.state === true && res.data.data.state != null) {
+                    setCookie(res.data.data.token, res.data.data.refresh_token)
+                    // console.log(res)
+                    setTimeout(r => {
+                        window.location.href = ("page/public/Result.jsp?data=" + data.code + "&message=" + res.data.data.msg)
+                    }, 2000)
+                } else if(res.data.code===200) {
+                    console.log( res.data.data.msg)
+                    operations("error", res.data.data.msg,self_)
+                }else {
+                    operations("error", res.data.message,self_)
+                }
+            }).catch(err => {
+                operations("error", err.message,self_)
+            });
         }
+    }
 });
-
 
 
 // 注册监听
@@ -95,7 +81,7 @@ var register = new Vue({
     el: "#app-2",
     methods: {
         register() {
-            dialog_.$data.dialogFormVisible=true;
+            dialog_.$data.dialogFormVisible = true;
         },
 
     }
@@ -112,7 +98,7 @@ var dialog_ = new Vue({
                 province: "",
                 ruleForm: {
                     phone: "",
-                    zip:'',
+                    zip: '',
                     username: '',
                     password: '',
                     region: '',
@@ -124,10 +110,10 @@ var dialog_ = new Vue({
             },
             // 输入框校验规则
             rules: {
-                phone:[{
-                    pattern:/^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/, message: '手机号码不合法', trigger: 'blur'
+                phone: [{
+                    pattern: /^((0\d{2,3}-\d{7,8})|(1[34578]\d{9}))$/, message: '手机号码不合法', trigger: 'blur'
                 }],
-                zip:[{min: 6, max: 6, message: '邮政编码只能填写6位', trigger: 'blur'}],
+                zip: [{min: 6, max: 6, message: '邮政编码只能填写6位', trigger: 'blur'}],
                 username: [
                     {required: true, message: '账户不能为空', trigger: 'blur'},
                 ],
@@ -155,20 +141,20 @@ var dialog_ = new Vue({
                         url: '/User/insert',
                         headers: {
                             'Content-Type': 'application/json',
-                            "Authorization":'Access-Control-Request-Headers'
+                            "Authorization": 'Access-Control-Request-Headers'
                         },
                         data: this.type_data
                     }).then(res => {
                         //获取servlet响应的信息
                         let data = res.data;
                         console.log(data)
-                        if (data.code===200){
+                        if (data.code === 200) {
                             this.$message({
                                 message: data.message,
                                 center: true,
                                 type: "success"
                             });
-                        }else {
+                        } else {
                             this.$message({
                                 message: data.message,
                                 center: true,

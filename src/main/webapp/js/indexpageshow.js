@@ -1,5 +1,7 @@
 // 回显对应的导航页面处理
 
+import {openFullScreen2} from "./utils/reload.js";
+
 var APPLE = new Vue({
     el: '#index_app',
     data() {
@@ -9,21 +11,21 @@ var APPLE = new Vue({
             test_data: false,
             userMessage: false,
             SeleniumResult:false,
+            test_case:false,
             loading:'',
         }
     },
     mounted() {
-        // this.onshow();
-        console.log("5555")
+        // 全局页面加载中。。
+        this.$loading({}).close()
+    },
+    created: function () {
+        let self = this
+// 全局页面加载中。。
+        openFullScreen2(this)
     },
     methods: {
-        onshow() {
-            let self = this;
-        },
-        created: function () {
-            let self = this
-            self.$data.index_show = "index"
-        }
+
     },
     // 监听导航栏的跳转
     watch: {
@@ -33,15 +35,19 @@ var APPLE = new Vue({
             for (var i = 0; i < name.length; i++) {
                 name[i].style.height = "100%";
             }
+            // 全局页面加载中。。
+            openFullScreen2(this)
             switch (newData.toString()) {
                 //首页
                 case "1":
                     self.$data.SeleniumResult = false
                     self.$data.userMessage = false
                     self.$data.index_show = false
+                    self.$data.test_case = false
                     self.$data.test_data = false
                     setTimeout(() => {
                         self.$data.index_show = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
                 //测试用例
@@ -50,18 +56,22 @@ var APPLE = new Vue({
                     self.$data.userMessage = false
                     self.$data.index_show = false
                     self.$data.test_data = false
+                    self.$data.test_case = false
                     setTimeout(() => {
-                        self.$data.test_data = true
+                        self.$data.test_case = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
                 //测试数据
                 case "2-2":
                     self.$data.SeleniumResult = false
                     self.$data.userMessage = false
+                    self.$data.test_case = false
                     self.$data.index_show = false
                     self.$data.test_data = false
                     setTimeout(() => {
                         self.$data.test_data = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
                 //测试报告
@@ -69,47 +79,57 @@ var APPLE = new Vue({
                     self.$data.test_data = false
                     self.$data.SeleniumResult = false
                     self.$data.index_show = false
+                    self.$data.test_case = false
                     self.$data.userMessage = false
                     setTimeout(() => {
                         self.$data.test_data = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
                 //测试脚本-测试数据
                 case "2-4-1":
                     self.$data.test_data = false
+                    self.$data.test_case = false
                     self.$data.index_show = false
                     self.$data.userMessage = false
                     self.$data.SeleniumResult = false
                     setTimeout(() => {
                         self.$data.test_data = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
                 //测试脚本-测试脚本
                 case "2-4-2":
                     self.$data.SeleniumResult = false
                     self.$data.userMessage = false
+                    self.$data.test_case = false
                     self.$data.test_data = false
                     self.$data.index_show = false
                     setTimeout(() => {
                         self.$data.test_data = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
                 //测试脚本-测试结果
                 case "2-4-3":
                     self.$data.userMessage = false
+                    self.$data.test_case = false
                     self.$data.SeleniumResult = false
                     self.$data.test_data = false
                     self.$data.index_show = false
                     setTimeout(() => {
                         self.$data.SeleniumResult = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
                 //消息管理
                 case "3":
                     self.$data.test_data = false
                     self.$data.index_show = false
+                    self.$data.test_case = false
                     setTimeout(() => {
                         self.$data.test_data = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
                 //用户管理
@@ -117,10 +137,11 @@ var APPLE = new Vue({
                     self.$data.SeleniumResult = false
                     self.$data.userMessage = false
                     self.$data.index_show = false
+                    self.$data.test_case = false
                     self.$data.test_data = false
                     setTimeout(() => {
-                        console.log(555)
                         self.$data.userMessage = true
+                        self.$loading({}).close()
                     }, 1000);
                     break
             }

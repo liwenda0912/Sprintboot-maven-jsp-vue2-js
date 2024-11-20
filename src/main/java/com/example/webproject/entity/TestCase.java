@@ -18,8 +18,6 @@ public class TestCase {
     private int TestCaseFail;
     private int state;
     private int TestCaseError;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private int startTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private int endTime;
 }

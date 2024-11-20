@@ -3,6 +3,8 @@ import {request} from "../../../js/utils/request.js";
 import {formatter} from "../../../js/utils/formatTime.js";
 import {getCookie, getCookieRefresh, setCookie, tokenDetect} from "../../../js/utils/Cookie.js";
 import {authDentifiy} from "../../../js/utils/authDentifiy.js";
+import {reloadLogin} from "../../../js/utils/reloadLogin.js";
+import {operations} from "../../../js/utils/message.js";
 // import moment from "moment";
 window.addEventListener("message", function (e) {
     if (e.data.split(":")[0] === "page") {
@@ -63,8 +65,8 @@ let publicTestCase_tabs = new Vue({
             let self_ = this
             self_.dialogVisible = true;
         },
-        data_(){
-            let self = this;
+        data_() {
+            let self_ = this;
             request({
                 method: 'Post',
                 url: '/testCaseTotal',
@@ -73,22 +75,43 @@ let publicTestCase_tabs = new Vue({
                 //     "Authorization":'Access-Control-Request-Headers'
                 // },
                 data: {
-                    pageNum: self.$data.pageNum,
-                    pageSize: self.$data.pageShowNum
+                    pageNum: self_.$data.pageNum,
+                    pageSize: self_.$data.pageShowNum
                 },
             }).then(res => {
-                self.tableData = res.data.data.list
-                self.send(res.data.data.total);
-                setTimeout(() => {
-                    self.loading = false;
-                }, 2000);
+                if (res.data.code === 200 && res.data.message != null && res.data.message.indexOf("过期")) {
+                    self_.loading = false;
+                    operations("error", res.data.message, self_)
+                    // self_.$message({
+                    //     message:res.data.message,
+                    //     type:"error",
+                    //     center:true
+                    // })
+                    reloadLogin();
+                } else if (res.data.code === 200 && res.data.message === null) {
+                    self_.tableData = res.data.data.list
+                    self_.send(res.data.data.total);
+                    setTimeout(() => {
+                        self_.loading = false;
+                    }, 2000);
+                } else {
+                    operations("error", res.data.message, self_)
+                    //
+                    // self_.$message({
+                    //     message:res.data.message,
+                    //     type:"error",
+                    //     center:true
+                    // });
+                }
             }).catch(error => {
-                self.loading = false
-                self.$message({
-                    message: error.message,
-                    type: "error",
-                    center: true
-                })
+                self_.loading = false,
+                    operations("error", error.message, self_)
+                //
+                // self_.$message({
+                //     message: error.message,
+                //     type: "error",
+                //     center: true
+                // })
             });
         }
     },

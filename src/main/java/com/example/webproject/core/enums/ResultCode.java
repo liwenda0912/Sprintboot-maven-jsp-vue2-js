@@ -16,7 +16,7 @@ public enum ResultCode {
         /**
          * 服务端异常
          */
-        EXCEPTION(500, "操作失败"),
+        EXCEPTION(500, "操作异常"),
         /**
          * 参数校验失败
          */
@@ -54,15 +54,13 @@ public enum ResultCode {
             this.message = message;
         }
 
-//        @Override
-//        public Integer getCode() {
-//            return code;
-//        }
-//
-//        @Override
-//        public String getMessage() {
-//            return message;
-//        }
+        public Integer getCode() {
+            return code;
+        }
+
+        public String getMessage() {
+            return message;
+        }
 
         public static ResultCode getState(int value) {
             ResultCode[] var1 = values();
@@ -76,7 +74,4 @@ public enum ResultCode {
             return null;
         }
 
-        public String getMessage() {
-            return message;
-        }
     }

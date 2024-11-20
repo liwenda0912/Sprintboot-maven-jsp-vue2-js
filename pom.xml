@@ -50,7 +50,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.10</version>
+            <version>1.18.14</version>
             <scope>provided</scope>
         </dependency>
         <!-- 包含spirng Mvc ,tomcat的包包含requestMapping restController 等注解 -->
@@ -70,11 +70,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.31</version>
         </dependency><!---->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.31</version>
-        </dependency>
         <!-- druid依赖 -->
         <dependency>
             <groupId>com.alibaba</groupId>

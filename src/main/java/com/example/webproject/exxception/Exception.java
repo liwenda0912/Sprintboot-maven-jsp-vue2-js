@@ -3,25 +3,32 @@ package com.example.webproject.exxception;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.Map;
+
 public class Exception<S> {
-    private HttpStatus code;
+    private int code;
+//    private HttpStatus code_;
+
     private String message;
 
-    public static <T> Exception <String>exception(HttpStatus code , String message) {
-        return new Exception<>(code, message);
-    }
+//    public static <T> Exception <String>exception(HttpStatus code , String message) {
+//        return new Exception<>(code, message);
+//    }
     public static <T> Exception <String>exception(int code,String message) {
         return new Exception<>(code,message);
     }
+    public static <T> Exception <Map> exceptions(int code, String message) {
+        return new Exception<>(code,message);
+    }
 
-    public Exception(HttpStatus code, String message) {
+    public Exception(int code, String message) {
         this.code = code;
         this.message = message;
     }
-    public Exception(int code , String message) {
-        this.message = message;
-        this.code = HttpStatus.valueOf(code);
-    }
+//    public Exception(HttpStatus code_ , String message) {
+//        this.message = message;
+//        this.code_ = code_;
+//    }
 
     public String getMessage() {
         return message;
@@ -31,11 +38,19 @@ public class Exception<S> {
         this.message = message;
     }
 
-    public HttpStatus getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(HttpStatus code) {
+    public void setCode(int code) {
         this.code = code;
     }
+
+//    public HttpStatus getCode_() {
+//        return code_;
+//    }
+
+//    public void setCode_(HttpStatus code_) {
+//        this.code_ = code_;
+//    }
 }
