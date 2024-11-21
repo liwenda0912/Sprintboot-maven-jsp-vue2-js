@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,32 +17,35 @@ public class TestCaseExcel {
         private Integer id ;
         /**  */
         @JsonProperty("Module")
-        private String Module ;
+        private String module ;
         /**  */
         @JsonProperty("Scene")
-        private String Scene ;
+        private String scene ;
         /**  */
         @JsonProperty("CaseTitle")
-        private String CaseTitle ;
+        private String caseTitle ;
         /**  */
         @JsonProperty("Priority")
-        private String Priority ;
+        private String priority ;
         /**  */
         @JsonProperty("OperateStep")
-        private String OperateStep ;
+        private String operateStep ;
         /**  */
         @JsonProperty("ExpectedResult")
-        private String ExpectedResult ;
+        private String expectedResult ;
         /**  */
         @JsonProperty("ActualResult")
-        private String ActualResult ;
+        private String actualResult ;
         /**  */
         @JsonProperty("Remarks")
-        private String Remarks ;
+        private String remarks ;
         /**  */
+        @JsonIgnore
         private Integer state ;
         /**  */
+        @JsonProperty("CreateTime")
         private Long createtime ;
         /**  */
+        @JsonIgnore
         private Long updatetime ;
 }

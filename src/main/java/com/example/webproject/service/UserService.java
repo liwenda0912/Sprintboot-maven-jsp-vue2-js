@@ -1,6 +1,8 @@
 package com.example.webproject.service;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.example.webproject.core.Utils.JWTUtils;
 import com.example.webproject.dto.UserDto;
 import com.example.webproject.entity.UserLogin;
 import com.github.pagehelper.page.PageMethod;
@@ -14,7 +16,9 @@ import com.example.webproject.dto.RowBounds;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -102,4 +106,14 @@ public class UserService {
             return 0;
         }
     }
+    @Transactional
+    public Map<String, Object> verify(String token) {
+        Map<String, Object> map = new HashMap<>();
+        // 验证令牌
+        DecodedJWT verify = JWTUtils.verify(token);
+        map.put("state", true);
+        map.put("msg", "请求成功");
+        return map;
+    }
+
 }

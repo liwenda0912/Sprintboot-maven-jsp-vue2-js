@@ -20,7 +20,7 @@
                 </div>
             </el-tab-pane>
             <el-tab-pane label="APP测试数据" name="second">
-                <div v-if="APPManage">
+                <div v-if="userManage">
                     <iframe src="TestDataTable.jsp"  scrolling="no" style="width: 100%;height:100%;border: 0"></iframe>
                 </div>
             </el-tab-pane>
@@ -49,5 +49,5 @@
     }
 
 </style>
-<script type="text/javascript" src="../../js/table.js"></script>
+<script type="module" src="../../js/table.js"></script>
 </html>

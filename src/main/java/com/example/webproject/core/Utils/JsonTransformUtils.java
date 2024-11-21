@@ -6,7 +6,6 @@ import java.util.List;
 
 public class JsonTransformUtils {
     public JSONObject putJson(List<String> array_text, Row array_name) {
-        int columns = array_name.getLastCellNum();
         JSONObject jsonObj = new JSONObject();
         for (int i = 0 ;i<array_text.size();i++){
             jsonObj.put(String.valueOf(array_name.getCell(i+1)), array_text.get(i));

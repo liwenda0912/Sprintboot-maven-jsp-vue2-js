@@ -17,10 +17,12 @@ public class readExcelUtils {
         // 读取Excel内容的代码
         int sheet_rows =sheet.getLastRowNum();
         for (int j =1 ; j<sheet_rows;j++){
-            //获取某行的数据
+            //获取行某的数据
             Row column = sheet.getRow(j);
-            //获取某行的列数
-            int columns = column.getLastCellNum();
+//            //获取每一行的列数
+//            int columns = column.getLastCellNum();
+            //获取第一行的列数
+            int columns = sheet.getRow(0).getLastCellNum();
             for (int i =1;i<columns; i++) {
                 // 给数组array_text插入数据
                 array_text.add(String.valueOf(column.getCell(i)));

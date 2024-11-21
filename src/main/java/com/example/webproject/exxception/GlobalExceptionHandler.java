@@ -26,7 +26,6 @@ import java.util.Map;
 @ResponseBody
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    Map<String, Object> map = new HashMap<>();
     MapUtils mapUtils = new MapUtils();
 
     @ExceptionHandler(HttpServerErrorException.GatewayTimeout.class)
@@ -56,7 +55,7 @@ public class GlobalExceptionHandler {
         return Exception.exception(ResultCode.EXCEPTION.getCode(), ResultCode.EXCEPTION.getMessage());
     }
     @ExceptionHandler(value = TokenExpiredException.class)
-    public CommonResult<Map> handler(TokenExpiredException e) {
+    public CommonResult<Map<String, Object>> handler(TokenExpiredException e) {
        return CommonResult.success(mapUtils.getErrorToken(e.getMessage()));
     }
     @ExceptionHandler(value = ArrayIndexOutOfBoundsException.class)
@@ -64,19 +63,19 @@ public class GlobalExceptionHandler {
         return Exception.exception(ResultCode.EXCEPTION.getCode(),"服务端异常");
     }
     @ExceptionHandler(value = SignatureVerificationException.class)
-    public CommonResult<Map> SignatureVerification(SignatureVerificationException e){
+    public CommonResult<Map<String, Object>> SignatureVerification(SignatureVerificationException e){
         return CommonResult.success( mapUtils.getErrorToken("无效签名！"));
     }
     @ExceptionHandler(value = AlgorithmMismatchException.class)
-    public CommonResult<Map> AlgorithmMismatch(AlgorithmMismatchException e){
+    public CommonResult<Map<String, Object>> AlgorithmMismatch(AlgorithmMismatchException e){
         return CommonResult.success( mapUtils.getErrorToken("算法不一致"));
     }
     @ExceptionHandler(value = JWTDecodeException.class)
-    public CommonResult<Map> JWTDecode(JWTDecodeException e){
+    public CommonResult<Map<String, Object>> JWTDecode(JWTDecodeException e){
         return CommonResult.success(mapUtils.getErrorToken("token无效！"));
     }
     @ExceptionHandler(value = RuntimeException.class)
-    public CommonResult<Map> RuntimeException(RuntimeException e){
+    public CommonResult<Map<String, Object>> RuntimeException(RuntimeException e){
         return CommonResult.success( mapUtils.getErrorToken(e.getMessage()));
     }
     @ExceptionHandler(value = NullPointerException.class)

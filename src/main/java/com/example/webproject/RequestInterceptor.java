@@ -107,7 +107,6 @@ public class RequestInterceptor implements HandlerInterceptor {
 
     public Map userAging(String token){
         Map<String,Object> map = new HashMap<>();
-        try {
             // 验证令牌
             DecodedJWT verify = JWTUtils.verify(token);
             map.put("state",true);
@@ -115,22 +114,6 @@ public class RequestInterceptor implements HandlerInterceptor {
             map.put("name",verify.getClaim("name"));
             map.put("msg","请求成功");
             return map;
-        } catch (SignatureVerificationException e) {
-//            e.printStackTrace();
-            map.put("msg","无效签名！");
-        }catch (TokenExpiredException e){
-//            e.printStackTrace();
-            map.put("msg","token过期");
-
-        }catch (AlgorithmMismatchException e){
-//            e.printStackTrace();
-            map.put("msg","算法不一致");
-        }catch (JWTDecodeException e){
-//            e.printStackTrace();
-            map.put("msg","token无效！");
-        }
-        map.put("state",false);
-        return map;
     }
 
     /**

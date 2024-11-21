@@ -61,22 +61,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public CommonResult<Map> login(@RequestBody UserLogin UserLogin) {
+    public CommonResult<Map<String, Object>> login(@RequestBody UserLogin UserLogin) {
         UserLogin userDB = userService.login(UserLogin);
         MapUtils mapUtils = new MapUtils();
         return CommonResult.success(mapUtils.getToken(userDB));
     }
 
     @RequestMapping(value = "/userAging", method = RequestMethod.POST)
-    public CommonResult<Map> test(String token) {
-        Map<String, Object> map = new HashMap<>();
-            // 验证令牌
-            DecodedJWT verify = JWTUtils.verify(token);
-            map.put("state", true);
-            map.put("id", verify.getClaim("id"));
-            map.put("name", verify.getClaim("name"));
-            map.put("msg", "请求成功");
-            return CommonResult.success(map);
+    public CommonResult<Map<String, Object>> test(String token) {
+            return CommonResult.success(userService.verify(token));
 
     }
 }

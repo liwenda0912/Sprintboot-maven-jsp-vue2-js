@@ -9,14 +9,14 @@ public class MapUtils {
 
 
     //获取token错误map
-    public Map getErrorToken(String s){
+    public Map<String, Object> getErrorToken(String s){
         map.put("msg", s);
         map.put("state", false);
         return map;
     }
 
     // 获取token成功map
-    public  Map getToken(UserLogin userLogin){
+    public  Map<String, Object> getToken(UserLogin userLogin){
         // 生成刷新jwt令牌
         String refresh_token = JWTUtils.getRefreshToken(payload(userLogin));
         // 生成jwt令牌

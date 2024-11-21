@@ -17,6 +17,7 @@ public class UploadFileService {
         for (Sheet rows : sheet) {
 //            调用读取excel文档服务
             readExcelUtils.readSheet(rows);
+            System.out.print(readExcelUtils.readSheet(rows));
         }
         return "导入成功";
     }
