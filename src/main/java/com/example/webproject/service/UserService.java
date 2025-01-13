@@ -53,7 +53,7 @@ public class UserService {
         if (userMapper.login(wrapper)!=null){
             return userMapper.login(wrapper);
         }
-        throw  new RuntimeException("登录失败!");
+        throw  new RuntimeException("用戶不存在!");
     }
 
     @Transactional
@@ -113,6 +113,7 @@ public class UserService {
         DecodedJWT verify = JWTUtils.verify(token);
         map.put("state", true);
         map.put("msg", "请求成功");
+        System.out.print(verify);
         return map;
     }
 

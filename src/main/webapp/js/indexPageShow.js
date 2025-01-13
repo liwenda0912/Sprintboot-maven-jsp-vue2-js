@@ -39,8 +39,8 @@ var APPLE = new Vue({
     watch: {
         index_code: function (newData, oldData) {
             let self = this
-            var name = window.document.getElementsByClassName("border");
-            for (var i = 0; i < name.length; i++) {
+            let name = window.document.getElementsByClassName("border");
+            for (let i = 0; i < name.length; i++) {
                 name[i].style.height = "100%";
             }
             // 全局页面加载中。。
@@ -126,7 +126,7 @@ var APPLE = new Vue({
 })
 // 监听子页面传递的通讯
 window.addEventListener("message", function (e) {
-    var frame = document.getElementById('index_iframe');
+    let frame = document.getElementById('index_iframe');
     //给iframe的id为index_iframe的子页面进行通信传参
     switch (e.data) {
         //监听导航栏的传参

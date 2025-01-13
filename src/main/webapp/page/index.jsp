@@ -43,7 +43,6 @@
         <div v-if="test_case">
             <iframe src="table/TestCaseTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%;box-shadow: 0 0 20px grey;"></iframe>
         </div>
-
     </div>
     <el-container>
         <el-footer>
@@ -52,9 +51,8 @@
             </div>
         </el-footer>
     </el-container>
-
 </div>
 </body>
-<script type="module" src="../js/indexpageshow.js"></script>
+<script type="module" src="../js/indexPageShow.js"></script>
 </html>
 

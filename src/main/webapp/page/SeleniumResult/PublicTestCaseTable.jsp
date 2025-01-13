@@ -10,8 +10,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ page isELIgnored="false" %>
-
-<%--<link rel="stylesheet" type="text/css" href="css/userMessage.css">--%>
 <html>
 <head>
     <script src="//unpkg.com/vue@2/dist/vue.js"></script>

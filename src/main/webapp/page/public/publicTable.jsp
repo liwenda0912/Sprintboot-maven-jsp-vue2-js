@@ -1,16 +1,12 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: 10260
+  Date: 2024/7/20
+  Time: 15:05
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
-<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>--%>
-<%--<%@ page isELIgnored="false" %>--%>
-<%--<html>--%>
-<%--<head>--%>
-<%--    <script src="//unpkg.com/vue@2/dist/vue.js"></script>--%>
-<%--    <script src="//unpkg.com/element-ui@2.15.14/lib/index.js"></script>--%>
-<%--    <link rel="stylesheet" href="//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css">--%>
-<%--    <title></title>--%>
-<%--</head>--%>
-<%--<body>--%>
 <div id="app">
     <el-table
             border

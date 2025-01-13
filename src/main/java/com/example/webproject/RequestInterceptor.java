@@ -58,7 +58,7 @@ public class RequestInterceptor implements HandlerInterceptor {
             }
             //校验token是否有效
             Map token_ = userAging(TOKEN);
-
+            System.out.print(token_);
             Map refresh_token_ = userAging(REFRESH_TOKEN);
             if (token_.get("state").toString().equals("false")) {
                 if (refresh_token_.get("state").toString().equals("false")) {
@@ -107,6 +107,8 @@ public class RequestInterceptor implements HandlerInterceptor {
 
     public Map userAging(String token){
         Map<String,Object> map = new HashMap<>();
+        // 防止全局异常操控token过期导致refresh_token无法进行校验
+        try {
             // 验证令牌
             DecodedJWT verify = JWTUtils.verify(token);
             map.put("state",true);
@@ -114,6 +116,12 @@ public class RequestInterceptor implements HandlerInterceptor {
             map.put("name",verify.getClaim("name"));
             map.put("msg","请求成功");
             return map;
+        }catch (TokenExpiredException e){
+            map.put("state",false);
+            map.put("msg",e);
+            return map;
+        }
+
     }
 
     /**

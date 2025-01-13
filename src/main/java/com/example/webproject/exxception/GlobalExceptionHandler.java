@@ -52,6 +52,7 @@ public class GlobalExceptionHandler {
 //    }
     @ExceptionHandler(value = java.lang.Exception.class)
     public Exception<String> allException(java.lang.Exception e) {
+        System.out.print(ResultCode.EXCEPTION.getMessage());
         return Exception.exception(ResultCode.EXCEPTION.getCode(), ResultCode.EXCEPTION.getMessage());
     }
     @ExceptionHandler(value = TokenExpiredException.class)
