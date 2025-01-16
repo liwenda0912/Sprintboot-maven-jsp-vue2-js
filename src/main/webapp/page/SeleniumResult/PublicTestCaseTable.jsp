@@ -158,7 +158,7 @@
     .el-dialog {
         margin-top: 10vh !important;
         width: 80%;
-        height: 100%;
+        height: 90%;
     }
 </style>
 <script type="module" src="../../js/utils/formatTime.js"></script>

@@ -1,6 +1,8 @@
 import {request} from "./utils/request.js";
 import {setCookie} from "./utils/Cookie.js"
 import {operations} from "./utils/message.js";
+import {getDecryptData, getSecretData} from "./utils/crypto.js";
+import {jsonStringSwitch} from "./utils/dataHandle.js";
 // vue2中的设置方式
 var Min = new Vue({
     el: '#APP_input',
@@ -17,10 +19,13 @@ var Min = new Vue({
             rules: {
                 input: [
                     {required: true, message: '账户不能为空', trigger: 'blur'},
+                    { pattern: /^(?! ).*(?<! )$/, message: '输入内容不得有空格', trigger: 'blur' }
+
                 ],
                 input_passwd: [
                     {required: true, message: '密码不能为空', trigger: 'blur'},
-                    {min: 8, max: 16, message: '密码长度为8到16位！', trigger: 'blur'}
+                    {min: 8, max: 16, message: '密码长度为8到16位！', trigger: 'blur'},
+                    { pattern: /^(?! ).*(?<! )$/, message: '输入内容不得有空格', trigger: 'blur' }
                 ]
             }
         }
@@ -28,9 +33,10 @@ var Min = new Vue({
     methods: {
         //登录方法
         submit(formName) {
-            this.$refs[formName].validate((valid) => {
+            let self_= this;
+            self_.$refs[formName].validate((valid) => {
                 if (valid) {
-                    this.login_()
+                    self_.login_();
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -39,7 +45,10 @@ var Min = new Vue({
         },
         login_() {
             let self_ = this;
-            // window.location.href = ("../../page/public/Result.jsp?data=" + 1 + "&message=" + "登录成功")
+            let data_= {
+                    username: self_.$data.ruleForm.input,
+                    password: self_.$data.ruleForm.input_passwd
+                };
             // 向登录servlet请求登录申请
             request({
                 method: 'Post',
@@ -48,23 +57,20 @@ var Min = new Vue({
                     'Content-Type': 'application/json',
                     "Authorization": 'Access-Control-Request-Headers'
                 },
-                data: {
-                    username: self_.$data.ruleForm.input,
-                    password: self_.$data.ruleForm.input_passwd
-                },
+                data: getSecretData(jsonStringSwitch("String",data_))
             }).then(res => {
                 //获取登录servlet的登录请求响应
-                var data = res.data;
-                console.log(res)
-                if (res.data.code===200 &&res.data.data.state === true && res.data.data.state != null) {
-                    setCookie(res.data.data.token, res.data.data.refresh_token)
+                let dataTokens = jsonStringSwitch("Json",getDecryptData(res.data.data))
+                if (res.data.code===200 &&dataTokens.state === true && dataTokens.state != null) {
+                    //
+                    setCookie(dataTokens.token, dataTokens.refresh_token)
                     // console.log(res)
                     setTimeout(r => {
-                        window.location.href = ("page/public/Result.jsp?data=" + data.code + "&message=" + res.data.data.msg)
+                        window.location.href = ("page/public/Result.jsp?data=" + res.data.code + "&message=" + dataTokens.msg)
                     }, 2000)
                 } else if(res.data.code===200) {
-                    console.log( res.data.data.msg)
-                    operations("error", res.data.data.msg,self_)
+                    console.log( dataTokens.msg)
+                    operations("error",dataTokens.msg,self_)
                 }else {
                     operations("error", res.data.message,self_)
                 }
@@ -116,10 +122,12 @@ var dialog_ = new Vue({
                 zip: [{min: 6, max: 6, message: '邮政编码只能填写6位', trigger: 'blur'}],
                 username: [
                     {required: true, message: '账户不能为空', trigger: 'blur'},
+                    { pattern: /^(?! ).*(?<! )$/, message: '输入内容不得有空格', trigger: 'blur' }
                 ],
                 password: [
                     {required: true, message: '密码不能为空', trigger: 'blur'},
-                    {min: 8, max: 16, message: '密码长度为8到16位！', trigger: 'blur'}
+                    {min: 8, max: 16, message: '密码长度为8到16位！', trigger: 'blur'},
+                    { pattern: /^(?! ).*(?<! )$/, message: '输入内容不得有空格', trigger: 'blur' }
                 ]
             },
             formLabelWidth: '120px'
@@ -178,12 +186,12 @@ var dialog_ = new Vue({
                     });
                     // 关闭注册界面并清除输入框
                     self.$data.dialogFormVisible = false;
-                    this.$refs.passwd.clear();
-                    this.$refs.user.clear();
-                    this.$refs.city.clear();
-                    this.$refs.address.clear();
-                    this.$refs.province.clear();
-                    this.$refs.phone.clear();
+                    self.$refs.passwd.clear();
+                    self.$refs.user.clear();
+                    self.$refs.city.clear();
+                    self.$refs.address.clear();
+                    self.$refs.province.clear();
+                    self.$refs.phone.clear();
                 } else {
                     // 清除输入框
                     // this.$refs.passwd.clear();

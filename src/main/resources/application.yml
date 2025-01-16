@@ -58,6 +58,7 @@ server:
 
 
 spring:
+
   servlet:
       multipart:
         max-file-size: 128KB
@@ -84,7 +85,7 @@ spring:
       suffix: .jsp
   web:
     resources:
-      static-locations: classpath:/static/**
+      static-locations: classpath:/static/
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/testRunningdata?useSSL=false&serverTimezone=GMT%2B8

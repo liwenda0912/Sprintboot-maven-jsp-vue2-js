@@ -9,10 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 public class IndexController {
 
     //    @ResponseBody
-    @RequestMapping("/test")
-    public String index(HttpServletResponse response) {
-        return "test";
-    }
     @RequestMapping("/login")
     public String login(HttpServletResponse response) {
         return "login";

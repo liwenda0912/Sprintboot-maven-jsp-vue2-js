@@ -11,6 +11,7 @@
     <title>login</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css">
     <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="https://unpkg.com/element-ui@2.15.14/lib/index.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>uploadFile</title>

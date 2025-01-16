@@ -2,7 +2,10 @@
 import {request} from "./utils/request.js";
 import {height_adjust} from "./utils/height_adjust.js";
 import {reloadLogin} from "./utils/reloadLogin.js";
-import {getCookie} from "./utils/Cookie.js";
+import {operations} from "/js/utils/message.js";
+import {getDecryptData, getSecretData} from "./utils/crypto.js";
+import {jsonStringSwitch} from "./utils/dataHandle.js";
+
 
 window.addEventListener("message", function (e) {
     console.log(e.data.split(":")[1])
@@ -25,6 +28,7 @@ var User = new Vue({
             pageShowNum: 10,
             pageNum_1: 1,
             dialogVisible: false,
+            dialogVisiblePassword:false,
             dialogFormVisible: false,
             delivery: false,
             formLabelWidth: '120px',
@@ -32,7 +36,21 @@ var User = new Vue({
             form: {},
             test: [],
             index_: null,
-            te_: []
+            te_: [],
+            id_:'',
+            data_:{},
+            //输入框rules校验
+            form_password:{
+                NewPassword:'',
+            },
+            rule_password: {
+                NewPassword: [
+                    {required: true, message: '账户不能为空', trigger: 'blur'},
+                    {min: 8, max: 16, message: '密码长度为8到16位！', trigger: 'blur'},
+                    { pattern: /^(?! ).*(?<! )$/, message: '输入内容不得有空格', trigger: 'blur' }
+                ],
+
+            }
         }
     },
     mounted() {
@@ -40,12 +58,53 @@ var User = new Vue({
         this.onshow();
     },
     methods: {
+        //修改密码
+        EditPs_(msg){
+            let self_ = this
+            self_.$data.id_ = msg.id
+            self_.$data.dialogVisiblePassword=true
+        },
+        EditPs(formName){
+            let self_ = this
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+
+                    self_.$data.data_.password=self_.$data.form_password.NewPassword
+                    self_.$data.data_.id=self_.$data.id_
+                    request({
+                        method: 'Post',
+                        url: '/User/editPassword',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "Authorization": 'Access-Control-Request-Headers'
+                        },
+                        data: getSecretData(jsonStringSwitch("String",self_.$data.data_))
+                    }).then(res=>{
+                        if (res.data.code === 200) {
+                            self_.$data.dialogVisiblePassword=false
+                            operations("success",res.data.message,self_)
+                            self_.$data.dialogVisiblePassword=false
+                        }else {
+                            operations("error",res.data.message,self_)
+                            self_.$data.dialogVisiblePassword=false
+
+                        }
+                    }).catch(e=>{
+                        operations("error",e.message,self_)
+                        self_.$data.dialogVisiblePassword=false
+                    })
+                } else {
+                    return false;
+                }
+            });
+         self_.$refs.NewPassword.clear()
+        },
         //控制列表的页面样式的方法
         handleChange(val) {
             var name_ = window.top.document.getElementsByClassName("border");
             var name_id = window.parent.document.getElementsByClassName("app_tabs_");
             var name = window.parent.document.getElementsByClassName("el-tabs el-tabs--top el-tabs--border-card");
-            height_adjust(val, name, [], [])
+            height_adjust(val, name, [], name_)
         },
         //页面查看按钮的方法
         handleClick(row) {
@@ -79,8 +138,8 @@ var User = new Vue({
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": 'Access-Control-Request-Headers'
-                },
-                data: type
+                },//数据加密提交给接口
+                data: getSecretData(jsonStringSwitch("String",type))
             }).then(res => {
                 if (res.data.code === 200 && res.data.message === "操作成功") {
                     self_.dialogVisible = false;
@@ -90,7 +149,7 @@ var User = new Vue({
                         message: res.data.message,
                     });
                     //修改table的数组数据并同步渲染
-                    self_.$set(self_.test, self_.$data.index_, res.data.data);
+                    self_.$set(self_.test, self_.$data.index_, jsonStringSwitch("Json",getDecryptData(res.data.data)));
                 } else if (res.data.code === 200 && res.data.message != null && res.data.message.indexOf("过期")) {
                     self_.loading = false;
                     self_.$message({
@@ -107,7 +166,6 @@ var User = new Vue({
                     })
                 }
             }, err => {
-                console.log(err.message);
                 self_.$message({
                     message: err.message,
                     type: "error",
@@ -117,9 +175,6 @@ var User = new Vue({
         },
         //页面加载就获取数据
         onshow() {
-
-            // this.dialogVisible=false;
-            // this.dialogFormVisible=false;
             let self_ = this
             request({
                 method: 'Post',
@@ -140,10 +195,13 @@ var User = new Vue({
                         type: "error",
                         center: true
                     })
-                    reloadLogin();
+                    // reloadLogin();
                 } else if (res.data.code === 200 && res.data.message === null) {
-                    self_.test = res.data.data.list;
-                    self_.send(res.data.data.total);
+                    // 获取后端数据解密后的数据
+                    let dataDecryptData =jsonStringSwitch("Json",getDecryptData(res.data.data))
+                    self_.test = dataDecryptData.list;
+                    // 给分页器传数据总量值
+                    self_.send(dataDecryptData.total);
                     self_.loading=false;
                 } else {
                     self_.$message({
@@ -172,13 +230,11 @@ var User = new Vue({
                 self_.loading = true
                 self_.test = [];
                 self_.onshow();
-                console.log("new num")
             }
         },
         //监听列表页数
         pageShowNum: function (newData, oldData) {
             let self_ = this
-            console.log(newData)
             if (newData !== oldData) {
                 self_.test = [];
                 self_.onshow();

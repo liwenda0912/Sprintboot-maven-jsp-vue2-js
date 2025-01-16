@@ -33,11 +33,12 @@ public class WebRequestInterceptor implements WebMvcConfigurer {
          registry.addInterceptor(new RequestInterceptor())
                  .addPathPatterns("/User/**")
                  .addPathPatterns("/testCaseTotal/**")
-//                 .addPathPatterns("/test/queryUser")
+                 .addPathPatterns("/testResult/**")
                  .excludePathPatterns("/User/login")
                  .excludePathPatterns("/User/userAging");
          ;
      }
+
     /**
      * 跨域支持 比如说vue 的axios访问
      * @param registry
@@ -114,9 +115,11 @@ public class WebRequestInterceptor implements WebMvcConfigurer {
      * 添加静态资源--过滤swagger-api (开源的在线API文档)
      * @param registry
      */
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/node_modules/**")
+                .addResourceLocations("classpath:/node_modules/");
     }
-
 
 
     public void addViewControllers(ViewControllerRegistry registry) {

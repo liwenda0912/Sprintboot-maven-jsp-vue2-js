@@ -19,7 +19,7 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
     List<User> findAll(@Param("ew") Wrapper wrapper);
     int EditUser(@Param("ew") Wrapper wrapper);
-
+    int EditPassword(@Param("ew") Wrapper wrapper);
     UserLogin login(@Param("ew") Wrapper wrapper);
 
 }

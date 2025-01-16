@@ -1,27 +1,24 @@
 package com.example.webproject.controller;
 
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.webproject.core.Utils.JWTUtils;
 import com.example.webproject.core.Utils.MapUtils;
 import com.example.webproject.core.common.CommonPage;
 import com.example.webproject.core.common.CommonResult;
 import com.example.webproject.core.enums.ResultCode;
+import com.example.webproject.dto.PassWordDto;
 import com.example.webproject.dto.UserDto;
+import com.example.webproject.dto.CipherDto;
 import com.example.webproject.entity.UserLogin;
 import com.example.webproject.dto.RowBounds;
 import com.example.webproject.entity.User;
 import com.example.webproject.service.UserService;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.webproject.core.Utils.AESCbc.encrypt;
 
 @RestController
 @RequestMapping("/User")
@@ -33,15 +30,15 @@ public class UserController {
     private Logger log;
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public CommonResult<CommonPage<User>> User(@RequestBody RowBounds rowBounds) {
+    public CommonResult<String> User(@RequestBody RowBounds rowBounds) throws Exception {
         List<User> touserList = userService.findInfos(rowBounds);
-        return CommonResult.success(CommonPage.restPage(touserList));
+        return CommonResult.success(encrypt(CommonPage.restPage(touserList)),null);
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public CommonResult<User> EditUser(@RequestBody User user) {
-        User result_code = userService.editUser(user);
-        if (result_code != null) {
+    public CommonResult<String> EditUser(@RequestBody CipherDto cipherDto) throws Exception {
+        String result_code = userService.editUser(cipherDto);
+        if (result_code.length()>0) {
             return CommonResult.success(result_code, "操作成功");
         } else {
             return CommonResult.failed("操作失败");
@@ -61,15 +58,32 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public CommonResult<Map<String, Object>> login(@RequestBody UserLogin UserLogin) {
-        UserLogin userDB = userService.login(UserLogin);
+    public CommonResult<String> login(@RequestBody CipherDto cipherDto) throws Exception {
+        UserLogin userDB = userService.login(cipherDto);
         MapUtils mapUtils = new MapUtils();
-        return CommonResult.success(mapUtils.getToken(userDB));
+        return CommonResult.success(encrypt(mapUtils.getToken(userDB)),null);
     }
 
     @RequestMapping(value = "/userAging", method = RequestMethod.POST)
     public CommonResult<Map<String, Object>> test(String token) {
             return CommonResult.success(userService.verify(token));
 
+    }
+    @RequestMapping(value = "/editPassword", method = RequestMethod.POST)
+    public CommonResult<String> password(@RequestBody CipherDto cipherDto) throws Exception {
+        if (userService.editPassword(cipherDto)>0){
+            return CommonResult.success(ResultCode.SUCCESS.getMessage());
+        }else{
+            return CommonResult.success(ResultCode.FAILED.getMessage());
+        }
+    }
+    @RequestMapping(value = "/getName", method = RequestMethod.POST)
+    public CommonResult<String> username(@RequestBody CipherDto cipherDto) throws Exception {
+        String NAME = userService.getName(cipherDto);
+        if (NAME!=null){
+            return CommonResult.success(NAME,ResultCode.SUCCESS.getMessage());
+        }else {
+            return CommonResult.failed(ResultCode.FAILED.getMessage());
+        }
     }
 }

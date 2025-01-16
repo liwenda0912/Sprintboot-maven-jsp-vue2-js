@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.webproject.core.Utils.JWTUtils;
 import com.example.webproject.core.Utils.MapUtils;
+import com.example.webproject.core.Utils.TokenHandleUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -38,6 +39,7 @@ public class RequestInterceptor implements HandlerInterceptor {
 //            throw new TokenExpiredException("请重新登录!");
 //        }
         JSONObject map = new JSONObject();
+        TokenHandleUtils tokenHandleUtils = new TokenHandleUtils();
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String key = headerNames.nextElement();
@@ -57,9 +59,8 @@ public class RequestInterceptor implements HandlerInterceptor {
                 }
             }
             //校验token是否有效
-            Map token_ = userAging(TOKEN);
-            System.out.print(token_);
-            Map refresh_token_ = userAging(REFRESH_TOKEN);
+            Map token_ = tokenHandleUtils.userAging(TOKEN);
+            Map refresh_token_ = tokenHandleUtils.userAging(REFRESH_TOKEN);
             if (token_.get("state").toString().equals("false")) {
                 if (refresh_token_.get("state").toString().equals("false")) {
                     throw new TokenExpiredException("token已经过期，请重新登录");
@@ -105,24 +106,7 @@ public class RequestInterceptor implements HandlerInterceptor {
      * @return 校验token
      */
 
-    public Map userAging(String token){
-        Map<String,Object> map = new HashMap<>();
-        // 防止全局异常操控token过期导致refresh_token无法进行校验
-        try {
-            // 验证令牌
-            DecodedJWT verify = JWTUtils.verify(token);
-            map.put("state",true);
-            map.put("id",verify.getClaim("id"));
-            map.put("name",verify.getClaim("name"));
-            map.put("msg","请求成功");
-            return map;
-        }catch (TokenExpiredException e){
-            map.put("state",false);
-            map.put("msg",e);
-            return map;
-        }
 
-    }
 
     /**
      * @param request

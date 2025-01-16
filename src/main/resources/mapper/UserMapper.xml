@@ -26,4 +26,11 @@
     <select id="login" resultType="com.example.webproject.entity.UserLogin">
         select * from user  ${ew.customSqlSegment}
     </select>
+    <update id="EditPassword" parameterType="com.example.webproject.entity.User">
+        update user
+        set
+            ${ew.sqlSet}
+        where
+            ${ew.sqlSegment}
+    </update>
 </mapper>
