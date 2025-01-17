@@ -54,8 +54,17 @@ export function getSecretData(data){
 
 
 export const getDecryptData=(secret)=>{
-    let secretData = dataHandle(secret)
-    // 获取到解密的数据
-    let s = decryptWithDynamicKey(secretData.iciphertext, secretData.key, secretData.iv)
-    return s
+    console.log(secret)
+    if(typeof secret != "object" && secret!=null){
+        let secretData = dataHandle(secret)
+        // 获取到解密的数据
+        let s = decryptWithDynamicKey(secretData.iciphertext, secretData.key, secretData.iv)
+        return s
+    }else {
+        console.log(secret)
+        return secret
+    }
+
+
+
 }

@@ -79,7 +79,7 @@ let publicTestCase_tabs = new Vue({
                     pageSize: self_.$data.pageShowNum
                 },
             }).then(res => {
-                if (res.data.code === 200 && res.data.message != null && res.data.message.indexOf("过期")) {
+                if (res.data.code === 200 && res.data.message == null) {
                     self_.loading = false;
                     operations("error", res.data.message, self_)
                     // self_.$message({
@@ -88,7 +88,7 @@ let publicTestCase_tabs = new Vue({
                     //     center:true
                     // })
                     reloadLogin();
-                } else if (res.data.code === 200 && res.data.message === null) {
+                } else if (res.data.code === 200 && res.data.message === "操作成功") {
                     self_.tableData = res.data.data.list
                     self_.send(res.data.data.total);
                     setTimeout(() => {

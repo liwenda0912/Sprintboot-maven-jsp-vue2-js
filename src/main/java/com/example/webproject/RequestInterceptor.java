@@ -57,6 +57,7 @@ public class RequestInterceptor implements HandlerInterceptor {
                     TOKEN = i.split("=")[1].split("[?]")[1];
                     REFRESH_TOKEN = i.split("=")[1].split("[?]")[0];
                 }
+
             }
             //校验token是否有效
             Map token_ = tokenHandleUtils.userAging(TOKEN);
@@ -82,6 +83,7 @@ public class RequestInterceptor implements HandlerInterceptor {
             }
             return true;
         } else {
+            System.out.print(request.getHeader("Cookie")+"\n");
             throw new TokenExpiredException("请登录账号!");//
         }
     }

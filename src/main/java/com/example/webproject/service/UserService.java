@@ -160,7 +160,6 @@ public class UserService {
         DecodedJWT verify = JWTUtils.verify(token);
         Map<String, Object> map = new HashMap<>();
         map.put("name", verify.getClaim("name").asString());
-        System.out.print(encrypt(map));
         return encrypt(map).toString();
     }
 }

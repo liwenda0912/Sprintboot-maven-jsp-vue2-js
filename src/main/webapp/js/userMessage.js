@@ -8,7 +8,6 @@ import {jsonStringSwitch} from "./utils/dataHandle.js";
 
 
 window.addEventListener("message", function (e) {
-    console.log(e.data.split(":")[1])
     if (e.data.split(":")[0] === "page") {
         User.$data.pageNum_1 = e.data.split(":")[1]
     } else {
@@ -80,14 +79,17 @@ var User = new Vue({
                         },
                         data: getSecretData(jsonStringSwitch("String",self_.$data.data_))
                     }).then(res=>{
-                        if (res.data.code === 200) {
+                        if (res.data.code === 200 && res.data.message==="操作成功") {
                             self_.$data.dialogVisiblePassword=false
                             operations("success",res.data.message,self_)
                             self_.$data.dialogVisiblePassword=false
+                        }else if(res.data.code === 200 && res.data.message===null) {
+                            operations("error",res.data.message,self_)
+                            self_.$data.dialogVisiblePassword=false
+                            reloadLogin()
                         }else {
                             operations("error",res.data.message,self_)
                             self_.$data.dialogVisiblePassword=false
-
                         }
                     }).catch(e=>{
                         operations("error",e.message,self_)
@@ -150,10 +152,10 @@ var User = new Vue({
                     });
                     //修改table的数组数据并同步渲染
                     self_.$set(self_.test, self_.$data.index_, jsonStringSwitch("Json",getDecryptData(res.data.data)));
-                } else if (res.data.code === 200 && res.data.message != null && res.data.message.indexOf("过期")) {
+                } else if (res.data.code === 200 && res.data.message === null) {
                     self_.loading = false;
                     self_.$message({
-                        message: res.data.message,
+                        message: res.data.data.msg,
                         type: "error",
                         center: true
                     });
@@ -188,15 +190,15 @@ var User = new Vue({
                     "Authorization": 'Access-Control-Request-Headers'
                 },
             }).then(res => {
-                if (res.data.code === 200 && res.data.message != null && res.data.message.indexOf("过期")) {
+                if (res.data.code === 200 && res.data.message === null ) {
                     self_.loading = false;
                     self_.$message({
-                        message: res.data.message,
+                        message: res.data.data.msg,
                         type: "error",
                         center: true
                     })
-                    // reloadLogin();
-                } else if (res.data.code === 200 && res.data.message === null) {
+                    reloadLogin();
+                } else if (res.data.code === 200 && res.data.message != null && res.data.data!=null ) {
                     // 获取后端数据解密后的数据
                     let dataDecryptData =jsonStringSwitch("Json",getDecryptData(res.data.data))
                     self_.test = dataDecryptData.list;

@@ -2,6 +2,7 @@ package com.example.webproject.controller;
 
 import com.example.webproject.core.common.CommonPage;
 import com.example.webproject.core.common.CommonResult;
+import com.example.webproject.core.enums.ResultCode;
 import com.example.webproject.dto.RowBounds;
 import com.example.webproject.entity.TestResult;
 import com.example.webproject.service.TestResultService;
@@ -20,7 +21,7 @@ public class TestResultController {
     @RequestMapping(value="/testResult",method = RequestMethod.POST)
     public CommonResult<CommonPage<TestResult>> TestResultInfo(@RequestBody RowBounds rowBounds)  {
         List<TestResult> testResultList = testResultServer.findInfos(rowBounds);
-        return CommonResult.success(CommonPage.restPage(testResultList));
+        return CommonResult.success(CommonPage.restPage(testResultList), ResultCode.SUCCESS.getMessage());
     }
 
 

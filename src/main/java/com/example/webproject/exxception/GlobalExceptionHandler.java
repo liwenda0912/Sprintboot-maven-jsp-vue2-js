@@ -30,12 +30,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpServerErrorException.GatewayTimeout.class)
     public Exception<String> httpServerErrorException(HttpServerErrorException E) {
-        return Exception.exception(200, E.getMessage());
+        return Exception.exception(200, E.getMessage(),null);
     }
 
     @ExceptionHandler(HandlerException.class)
     public Exception<String> HandlerException(HandlerException E) {
-        return Exception.exception(500, E.getMessage());
+        return Exception.exception(500, E.getMessage(),null);
     }
 
 //    @ExceptionHandler(UnauthorizedException.class)
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 //    }
     @ExceptionHandler(value = java.lang.Exception.class)
     public Exception<String> allException(java.lang.Exception e) {
-        return Exception.exception(ResultCode.EXCEPTION.getCode(), ResultCode.EXCEPTION.getMessage());
+        return Exception.exception(ResultCode.EXCEPTION.getCode(), ResultCode.EXCEPTION.getMessage(),null);
     }
     @ExceptionHandler(value = TokenExpiredException.class)
     public CommonResult<Map<String, Object>> handler(TokenExpiredException e) {
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(value = ArrayIndexOutOfBoundsException.class)
     public Exception<String> array(ArrayIndexOutOfBoundsException e){
-        return Exception.exception(ResultCode.EXCEPTION.getCode(),"服务端异常");
+        return Exception.exception(ResultCode.EXCEPTION.getCode(),"服务端异常",null);
     }
     @ExceptionHandler(value = SignatureVerificationException.class)
     public CommonResult<Map<String, Object>> SignatureVerification(SignatureVerificationException e){
@@ -80,11 +80,11 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(value = NullPointerException.class)
     public Exception<String> NullPointer(NullPointerException e){
-        return Exception.exception(400,"请求错误!");
+        return Exception.exception(400,"请求错误!",null);
     }
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     public Exception<String> MissingServletRequestParameter(MissingServletRequestParameterException e){
-        return Exception.exception(412,"缺少请求参数！");
+        return Exception.exception(412,"缺少请求参数！",null);
     }
 
 }

@@ -3,6 +3,8 @@ import {setCookie} from "./utils/Cookie.js"
 import {operations} from "./utils/message.js";
 import {getDecryptData, getSecretData} from "./utils/crypto.js";
 import {jsonStringSwitch} from "./utils/dataHandle.js";
+import router from "./utils/router.js";
+
 // vue2中的设置方式
 var Min = new Vue({
     el: '#APP_input',
@@ -59,18 +61,25 @@ var Min = new Vue({
                 },
                 data: getSecretData(jsonStringSwitch("String",data_))
             }).then(res => {
-                //获取登录servlet的登录请求响应
                 let dataTokens = jsonStringSwitch("Json",getDecryptData(res.data.data))
+                console.log(dataTokens)
+                //获取登录servlet的登录请求响应
                 if (res.data.code===200 &&dataTokens.state === true && dataTokens.state != null) {
                     //
                     setCookie(dataTokens.token, dataTokens.refresh_token)
+                    operations("success",dataTokens.msg,self_)
                     // console.log(res)
                     setTimeout(r => {
-                        window.location.href = ("page/public/Result.jsp?data=" + res.data.code + "&message=" + dataTokens.msg)
+                        let data = {
+                            code:res.data.code,
+                            message:dataTokens.msg
+                        }
+                        // window.location.href = ("page/public/Result.jsp?data=" + res.data.code + "&message=" + dataTokens.msg)
+                        window.location.href = `page/public/Result.jsp#${encodeURIComponent(JSON.stringify(data))}`;
+
                     }, 2000)
                 } else if(res.data.code===200) {
-                    console.log( dataTokens.msg)
-                    operations("error",dataTokens.msg,self_)
+                    operations("error",res.data.data.msg,self_)
                 }else {
                     operations("error", res.data.message,self_)
                 }

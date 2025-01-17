@@ -32,7 +32,7 @@ public class UserController {
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public CommonResult<String> User(@RequestBody RowBounds rowBounds) throws Exception {
         List<User> touserList = userService.findInfos(rowBounds);
-        return CommonResult.success(encrypt(CommonPage.restPage(touserList)),null);
+        return CommonResult.success(encrypt(CommonPage.restPage(touserList)),ResultCode.SUCCESS.getMessage());
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)

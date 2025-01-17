@@ -12,12 +12,17 @@ public class TokenHandleUtils {
         // 防止全局异常操控token过期导致refresh_token无法进行校验
         try {
             // 验证令牌
-            DecodedJWT verify = JWTUtils.verify(token);
-            map.put("state",true);
-            map.put("id",verify.getClaim("id"));
-            map.put("name",verify.getClaim("name"));
-            map.put("msg","请求成功");
-            return map;
+            if(token!=null){
+                DecodedJWT verify = JWTUtils.verify(token);
+                map.put("state",true);
+                map.put("id",verify.getClaim("id"));
+                map.put("name",verify.getClaim("name"));
+                map.put("msg","请求成功");
+                return map;
+            }else {
+                throw new TokenExpiredException("请登录账号!");//
+            }
+
         }catch (TokenExpiredException e){
             map.put("state",false);
             map.put("msg",e);
