@@ -15,7 +15,7 @@ public class UploadFileController {
     @Autowired
     private UploadFileService uploadFileServer;
     @RequestMapping(value="/upload",method = RequestMethod.POST)
-    public CommonResult<String> UploadFile(HttpServletRequest request) throws IOException, FileUploadException {
+    public CommonResult<String> UploadFile(HttpServletRequest request) throws Exception {
         String msg =  uploadFileServer.UploadFile(request);
         if (msg.equals("导入成功")){
             return  CommonResult.success("操作成功");

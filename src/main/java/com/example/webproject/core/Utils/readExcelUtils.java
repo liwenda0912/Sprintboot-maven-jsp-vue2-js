@@ -1,16 +1,15 @@
 package com.example.webproject.core.Utils;
-
+import org.apache.poi.ss.usermodel.Name;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class readExcelUtils {
+    Row row;
     public JSONArray readSheet(Sheet sheet){
-        JSONObject set = null;
         JSONArray array = new JSONArray();
         JsonTransformUtils jsonTransformUilts = new JsonTransformUtils();
         List<String> array_text = new ArrayList<String>();
@@ -29,10 +28,15 @@ public class readExcelUtils {
             }
             //将数组和表的第一列数据变成json格式
             JSONObject data = jsonTransformUilts.putJson(array_text, sheet.getRow(0));
+            row = sheet.getRow(0);
             array_text.clear();
             // 将json对象的data添加到json列表
             array.put(data);
         }
         return array;
     }
+    public Row getRow(){
+        return row;
+    }
+
 }

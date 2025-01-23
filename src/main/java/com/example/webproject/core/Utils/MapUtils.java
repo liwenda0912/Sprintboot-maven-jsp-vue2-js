@@ -37,7 +37,6 @@ public class MapUtils {
     // 提供token获取数据的hashmap
     public Map<String, String> payload(UserLogin userLogin){
         Map<String, String> payload = new HashMap<>();
-        boolean s = true;
         try {
                 payload.put("id", userLogin.getId());
                 payload.put("name", userLogin.getUsername());

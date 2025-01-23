@@ -14,7 +14,7 @@ import lombok.Data;
 public class TestCaseExcel {
         /**  */
         @TableId(type = IdType.AUTO)
-        private Integer id ;
+        private int id ;
         /**  */
         @JsonProperty("Module")
         private String module ;

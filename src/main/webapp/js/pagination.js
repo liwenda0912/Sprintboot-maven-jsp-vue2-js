@@ -1,8 +1,16 @@
-window.addEventListener("message",function(e) {
-    Pagination.$data.dataNum =e.data
-}, false);
+// window.addEventListener("message",function(e) {
+//     Pagination.$data.dataNum =e.data
+// }, false);
 
+window.addEventListener('message', (event) => {
+    Pagination.$data.dataNum =event.data
 
+    // 检查来源（可选，但建议添加以增强安全性）
+    console.log(event)
+    // if (event.origin !== 'http://example.com') {
+    //     return;
+    // }
+});
 
 
 var Pagination = new Vue({

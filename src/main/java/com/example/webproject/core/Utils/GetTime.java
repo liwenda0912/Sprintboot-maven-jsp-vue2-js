@@ -37,9 +37,4 @@ public class GetTime {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
-//    public static void main(String[] args) {
-//         GetTime getTime = new GetTime();
-//         getTime.getTime();
-//
-//    }
 }

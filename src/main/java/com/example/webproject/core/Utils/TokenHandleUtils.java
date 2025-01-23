@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TokenHandleUtils {
-    public Map userAging(String token){
+    public Map<String,Object> userAging(String token){
         Map<String,Object> map = new HashMap<>();
         // 防止全局异常操控token过期导致refresh_token无法进行校验
         try {
@@ -22,7 +22,6 @@ public class TokenHandleUtils {
             }else {
                 throw new TokenExpiredException("请登录账号!");//
             }
-
         }catch (TokenExpiredException e){
             map.put("state",false);
             map.put("msg",e);

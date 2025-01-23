@@ -26,6 +26,7 @@ public class TestCaseExcelService{
             PageMethod.startPage(rowBounds.getPageNum(), rowBounds.getPageSize());
         }
         QueryWrapper<TestCaseExcel> wrapper = new QueryWrapper<>();
+                   wrapper.eq("state",1);
         return testCaseExcelMapper.selectByPage(wrapper);
     }
 }

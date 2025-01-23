@@ -42,7 +42,6 @@ export function decryptWithDynamicKey(ciphertextBase64, keyBase64, ivBase64) {
     return decrypted.toString(CryptoJS.enc.Utf8);
 }
 
-
 export function getSecretData(data){
     let data_ = {}
     let secretData = encryptWithDynamicKey(data)
@@ -52,19 +51,13 @@ export function getSecretData(data){
     return data_
 }
 
-
 export const getDecryptData=(secret)=>{
-    console.log(secret)
     if(typeof secret != "object" && secret!=null){
         let secretData = dataHandle(secret)
         // 获取到解密的数据
         let s = decryptWithDynamicKey(secretData.iciphertext, secretData.key, secretData.iv)
         return s
     }else {
-        console.log(secret)
         return secret
     }
-
-
-
 }

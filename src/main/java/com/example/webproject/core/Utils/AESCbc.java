@@ -7,22 +7,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-//import java.util.Base64;
 
 public class AESCbc<T>{
-//    public static  void  main(String[] args) throws Exception{
-//
-////        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-////        keyGenerator.init(128);
-////        SecretKey secretKey = keyGenerator.generateKey();
-//        String iv = "88888888888888";
-//        String KET = "sjKLYGF3468SBxZT";
-//        String S = "SSS";
-//        String sting = encrypt(S, KET, Arrays.toString(new String[]{iv}));
-//        System.out.print(sting);
-//        String s = decrypt(sting,KET, Arrays.toString(new String[]{iv}));
-//        System.out.print(s);
-//    }
     public static  <T> String encrypt(T data) throws Exception {
         // 生成随机密钥和IV
         SecureRandom random = new SecureRandom();
@@ -64,7 +50,6 @@ public class AESCbc<T>{
         byte[] original = cipher.doFinal(encryptedData);
         return (T) original;
     }
-
 }
 
 

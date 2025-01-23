@@ -1,24 +1,15 @@
 package com.example.webproject;
 
 import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.exceptions.AlgorithmMismatchException;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.webproject.core.Utils.JWTUtils;
-import com.example.webproject.core.Utils.MapUtils;
 import com.example.webproject.core.Utils.TokenHandleUtils;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.security.auth.login.LoginException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +24,7 @@ public class RequestInterceptor implements HandlerInterceptor {
      * false表示流程中断（如登录检查失败），不会继续调用其他的拦截器或处理器，此时我们需要通过response来产生响应；
      */
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 //        将头部信息都转换成map
 //        if(!validCookie(request,response)){
 //            throw new TokenExpiredException("请重新登录!");
@@ -60,8 +51,8 @@ public class RequestInterceptor implements HandlerInterceptor {
 
             }
             //校验token是否有效
-            Map token_ = tokenHandleUtils.userAging(TOKEN);
-            Map refresh_token_ = tokenHandleUtils.userAging(REFRESH_TOKEN);
+            Map<String,Object> token_ = tokenHandleUtils.userAging(TOKEN);
+            Map<String,Object>  refresh_token_ = tokenHandleUtils.userAging(REFRESH_TOKEN);
             if (token_.get("state").toString().equals("false")) {
                 if (refresh_token_.get("state").toString().equals("false")) {
                     throw new TokenExpiredException("token已经过期，请重新登录");
@@ -107,9 +98,6 @@ public class RequestInterceptor implements HandlerInterceptor {
      * @param token
      * @return 校验token
      */
-
-
-
     /**
      * @param request
      * @param response
@@ -129,20 +117,4 @@ public class RequestInterceptor implements HandlerInterceptor {
         // 将Cookie添加到响应中
         response.addCookie(cookie);
     }
-
-//    public boolean validCookie(HttpServletRequest request, HttpServletResponse response) {
-//        Cookie[] cookies = request.getCookies();
-//        System.out.print(cookies.length);
-//            long maxAge = cookies[0].getMaxAge();
-//            for(Cookie cookie:cookies){
-//               System.out.print(cookie.getName());
-//            }
-//            if (maxAge > 0) {
-//                System.out.print(maxAge);
-//                return true;
-//            }else {
-//                return false;
-//        }
-//    }
-
 }

@@ -4,11 +4,8 @@ import com.example.webproject.core.Utils.MapUtils;
 import com.example.webproject.core.common.CommonPage;
 import com.example.webproject.core.common.CommonResult;
 import com.example.webproject.core.enums.ResultCode;
-import com.example.webproject.dto.PassWordDto;
-import com.example.webproject.dto.UserDto;
-import com.example.webproject.dto.CipherDto;
+import com.example.webproject.dto.*;
 import com.example.webproject.entity.UserLogin;
-import com.example.webproject.dto.RowBounds;
 import com.example.webproject.entity.User;
 import com.example.webproject.service.UserService;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +29,11 @@ public class UserController {
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public CommonResult<String> User(@RequestBody RowBounds rowBounds) throws Exception {
         List<User> touserList = userService.findInfos(rowBounds);
+        return CommonResult.success(encrypt(CommonPage.restPage(touserList)),ResultCode.SUCCESS.getMessage());
+    }
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public CommonResult<String> User(@RequestBody UserSearchDto userSearchDto) throws Exception {
+        List<User> touserList = userService.findInfo(userSearchDto);
         return CommonResult.success(encrypt(CommonPage.restPage(touserList)),ResultCode.SUCCESS.getMessage());
     }
 

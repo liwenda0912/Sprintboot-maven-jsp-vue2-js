@@ -12,8 +12,10 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpServerErrorException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +57,7 @@ public class GlobalExceptionHandler {
         return Exception.exception(ResultCode.EXCEPTION.getCode(), ResultCode.EXCEPTION.getMessage(),null);
     }
     @ExceptionHandler(value = TokenExpiredException.class)
-    public CommonResult<Map<String, Object>> handler(TokenExpiredException e) {
+    public CommonResult<Map<String, Object>> TokenExpired(TokenExpiredException e) {
        return CommonResult.success(mapUtils.getErrorToken(e.getMessage()));
     }
     @ExceptionHandler(value = ArrayIndexOutOfBoundsException.class)
@@ -76,15 +78,38 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(value = RuntimeException.class)
     public CommonResult<Map<String, Object>> RuntimeException(RuntimeException e){
-        return CommonResult.success( mapUtils.getErrorToken(e.getMessage()));
+        return CommonResult.success( mapUtils.getErrorToken("ssss"));
     }
-    @ExceptionHandler(value = NullPointerException.class)
-    public Exception<String> NullPointer(NullPointerException e){
-        return Exception.exception(400,"请求错误!",null);
-    }
+//    @ExceptionHandler(value = NullPointerException.class)
+//    public Exception<String> NullPointer(NullPointerException e){
+//        return Exception.exception(400,"缺少请求参数!",null);
+//    }
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     public Exception<String> MissingServletRequestParameter(MissingServletRequestParameterException e){
         return Exception.exception(412,"缺少请求参数！",null);
     }
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public Exception<String> IllegalArgument(IllegalArgumentException e){
+        return Exception.exception(ResultCode.VALIDATELOSS_EXCEPTION.getCode(),ResultCode.VALIDATELOSS_EXCEPTION.getMessage(),null);
+    }
+    @ExceptionHandler(value = InvocationTargetException.class)
+    public Exception<String>  InvocationTarget(InvocationTargetException e){
+        // 获取封装的实际异常
+        Throwable targetException = e.getCause();
+        if (targetException != null) {
+            // 根据实际异常的类型进行处理
+            if (targetException instanceof IllegalArgumentException) {
+                        return Exception.exception(ResultCode.VALIDATELOSS_EXCEPTION.getCode(),ResultCode.VALIDATELOSS_EXCEPTION.getMessage(),null);
+
+            } else if (targetException instanceof NullPointerException) {
+                return Exception.exception(ResultCode.VALIDATELOSS_EXCEPTION.getCode(),targetException.getMessage(),null);
+            } else {
+                return Exception.exception(ResultCode.VALIDATELOSS_EXCEPTION.getCode(),targetException.getMessage(),null);
+            }
+        } else {
+            return Exception.exception(ResultCode.VALIDATELOSS_EXCEPTION.getCode(),"Unknown error occurred during method invocation",null);
+        }
+    }
+
 
 }

@@ -7,14 +7,16 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<div id="app">
+<div id="app" style="box-shadow:grey 0 0 20px">
     <el-table
             border
             v-loading="loading"
             element-loading-text="加载中.."
             style="width: 100%"
-<%--            height="560px"--%>
-            :data="tableData">
+            height="730px"
+            :data="tableData"
+
+    >
         <el-table-column
                 :formatter='dateFormat'
                 v-for="(column, index) in dynamicColumns"
@@ -36,10 +38,14 @@
             </template>
         </el-table-column>
     </el-table>
+    <div style="height: 60px;">
+        <iframe id="iframe_seleniumTestCase_pagination" src="../public/pagination.jsp" scrolling="no"
+                style="width: 11960px;border: 0;position: fixed;height: 200px"></iframe>
+    </div>
     <el-dialog title="修改用户信息" :visible.sync="dialogVisible" :close-on-click-modal="false">
         <el-form>
             <el-form-item v-for="(column, index) in dynamicColumns"
-                          :label="column.label"
+                          :label="column.label+':'"
                           :label-width="formLabelWidth">
                 <el-input v-model='type[column.prop]' autocomplete="off" ></el-input>
             </el-form-item>
@@ -61,6 +67,9 @@
 <style>
     .el-table--border th.el-table__cell {
         background-color: #DDDDDD;
+    }
+     .el-table td {
+        font-size: 12px !important; /* 根据需要调整字体大小 */
     }
 </style>
 <%--<script>--%>

@@ -1,6 +1,6 @@
 import {height_adjust} from "../../../js/utils/height_adjust.js";
 import {request} from "../../../js/utils/request.js";
-import {formatter} from "../../../js/utils/formatTime.js";
+import {formatter, timestamp} from "../../../js/utils/formatTime.js";
 import {getCookie, getCookieRefresh, setCookie, tokenDetect} from "../../../js/utils/Cookie.js";
 import {authDentifiy} from "../../../js/utils/authDentifiy.js";
 import {reloadLogin} from "../../../js/utils/reloadLogin.js";
@@ -22,6 +22,7 @@ let publicTestCase_tabs = new Vue({
             value3: "",
             input1: "",
             input2: '',
+            input3:'',
             loading: '',
             dialogVisible: false,
             dialogFormVisible: false,
@@ -40,9 +41,34 @@ let publicTestCase_tabs = new Vue({
         this.onshow();
     },
     methods: {
+        cleartext() {
+            let self_ = this
+            self_.$data.value3 = 0
+            self_.$data.input1 = ''
+            self_.$data.input2 = ''
+            self_.$data.input3 = ''
+        },
+        search(){
+            let self_ = this;
+            let data = {
+                pageNum: self_.$data.pageNum,
+                pageSize: self_.$data.pageShowNum,
+                startTime: timestamp(self_.$data.value3!==''?self_.$data.value3:0),
+                testCaseFail: self_.$data.input3!==""?parseInt(self_.$data.input3):-1,
+                testCaseSuccess: self_.$data.input2!==""?parseInt(self_.$data.input2):-1,
+                testCaseName:self_.$data.input1,
+                type:1
+            }
+            self_.data_(data);
+        },
         onshow() {
-            let self = this;
-            self.data_();
+            let self_ = this;
+            let data = {
+                    pageNum: self_.$data.pageNum,
+                    pageSize: self_.$data.pageShowNum,
+                    type:0
+                }
+            self_.data_(data);
         },
         handleChange(val) {
             var name_ = window.top.document.getElementsByClassName("border");
@@ -57,27 +83,34 @@ let publicTestCase_tabs = new Vue({
                 frame_pagination.contentWindow.postMessage(data, 'http://127.0.0.1:8090/page/public/pagination.jsp\n');
             }
         },
-        dateFormat(row, column) {
-            return formatter(row, column)
+        dateFormat(row, column,cellValue) {
+            return formatter(row, column,cellValue)
         },
         ShowDetail(row) {
-            console.log(row.id)
             let self_ = this
             self_.dialogVisible = true;
+            let data="id:"+row.id
+            setTimeout(()=>{
+                let frame_pagination = document.getElementById("iframe_PublicResultTable");
+                frame_pagination.contentWindow.postMessage(data, 'http://127.0.0.1:8090/page/SeleniumResult/PublicResultTable.jsp');
+                frame_pagination.onload = function () {
+                    frame_pagination.contentWindow.postMessage(data, 'http://127.0.0.1:8090/page/SeleniumResult/PublicResultTable.jsp\n');
+                }
+
+            },2000)
+
         },
-        data_() {
+        data_(data) {
+
             let self_ = this;
             request({
                 method: 'Post',
-                url: '/testCaseTotal',
+                url: '/TestCaseResultTotal/testCaseTotal',
                 // headers: {
                 //     'Content-Type': 'application/json',
                 //     "Authorization":'Access-Control-Request-Headers'
                 // },
-                data: {
-                    pageNum: self_.$data.pageNum,
-                    pageSize: self_.$data.pageShowNum
-                },
+                data: data
             }).then(res => {
                 if (res.data.code === 200 && res.data.message == null) {
                     self_.loading = false;

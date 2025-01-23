@@ -5,4 +5,20 @@
     <select id="selectByPage" resultType="com.example.webproject.entity.TestCaseExcel">
         select * from testcaseexcel ${ew.customSqlSegment}
     </select>
+    <insert id="insert_" >
+        INSERT INTO testcaseexcel (Module,Scene,CaseTitle,Priority,OperateStep,ExpectedResult,ActualResult,Remarks,state,CreateTime)
+        VALUES
+        <foreach collection ="List" item="Testcaseexcel" separator =",">
+            (#{Testcaseexcel.module}
+            ,#{Testcaseexcel.scene}
+            ,#{Testcaseexcel.caseTitle}
+            ,#{Testcaseexcel.priority}
+            ,#{Testcaseexcel.operateStep}
+            ,#{Testcaseexcel.expectedResult}
+            ,#{Testcaseexcel.actualResult}
+            ,${Testcaseexcel.remarks}
+            ,${Testcaseexcel.state}
+            ,${Testcaseexcel.createtime})
+        </foreach>
+    </insert>
 </mapper>

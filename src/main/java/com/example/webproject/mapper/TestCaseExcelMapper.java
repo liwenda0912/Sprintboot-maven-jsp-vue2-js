@@ -1,8 +1,6 @@
 package com.example.webproject.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.example.webproject.entity.TestCaseExcel;
 import org.apache.ibatis.annotations.Mapper;
@@ -16,7 +14,7 @@ import java.util.List;
  * @date : 2024-11-20
  */
 @Mapper
-public interface TestCaseExcelMapper extends BaseMapper<TestCaseExcelMapper> {
+public interface TestCaseExcelMapper extends BaseMapper<TestCaseExcel> {
 
         /**
          * 分页查询指定行数据
@@ -25,4 +23,6 @@ public interface TestCaseExcelMapper extends BaseMapper<TestCaseExcelMapper> {
          * @return 分页对象列表
          */
         List<TestCaseExcel> selectByPage(@Param("ew") Wrapper wrapper);
+        Integer insert_(List<TestCaseExcel> List);
+
 }

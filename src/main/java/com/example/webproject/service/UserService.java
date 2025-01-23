@@ -5,33 +5,21 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.webproject.core.Utils.JWTUtils;
-import com.example.webproject.core.Utils.Json;
-import com.example.webproject.dto.CipherDto;
-import com.example.webproject.dto.PassWordDto;
-import com.example.webproject.dto.UserDto;
+import com.example.webproject.dto.*;
 import com.example.webproject.entity.UserLogin;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.page.PageMethod;
 import com.example.webproject.core.Utils.GetTime;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.webproject.entity.User;
 import com.example.webproject.mapper.UserMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.webproject.dto.RowBounds;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static com.example.webproject.core.Utils.AESCbc.decrypt;
 import static com.example.webproject.core.Utils.AESCbc.encrypt;
 
@@ -57,6 +45,24 @@ public class UserService {
             PageMethod.startPage(rowBounds.getPageNum(), rowBounds.getPageSize());
         }
         QueryWrapper<User> wrapper = new QueryWrapper<>();
+        return userMapper.findAll(wrapper);
+    }
+    @Transactional
+    public List<User> findInfo(UserSearchDto rowBounds) {
+        if (rowBounds.getPageNum() != null) {
+            PageMethod.startPage(rowBounds.getPageNum(), rowBounds.getPageSize());
+        }
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        if (rowBounds.getDatetime() != 0 ){
+            wrapper.eq("Time",rowBounds.getDatetime());
+        }
+        if (rowBounds.getAddress().length()>0 && rowBounds.getDatetime()!= null) {
+            System.out.print(rowBounds.getAddress());
+            wrapper.eq("address",rowBounds.getAddress());
+        }
+        if(rowBounds.getUsername()!=null && rowBounds.getUsername().length()>0){
+            wrapper.eq("username",rowBounds.getUsername());
+        }
         return userMapper.findAll(wrapper);
     }
 
@@ -99,7 +105,6 @@ public class UserService {
         } else {
             return null;
         }
-
     }
 
     @Transactional

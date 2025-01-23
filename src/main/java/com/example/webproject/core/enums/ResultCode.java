@@ -17,6 +17,10 @@ public enum ResultCode {
          * 服务端异常
          */
         EXCEPTION(500, "操作异常"),
+       /**
+       * 参数不完整
+       */
+        VALIDATELOSS_EXCEPTION(400, "请求参数缺失或格式错误"),
         /**
          * 参数校验失败
          */
@@ -73,5 +77,4 @@ public enum ResultCode {
             }
             return null;
         }
-
     }

@@ -32,7 +32,7 @@ public class WebRequestInterceptor implements WebMvcConfigurer {
          // /test/queryUser接口则是token验证后，把token为xx的玩家信息放入Request中，方便接口拿取
          registry.addInterceptor(new RequestInterceptor())
                  .addPathPatterns("/User/**")
-                 .addPathPatterns("/testCaseTotal/**")
+                 .addPathPatterns("/TestCaseResultTotal/**")
                  .addPathPatterns("/testResult/**")
                  .excludePathPatterns("/User/login")
                  .excludePathPatterns("/User/userAging");
@@ -43,13 +43,13 @@ public class WebRequestInterceptor implements WebMvcConfigurer {
      * 跨域支持 比如说vue 的axios访问
      * @param registry
      */
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("*")
-//                .allowCredentials(true)
-//                .allowedMethods("GET", "POST", "DELETE", "PUT")
-//                .maxAge(3600 * 24);
-//    }
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .maxAge(3600 * 24);
+    }
     /**
      * 修改访问路径
      * @param configurer

@@ -5,6 +5,7 @@ import {reloadLogin} from "./utils/reloadLogin.js";
 import {operations} from "/js/utils/message.js";
 import {getDecryptData, getSecretData} from "./utils/crypto.js";
 import {jsonStringSwitch} from "./utils/dataHandle.js";
+import {timestamp} from "./utils/formatTime.js";
 
 
 window.addEventListener("message", function (e) {
@@ -20,7 +21,7 @@ var User = new Vue({
     data() {
         return {
             activeNames: "",
-            value3: "",
+            value3:0,
             input1: "",
             input2: '',
             loading: '',
@@ -57,6 +58,60 @@ var User = new Vue({
         this.onshow();
     },
     methods: {
+        cleartext() {
+                let self_ = this
+                self_.$data.value3 = 0
+                self_.$data.input1 = ''
+                self_.$data.input2 = ''
+        },
+        search(){
+            let self_ = this
+            request({
+                method: 'Post',
+                url: '/User/search',
+                data: {
+                    pageNum: self_.$data.pageNum_1,
+                    pageSize: self_.$data.pageShowNum,
+                    datetime: timestamp(self_.$data.value3!=null?self_.$data.value3:0),
+                    address: self_.$data.input1,
+                    username: self_.$data.input2,
+                },
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": 'Access-Control-Request-Headers'
+                },
+            }).then(res => {
+                if (res.data.code === 200 && res.data.message === null ) {
+                    self_.loading = false;
+                    self_.$message({
+                        message: res.data.data.msg,
+                        type: "error",
+                        center: true
+                    })
+                    // reloadLogin();
+                } else if (res.data.code === 200 && res.data.message != null && res.data.data!=null ) {
+                    // 获取后端数据解密后的数据
+                    let dataDecryptData =jsonStringSwitch("Json",getDecryptData(res.data.data))
+                    self_.test = dataDecryptData.list;
+                    // 给分页器传数据总量值
+                    self_.send(dataDecryptData.total);
+                    self_.loading=false;
+                } else {
+                    self_.$message({
+                        message: res.data.message,
+                        type: "error",
+                        center: true
+                    });
+                }
+            }).catch(error => {
+                self_.loading = false
+                self_.$message({
+                    message: error.message,
+                    type: "error",
+                    center: true
+                })
+            });
+        },
         //修改密码
         EditPs_(msg){
             let self_ = this

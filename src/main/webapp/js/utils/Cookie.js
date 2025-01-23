@@ -6,9 +6,11 @@ import {request} from "./request.js";
 export function setCookie(token,refresh) {
     var date = new Date();
     date.setTime(date.getTime() + (24 * 60 * 60));
-    var expires = "expires=" + date.toUTCString();
+    var expires =date.toUTCString();
     let string = refresh + "?" + token
-    document.cookie = "cookies=" + string + "; expires=" + expires + "; path=/";
+    console.log(expires)
+
+    document.cookie = `cookies=${string}; expires=${expires}; path=/;secure;SameSite=Strict`;
 }
 
 //获取token

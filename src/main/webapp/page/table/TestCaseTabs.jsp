@@ -9,13 +9,21 @@
     <title></title>
 </head>
 <body>
+
 <%@ include file="../public/publicTable.jsp" %>
 </body>
 <script type="module">
     import {request} from "../../js/utils/request.js";
     import {operations} from "../../js/utils/message.js";
+    window.addEventListener("message", function (e) {
+        if (e.data.split(":")[0] === "page") {
+            publicCase_tabs.$data.pageNum = e.data.split(":")[1]
+        } else {
+            publicCase_tabs.$data.pageShowNum = parseInt(e.data.split(":")[1])
+        }
+    }, false);
 
-    new Vue({
+    let publicCase_tabs = new Vue({
         el: '#app',
         data() {
             return {
@@ -49,6 +57,13 @@
             },1000)
         },
         methods:{
+            send(data) {
+                let frame_pagination = document.getElementById("iframe_seleniumTestCase_pagination");
+                frame_pagination.contentWindow.postMessage(data, 'http://127.0.0.1:8090/page/public/pagination.jsp');
+                frame_pagination.onload = function () {
+                    frame_pagination.contentWindow.postMessage(data, 'http://127.0.0.1:8090/page/public/pagination.jsp\n');
+                }
+            },
             dateFormat(row, column) {
                 return row[column.property] === null ? "--" : row[column.property];
             },
@@ -68,6 +83,10 @@
                   }).then(res =>{
                       if(res.data.code===200){
                           this.$data.tableData = res.data.data.list
+                          self_.send(res.data.data.total);
+                          setTimeout(() => {
+                              self_.loading = false;
+                          }, 2000);
                       }else {
                           // vue的this.message方法
                           operations("error",res.data.message,self_)
@@ -91,6 +110,21 @@
                 self_.$data.type=row;
                 this.dialogFormVisible=true;
             },
+        },
+        watch: {
+            pageNum: function (newData, oldData) {
+                if (newData !== oldData) {
+                    this.loading = true
+                    this.test = [];
+                    this.onshow();
+                }
+            },
+            pageShowNum: function (newData, oldData) {
+                if (newData !== oldData) {
+                    this.test = [];
+                    this.onshow();
+                }
+            }
         }
     });
 

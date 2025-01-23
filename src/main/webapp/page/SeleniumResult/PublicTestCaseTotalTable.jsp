@@ -31,15 +31,27 @@
                             default-time="12:00:00">
                     </el-date-picker>
                     <el-input
-                            placeholder="id"
-                            suffix-icon="el-icon-date"
+                            placeholder="用例集"
+                            suffix-icon="el-icon-edit"
                             v-model="input1">
                     </el-input>
                     <el-input
-                            placeholder="set_type"
-                            suffix-icon="el-icon-date"
+                            placeholder="成功次数"
+                            suffix-icon="el-icon-edit"
                             v-model="input2">
                     </el-input>
+                    <el-input
+                            placeholder="失败次数"
+                            suffix-icon="el-icon-edit"
+                            v-model="input3">
+                    </el-input>
+
+                    <el-button type="text" size="small" icon="el-icon-edit"
+                               @click="cleartext()">清空
+                    </el-button>
+                    <el-button type="text" size="small" icon="el-icon-edit—pwd" @click="search()">
+                        搜索
+                    </el-button>
                 </div>
             </el-collapse-item>
         </el-collapse>
@@ -48,8 +60,7 @@
                 v-loading="loading"
                 :data="tableData"
                 style="width: 100%"
-                height="560px"
-        >
+                height="560px">
             <el-table-column
                     fixed
                     prop="testCaseName"
@@ -106,7 +117,7 @@
         </div>
         <!-- dialog-->
         <el-dialog title="测试结果详情" :visible.sync="dialogVisible">
-            <iframe v-if="dialogVisible" src="../../page/SeleniumResult/PublicResultTable.jsp" scrolling="no"
+            <iframe id="iframe_PublicResultTable"  v-if="dialogVisible" src="../../page/SeleniumResult/PublicResultTable.jsp" scrolling="no"
                     style="width: 100%;height: 100%;border: 0"></iframe>
         </el-dialog>
 
@@ -165,7 +176,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 <script type="text/javascript" src="../../js/utils/TimePickerOption.js"></script>
 <script type="module" src="../../js/utils/height_adjust.js"></script>
-<script type="module" src="js/PublicTestCaseTable.js">
+<script type="module" src="js/PublicTestCaseTotalTable.js">
 </script>
 
 </html>

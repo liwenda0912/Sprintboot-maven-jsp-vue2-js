@@ -30,7 +30,7 @@
     </div>
     <div id="index_app" class="border"  >
         <div class="index" v-if="index_show">
-            <iframe id="index_iframe" src="index_import.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%"></iframe>
+            <iframe id="index_iframe" src="index_body.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%"></iframe>
         </div>
         <div class="work_platform_data" v-if="test_data">
             <iframe src="DataPage/TestDataTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 109%"></iframe>
@@ -42,7 +42,7 @@
             <iframe src="SeleniumResult/ResultTableTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 115%"></iframe>
         </div>
         <div v-if="test_case">
-            <iframe src="table/TestCaseTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 100%;box-shadow: 0 0 20px grey;"></iframe>
+            <iframe src="table/TestCaseTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 110%;"></iframe>
         </div>
     </div>
     <el-container>
