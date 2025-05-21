@@ -42,8 +42,9 @@
             <iframe src="SeleniumResult/ResultTableTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 115%"></iframe>
         </div>
         <div v-if="test_case">
-            <iframe src="table/TestCaseTabs.jsp" scrolling="no" style="border: 0;width: 100%;height: 110%;"></iframe>
+            <iframe src="table/testCaseDri.jsp" scrolling="no" style="border: 0;width: 100%;height: 110%;"></iframe>
         </div>
+
     </div>
     <el-container>
         <el-footer>

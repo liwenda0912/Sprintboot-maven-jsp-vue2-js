@@ -5,8 +5,7 @@
   Time: 15:05
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="app" style="box-shadow:grey 0 0 20px">
     <el-table
             border
@@ -15,7 +14,6 @@
             style="width: 100%"
             height="730px"
             :data="tableData"
-
     >
         <el-table-column
                 :formatter='dateFormat'
@@ -23,6 +21,7 @@
                 :key=" index"
                 :label="column.label"
                 :prop="column.prop?column.prop:'--'"
+                :width="column.formLabelWidth"
         ></el-table-column>
         <el-table-column
                 label="操作"
@@ -38,24 +37,24 @@
             </template>
         </el-table-column>
     </el-table>
-    <div style="height: 60px;">
+    <div style="height: 80px;background-color:white">
         <iframe id="iframe_seleniumTestCase_pagination" src="../public/pagination.jsp" scrolling="no"
                 style="width: 11960px;border: 0;position: fixed;height: 200px"></iframe>
     </div>
-    <el-dialog title="修改用户信息" :visible.sync="dialogVisible" :close-on-click-modal="false">
+    <el-dialog title="修改信息" :visible.sync="dialogVisible" :close-on-click-modal="false">
         <el-form>
             <el-form-item v-for="(column, index) in dynamicColumns"
+                          :key=" index"
                           :label="column.label+':'"
-                          :label-width="formLabelWidth">
+                          :label-width="formLabelWidths">
                 <el-input v-model='type[column.prop]' autocomplete="off" ></el-input>
             </el-form-item>
         </el-form>
     </el-dialog>
-
-    <el-dialog title="用户信息" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+    <el-dialog title="详情" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
         <div style="font-size: 15px;margin: 5px 5px" >
             <el-descriptions v-for="(column, index) in dynamicColumns">
-                <el-descriptions-item  :label="column.label">
+                <el-descriptions-item :label="column.label" :key=" index">
                     {{type[column.prop]?type[column.prop]:"--"}}
                 </el-descriptions-item>
             </el-descriptions>
@@ -72,48 +71,3 @@
         font-size: 12px !important; /* 根据需要调整字体大小 */
     }
 </style>
-<%--<script>--%>
-<%--    new Vue({--%>
-<%--        el: '#app',--%>
-<%--        data() {--%>
-<%--            return {--%>
-<%--                dialogVisible:false,--%>
-<%--                dialogFormVisible:false,--%>
-<%--                form:[],--%>
-<%--                type:[],--%>
-<%--                formLabelWidth: '120px',--%>
-<%--                dynamicColumns: [--%>
-<%--                    { label: '年龄', prop: 'age' },--%>
-<%--                    { label: '城市', prop: 'city' },--%>
-<%--                    { label: '职位1', prop: 'position' },--%>
-<%--                    { label: '职位2', prop: 'position' },--%>
-<%--                    { label: '职位3', prop: 'position' },--%>
-
-<%--                ],--%>
-<%--            tableData: [--%>
-<%--			 { name: '张三', age: 28, city: '北京', position: '工程师' },--%>
-<%--             { name: '李四', age: 22, city: '上海', position: '设计师' },--%>
-<%--             { name: '王五', age: 30, city: '广州', position: '产品经理' }--%>
-<%--        ]--%>
-<%--        };--%>
-<%--        },--%>
-<%--        methods:{--%>
-<%--            //页面编辑按钮的方法--%>
-<%--            edit(row,index){--%>
-<%--                let self_ = this--%>
-<%--                // self_.$data.type=row--%>
-<%--                self_.$data.type=JSON.parse(JSON.stringify(row));--%>
-<%--                self_.dialogVisible=true;--%>
-<%--                self_.index_=index--%>
-<%--            },--%>
-<%--            //页面查看按钮的方法--%>
-<%--            handleClick(row) {--%>
-<%--                let self_ = this--%>
-<%--                self_.$data.type=row;--%>
-<%--                this.dialogFormVisible=true;--%>
-<%--            },--%>
-<%--        }--%>
-<%--    });--%>
-
-<%--</script>--%>
-<%--</html>--%>

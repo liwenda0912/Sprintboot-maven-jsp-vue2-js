@@ -13,5 +13,9 @@ public class IndexController {
     public String login(HttpServletResponse response) {
         return "login";
     }
+    @RequestMapping("/test")
+    public String index(HttpServletResponse response) {
+        return "test";
+    }
 
 }

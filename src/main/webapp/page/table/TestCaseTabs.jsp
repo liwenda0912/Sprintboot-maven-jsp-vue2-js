@@ -9,7 +9,6 @@
     <title></title>
 </head>
 <body>
-
 <%@ include file="../public/publicTable.jsp" %>
 </body>
 <script type="module">
@@ -71,7 +70,7 @@
                   let self_ = this;
                   request({
                           method: 'Post',
-                          url: '/testCaseExcel/list',
+                          url: '/testCase/testCaseList',
                           headers: {
                               'Content-Type': 'application/json',
                               "Authorization": 'Access-Control-Request-Headers'

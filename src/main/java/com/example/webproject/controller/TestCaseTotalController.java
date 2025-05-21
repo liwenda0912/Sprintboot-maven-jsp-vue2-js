@@ -3,8 +3,7 @@ package com.example.webproject.controller;
 import com.example.webproject.core.common.CommonPage;
 import com.example.webproject.core.common.CommonResult;
 import com.example.webproject.core.enums.ResultCode;
-import com.example.webproject.dto.RowBounds;
-import com.example.webproject.dto.TestCaseDto;
+import com.example.webproject.dto.TestCaseResultDto;
 import com.example.webproject.entity.TestCase;
 import com.example.webproject.service.TestCaseTotalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ public class TestCaseTotalController {
     @Autowired
     private TestCaseTotalService testCaseTotalServer;
     @RequestMapping(value="/testCaseTotal",method = RequestMethod.POST)
-    public CommonResult<CommonPage<TestCase>> TestResultInfo(@RequestBody TestCaseDto testCaseDto)  {
+    public CommonResult<CommonPage<TestCase>> TestResultInfo(@RequestBody TestCaseResultDto testCaseDto)  {
         System.out.print(testCaseDto.getTestCaseSuccess());
         List<TestCase> testCaseList = testCaseTotalServer.findInfos(testCaseDto);
         return CommonResult.success(CommonPage.restPage(testCaseList), ResultCode.SUCCESS.getMessage());

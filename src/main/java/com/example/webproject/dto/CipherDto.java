@@ -7,5 +7,4 @@ public class CipherDto {
     private String ciphertext;
     private String iv;
     private String key;
-
 }

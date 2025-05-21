@@ -1,8 +1,7 @@
 package com.example.webproject.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.webproject.dto.RowBounds;
-import com.example.webproject.dto.TestCaseDto;
+import com.example.webproject.dto.TestCaseResultDto;
 import com.example.webproject.entity.TestCase;
 import com.example.webproject.entity.TestResult;
 import com.example.webproject.mapper.TestCaseTotalMapper;
@@ -22,7 +21,7 @@ public class TestCaseTotalService {
         return testCaseTotalMapper.selectById(id);
     }
     @Transactional
-    public List<TestCase> findInfos(TestCaseDto testCaseDto) {
+    public List<TestCase> findInfos(TestCaseResultDto testCaseDto) {
         if (testCaseDto.getPageNum() != null) {
             PageMethod.startPage(testCaseDto.getPageNum(), testCaseDto.getPageSize());
         }

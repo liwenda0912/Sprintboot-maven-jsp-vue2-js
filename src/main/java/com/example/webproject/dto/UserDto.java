@@ -16,7 +16,6 @@ public class UserDto {
     private String province;
     private String address;
     private String phone;
-    private String alias;
     private UserRuleForm ruleForm;
 //    public String getUsername() {
 //        return username;

@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @TableName("testcaseexcel")
-public class TestCaseExcel {
+public class TestCaseExcel extends BaseModel {
         /**  */
         @TableId(type = IdType.AUTO)
         private int id ;
@@ -39,13 +39,15 @@ public class TestCaseExcel {
         /**  */
         @JsonProperty("Remarks")
         private String remarks ;
+
+        private int testCaseDriId;
         /**  */
-        @JsonIgnore
-        private Integer state ;
+//        @JsonIgnore
+//        private Integer state ;
         /**  */
-        @JsonProperty("CreateTime")
-        private Long createtime ;
-        /**  */
-        @JsonIgnore
-        private Long updatetime ;
+//        @JsonProperty("CreateTime")
+//        private Long createtime ;
+//        /**  */
+//        @JsonIgnore
+//        private Long updatetime ;
 }

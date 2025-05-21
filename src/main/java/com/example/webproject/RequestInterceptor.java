@@ -7,12 +7,14 @@ import com.example.webproject.core.Utils.TokenHandleUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class RequestInterceptor implements HandlerInterceptor {
@@ -29,9 +31,15 @@ public class RequestInterceptor implements HandlerInterceptor {
 //        if(!validCookie(request,response)){
 //            throw new TokenExpiredException("请重新登录!");
 //        }
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            // 设置 CORS 头
+            response.setStatus(HttpServletResponse.SC_OK);
+            return true; // 预检请求处理完毕，不再继续处理
+        }
         JSONObject map = new JSONObject();
         TokenHandleUtils tokenHandleUtils = new TokenHandleUtils();
         Enumeration<String> headerNames = request.getHeaderNames();
+        System.out.print(request.getHeader("Token"));
         while (headerNames.hasMoreElements()) {
             String key = headerNames.nextElement();
             String value = request.getHeader(key);
@@ -39,44 +47,19 @@ public class RequestInterceptor implements HandlerInterceptor {
         }
         //判断从前端传来的头部信息中AUTH-TOKEN的值是否与我们后台定义的token值一致
         if (request.getHeader("Cookie") != null) {
-            //获取token和refresh_token
-            String TOKEN = null;
-            String REFRESH_TOKEN = null;
-            // 判断”cookies=“在数组哪个位置,并获取token和刷新token值
-            for (String i : request.getHeader("Cookie").split(";")) {
-                if (i.contains("cookies=")) {
-                    TOKEN = i.split("=")[1].split("[?]")[1];
-                    REFRESH_TOKEN = i.split("=")[1].split("[?]")[0];
-                }
-
-            }
-            //校验token是否有效
-            Map<String,Object> token_ = tokenHandleUtils.userAging(TOKEN);
-            Map<String,Object>  refresh_token_ = tokenHandleUtils.userAging(REFRESH_TOKEN);
-            if (token_.get("state").toString().equals("false")) {
-                if (refresh_token_.get("state").toString().equals("false")) {
-                    throw new TokenExpiredException("token已经过期，请重新登录");
-                } else {
-                    Map<String, String> payload = new HashMap<>();
-                    // 是否存在用户信息
-                    if (refresh_token_.get("id") != null && refresh_token_.get("name") != null) {
-                        // 获取用户信息并生成token
-                        payload.put("id", refresh_token_.get("id").toString());
-                        payload.put("name", refresh_token_.get("name").toString());
-                        String token = JWTUtils.getToken(payload);
-                        // 设置新的token值并在response里面传到前端
-                        setCookie(request, response, token,REFRESH_TOKEN);
-                        return true;
-                    }
-                }
-            } else {
-                return true;
-            }
-            return true;
+            String s = "Cookie";
+            String splitString = "cookies=";
+            ValidCookie(request, response, tokenHandleUtils, s, splitString);
         } else {
-            System.out.print(request.getHeader("Cookie")+"\n");
-            throw new TokenExpiredException("请登录账号!");//
+            if (request.getHeader("Token") != null) {
+                String s = "";
+                String splitString = "token";
+                ValidCookie(request, response, tokenHandleUtils, s, splitString);
+            } else {
+                throw new TokenExpiredException("请登录账号!");//
+            }
         }
+        return true;
     }
 
     /**
@@ -103,7 +86,7 @@ public class RequestInterceptor implements HandlerInterceptor {
      * @param response
      * @param token    设置最新的token
      */
-    public void setCookie(HttpServletRequest request, HttpServletResponse response, String token,String REFRESH_TOKEN) {
+    public void setCookie(HttpServletRequest request, HttpServletResponse response, String token, String REFRESH_TOKEN) {
         String string = REFRESH_TOKEN + "?" + token;
         // 创建一个Cookie对象
         Cookie cookie = new Cookie("cookies", string);
@@ -117,4 +100,49 @@ public class RequestInterceptor implements HandlerInterceptor {
         // 将Cookie添加到响应中
         response.addCookie(cookie);
     }
+
+    public void ValidCookie(HttpServletRequest request, HttpServletResponse response, TokenHandleUtils tokenHandleUtils, String S, String splitString) {
+        //获取token和refresh_token
+        String TOKEN = null;
+        String REFRESH_TOKEN = null;
+        // 判断”cookies=“在数组哪个位置,并获取token和刷新token值
+        if (!Objects.equals(splitString, "token")) {
+            for (String i : request.getHeader(splitString).split(";")) {
+                if (i.contains(S)) {
+                    TOKEN = i.split("=")[1].split("[?]")[1];
+                    REFRESH_TOKEN = i.split("=")[1].split("[?]")[0];
+                }
+            }
+        }else {
+            String[] list = request.getHeader(splitString).split("\\+");
+            TOKEN = list[0];
+            REFRESH_TOKEN = list[1];
+        }
+
+        //校验token是否有效
+        Map<String, Object> token_ = tokenHandleUtils.userAging(TOKEN);
+        Map<String, Object> refresh_token_ = tokenHandleUtils.userAging(REFRESH_TOKEN);
+        if (token_.get("state").toString().equals("false")) {
+            if (refresh_token_.get("state").toString().equals("false")) {
+                throw new TokenExpiredException("token已经过期，请重新登录");
+            } else {
+                Map<String, String> payload = new HashMap<>();
+                // 是否存在用户信息
+                if (refresh_token_.get("id") != null && refresh_token_.get("name") != null) {
+                    // 获取用户信息并生成token
+                    payload.put("id", refresh_token_.get("id").toString());
+                    payload.put("name", refresh_token_.get("name").toString());
+                    String token = JWTUtils.getToken(payload);
+                    // 设置新的token值并在response里面传到前端
+                    if (!Objects.equals(splitString, "token")) {
+                        setCookie(request, response, token, REFRESH_TOKEN);
+                    }else {
+                        response.setHeader("Token", token+"+"+REFRESH_TOKEN);
+                    }
+
+                }
+            }
+        }
+    }
+
 }

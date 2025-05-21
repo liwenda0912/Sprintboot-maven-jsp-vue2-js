@@ -8,7 +8,6 @@ export function setCookie(token,refresh) {
     date.setTime(date.getTime() + (24 * 60 * 60));
     var expires =date.toUTCString();
     let string = refresh + "?" + token
-    console.log(expires)
 
     document.cookie = `cookies=${string}; expires=${expires}; path=/;secure;SameSite=Strict`;
 }

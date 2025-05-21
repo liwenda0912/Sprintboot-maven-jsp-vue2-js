@@ -1,4 +1,4 @@
-package com.config;
+package com.example.webproject.config;
 
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.context.annotation.Configuration;

@@ -1,5 +1,6 @@
 package com.example.webproject.controller;
 
+import com.example.webproject.RequestInterceptor;
 import com.example.webproject.core.Utils.MapUtils;
 import com.example.webproject.core.common.CommonPage;
 import com.example.webproject.core.common.CommonResult;
@@ -12,6 +13,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -27,15 +30,15 @@ public class UserController {
     private Logger log;
 
     @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public CommonResult<String> User(@RequestBody RowBounds rowBounds) throws Exception {
-        List<User> touserList = userService.findInfos(rowBounds);
-        return CommonResult.success(encrypt(CommonPage.restPage(touserList)),ResultCode.SUCCESS.getMessage());
-    }
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
     public CommonResult<String> User(@RequestBody UserSearchDto userSearchDto) throws Exception {
-        List<User> touserList = userService.findInfo(userSearchDto);
+        List<User> touserList = userService.findInfos(userSearchDto);
         return CommonResult.success(encrypt(CommonPage.restPage(touserList)),ResultCode.SUCCESS.getMessage());
     }
+//    @RequestMapping(value = "/search", method = RequestMethod.POST)
+//    public CommonResult<String> User(@RequestBody UserSearchDto userSearchDto) throws Exception {
+//        List<User> touserList = userService.findInfo(userSearchDto);
+//        return CommonResult.success(encrypt(CommonPage.restPage(touserList)),ResultCode.SUCCESS.getMessage());
+//    }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public CommonResult<String> EditUser(@RequestBody CipherDto cipherDto) throws Exception {
@@ -48,8 +51,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public CommonResult<Integer> insertUser(@RequestBody UserDto userDto) {
-        int result_code = userService.insertUser(userDto);
+    public CommonResult<Integer> insertUser(@RequestBody CipherDto cipherDto) throws Exception {
+        int result_code = userService.insertUser(cipherDto);
         if (result_code > 0) {
             return CommonResult.success(ResultCode.SUCCESS.getCode(), "操作成功");
         } else if (result_code == 0) {
@@ -60,8 +63,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public CommonResult<String> login(@RequestBody CipherDto cipherDto) throws Exception {
-        UserLogin userDB = userService.login(cipherDto);
+    public CommonResult<String> login(@RequestBody CipherDto cipherDto, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        UserLogin userDB = userService.login(cipherDto,request);
         MapUtils mapUtils = new MapUtils();
         return CommonResult.success(encrypt(mapUtils.getToken(userDB)),null);
     }

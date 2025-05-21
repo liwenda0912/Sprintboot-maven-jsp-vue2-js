@@ -4,25 +4,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.webproject.core.Utils.UploadFileUtils;
 import com.example.webproject.core.Utils.readExcelUtils;
 import com.example.webproject.entity.TestCaseExcel;
-import com.example.webproject.mapper.TestCaseExcelMapper;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.poi.ss.usermodel.CellStyle;
+import com.example.webproject.mapper.TestCaseMapper;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.webproject.core.Utils.GetTime.getSimpleDateFormat;
-import static com.example.webproject.core.Utils.GetTime.getTime;
 
 @Service
 public class UploadFileService {
     @Autowired
-    private TestCaseExcelMapper testCaseExcelMapper;
+    private TestCaseMapper testCaseExcelMapper;
 
     public String UploadFile(HttpServletRequest request) throws Exception {
         readExcelUtils readExcelUtils = new readExcelUtils();
@@ -49,8 +43,6 @@ public class UploadFileService {
                 }else{
                     TestCaseExcel.setRemarks(null);
                 }
-                TestCaseExcel.setState(1);
-                TestCaseExcel.setCreatetime(getSimpleDateFormat(getTime()));
                 List.add(TestCaseExcel);
             }
             testCaseExcelMapper.insert_(List);

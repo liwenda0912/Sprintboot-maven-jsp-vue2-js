@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @TableName("user")
-public class User {
+public class User extends BaseModel {
     private String username;
     @JsonIgnore
     private String password;
@@ -22,8 +22,8 @@ public class User {
     private String province;
     private String address;
     private String phone;
-    private String alias;
-    private String Time;
+
+
 //    public String getUsername() {
 //        return username;
 //    }

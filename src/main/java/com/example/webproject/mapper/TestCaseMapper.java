@@ -14,7 +14,7 @@ import java.util.List;
  * @date : 2024-11-20
  */
 @Mapper
-public interface TestCaseExcelMapper extends BaseMapper<TestCaseExcel> {
+public interface TestCaseMapper extends BaseMapper<TestCaseExcel> {
 
         /**
          * 分页查询指定行数据
@@ -24,5 +24,4 @@ public interface TestCaseExcelMapper extends BaseMapper<TestCaseExcel> {
          */
         List<TestCaseExcel> selectByPage(@Param("ew") Wrapper wrapper);
         Integer insert_(List<TestCaseExcel> List);
-
 }

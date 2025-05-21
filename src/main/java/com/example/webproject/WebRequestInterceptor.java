@@ -32,11 +32,12 @@ public class WebRequestInterceptor implements WebMvcConfigurer {
          // /test/queryUser接口则是token验证后，把token为xx的玩家信息放入Request中，方便接口拿取
          registry.addInterceptor(new RequestInterceptor())
                  .addPathPatterns("/User/**")
+                 .addPathPatterns("/**")
                  .addPathPatterns("/TestCaseResultTotal/**")
                  .addPathPatterns("/testResult/**")
                  .excludePathPatterns("/User/login")
+                 .excludePathPatterns("/captcha")
                  .excludePathPatterns("/User/userAging");
-         ;
      }
 
     /**
@@ -46,8 +47,10 @@ public class WebRequestInterceptor implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOriginPatterns("*")
+                .allowedOrigins("http://localhost:5173") // 前端域名
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("Content-Type", "Token") // 允许的请求头
                 .allowCredentials(true)
-                .allowedMethods("GET", "POST", "DELETE", "PUT")
                 .maxAge(3600 * 24);
     }
     /**

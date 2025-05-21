@@ -104,45 +104,7 @@
         </div>
     </div>
 </div>
-<div id="app-1">
-    <!-- Form -->
-    <transition name="el-zoom-in-bottom">
-        <el-dialog title="注册" :visible.sync="dialogFormVisible" style="text-align: center" :show-close="false"
-                   :center="true" :close-on-click-modal="false">
-            <el-form :model="type_data.ruleForm" :rules="rules" ref="type_data.ruleForm">
-                <el-form-item label="账号:" :label-width="formLabelWidth" prop="username">
-                    <el-input v-model.trim="type_data.ruleForm.username" autocomplete="off" clearable
-                              ref="user"></el-input>
-                </el-form-item>
-                <el-form-item label="密码:" :label-width="formLabelWidth" prop="password">
-                    <el-input v-model.trim="type_data.ruleForm.password" autocomplete="off" clearable
-                              show-password ref="passwd"></el-input>
-                </el-form-item>
-                <el-form-item label="电话:" :label-width="formLabelWidth" prop="phone">
-                    <el-input v-model="type_data.ruleForm.phone" autocomplete="off" clearable ref="phone"></el-input>
-                </el-form-item>
-                <el-form-item label="详细地址:" :label-width="formLabelWidth" prop="address">
-                    <el-input v-model="type_data.address" autocomplete="off" clearable ref="address"></el-input>
-                </el-form-item>
-                <el-form-item label="城市:" :label-width="formLabelWidth" prop="city">
-                    <el-input v-model="type_data.city" autocomplete="off" clearable ref="city"></el-input>
-                </el-form-item>
-                <el-form-item label="省份:" :label-width="formLabelWidth" prop="province">
-                    <el-input v-model="type_data.province" autocomplete="off" clearable ref="province"></el-input>
-                </el-form-item>
-                <el-form-item label="邮政编码:" :label-width="formLabelWidth" prop="zip">
-                    <el-input v-model="type_data.ruleForm.zip" autocomplete="off" clearable ref="zip"></el-input>
-                </el-form-item>
-                <div class="dialog-footer" style="text-align: center">
-                    <el-form-item>
-                        <el-button type="primary" @click="registered('type_data.ruleForm')">注册</el-button>
-                        <el-button type="primary" @click="quit()">取消</el-button>
-                    </el-form-item>
-                </div>
-            </el-form>
-        </el-dialog>
-    </transition>
-</div>
+
 <script src="../../js/login.js" type="module"></script>
 </body>
 </html>

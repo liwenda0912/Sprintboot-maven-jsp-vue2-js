@@ -15,4 +15,5 @@ public class UserLogin {
     private String password;
     private String token;
     private String refresh;
+    private String code;
 }

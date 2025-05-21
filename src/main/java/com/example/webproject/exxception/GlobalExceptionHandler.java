@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.example.webproject.core.Utils.MapUtils;
 import com.example.webproject.core.common.CommonResult;
 import com.example.webproject.core.enums.ResultCode;
+import com.example.webproject.exxception.Exception;
 import com.sun.xml.internal.ws.handler.HandlerException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpServerErrorException;
 
+import javax.servlet.ServletException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,9 +32,10 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     MapUtils mapUtils = new MapUtils();
 
+
     @ExceptionHandler(HttpServerErrorException.GatewayTimeout.class)
     public Exception<String> httpServerErrorException(HttpServerErrorException E) {
-        return Exception.exception(200, E.getMessage(),null);
+        return Exception.exception(500, E.getMessage(),null);
     }
 
     @ExceptionHandler(HandlerException.class)
@@ -54,11 +57,11 @@ public class GlobalExceptionHandler {
 //    }
     @ExceptionHandler(value = java.lang.Exception.class)
     public Exception<String> allException(java.lang.Exception e) {
-        return Exception.exception(ResultCode.EXCEPTION.getCode(), ResultCode.EXCEPTION.getMessage(),null);
+        return Exception.exception(e.hashCode(), ResultCode.EXCEPTION.getMessage(),null);
     }
     @ExceptionHandler(value = TokenExpiredException.class)
     public CommonResult<Map<String, Object>> TokenExpired(TokenExpiredException e) {
-       return CommonResult.success(mapUtils.getErrorToken(e.getMessage()));
+       return CommonResult.success(ResultCode.NOTOKEN.getCode(),mapUtils.getErrorToken(e.getMessage()),ResultCode.NOTOKEN.getMessage());
     }
     @ExceptionHandler(value = ArrayIndexOutOfBoundsException.class)
     public Exception<String> array(ArrayIndexOutOfBoundsException e){
@@ -78,7 +81,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(value = RuntimeException.class)
     public CommonResult<Map<String, Object>> RuntimeException(RuntimeException e){
-        return CommonResult.success( mapUtils.getErrorToken("ssss"));
+        return CommonResult.success( mapUtils.getErrorToken(e.getMessage()));
     }
 //    @ExceptionHandler(value = NullPointerException.class)
 //    public Exception<String> NullPointer(NullPointerException e){

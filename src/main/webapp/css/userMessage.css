@@ -1,12 +1,47 @@
-.table-style{
-    margin-left: 40%;
+div.cell_button {
+    width: 200px;
+    margin: 0;
 }
-.table-style td{
-    padding: 0 20px;
-    text-align: center;
+
+.el-button + .el-button {
+    margin-left: 0;
 }
-.table-style th{
-    padding:0 20px;
-    background-color: grey;
-    border: 1px solid black;
+
+.el-table--border th.el-table__cell {
+    background-color: #DDDDDD;
+}
+
+.demo-input-size {
+    float: right;
+}
+
+.el-input.el-input--suffix {
+    width: 200px;
+}
+
+.el-input.el-input--medium.el-input--suffix {
+    width: 200px;
+}
+
+.el-collapse-item__content {
+    height: 30px;
+}
+
+.el-select-dropdown__wrap {
+    overflow-y: auto !important;
+    min-height: 10px; /* 设置最小高度 */
+
+}
+.el-collapse-item__arrow{
+    position: fixed;
+    padding: 80px 6px;
+    color: #DDDDDD;
+}
+.el_form{
+    width: 400px;
+
+}
+.el-collapse-item__arrow.el-icon-arrow-right.is-active {
+    padding: 54px 14px 2px 14px;
+    margin-left: 14px;
 }

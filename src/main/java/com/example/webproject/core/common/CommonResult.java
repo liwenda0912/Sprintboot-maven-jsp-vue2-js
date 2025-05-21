@@ -62,6 +62,9 @@ public class CommonResult<T> {
     public static <T> CommonResult<T> success() {
         return new CommonResult<>(ResultCode.SUCCESS.getCode(),null);
     }
+    public static <T> CommonResult<T> success(Integer code,T data,String message) {
+        return new CommonResult<>(code,message,data);
+    }
 
     /**
      * 成功返回消息

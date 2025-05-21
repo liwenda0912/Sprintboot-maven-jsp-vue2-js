@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.webproject.core.Utils.JWTUtils;
+import com.example.webproject.core.common.globalDate;
 import com.example.webproject.dto.*;
 import com.example.webproject.entity.UserLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +17,11 @@ import com.example.webproject.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,16 +44,9 @@ public class UserService {
         return userMapper.selectById(id);
     }
 
+
     @Transactional
-    public List<User> findInfos(RowBounds rowBounds) {
-        if (rowBounds.getPageNum() != null) {
-            PageMethod.startPage(rowBounds.getPageNum(), rowBounds.getPageSize());
-        }
-        QueryWrapper<User> wrapper = new QueryWrapper<>();
-        return userMapper.findAll(wrapper);
-    }
-    @Transactional
-    public List<User> findInfo(UserSearchDto rowBounds) {
+    public List<User> findInfos(UserSearchDto rowBounds) {
         if (rowBounds.getPageNum() != null) {
             PageMethod.startPage(rowBounds.getPageNum(), rowBounds.getPageSize());
         }
@@ -57,27 +55,29 @@ public class UserService {
             wrapper.eq("Time",rowBounds.getDatetime());
         }
         if (rowBounds.getAddress().length()>0 && rowBounds.getDatetime()!= null) {
-            System.out.print(rowBounds.getAddress());
             wrapper.eq("address",rowBounds.getAddress());
         }
         if(rowBounds.getUsername()!=null && rowBounds.getUsername().length()>0){
             wrapper.eq("username",rowBounds.getUsername());
         }
+        wrapper.eq("state",1);
         return userMapper.findAll(wrapper);
     }
 
     @Transactional
-    public UserLogin login(CipherDto cipherDto) throws Exception {
+    public UserLogin login(CipherDto cipherDto, HttpServletRequest request) throws Exception {
         String string = new String(decrypt(cipherDto.getCiphertext(), cipherDto.getKey(), cipherDto.getIv()), StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();
         UserLogin UserLogin = objectMapper.readValue(string, UserLogin.class);
         QueryWrapper<UserLogin> wrapper = new QueryWrapper<>();
         wrapper.eq("username", UserLogin.getUsername())
-                .eq("password", UserLogin.getPassword());
+                .eq("password", UserLogin.getPassword())
+                .eq("state",1);
         if (userMapper.login(wrapper) != null) {
-            return userMapper.login(wrapper);
+                return userMapper.login(wrapper);
+
         }
-        throw new RuntimeException("用戶不存在!");
+        throw new RuntimeException("用戶不存在或用户已被停用!");
     }
 
     @Transactional
@@ -85,19 +85,11 @@ public class UserService {
         String string = new String(decrypt(cipherDto.getCiphertext(), cipherDto.getKey(), cipherDto.getIv()), StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();
         User user = objectMapper.readValue(string, User.class);
-        user.setTime(GetTime.getTime());
         if (user.getId() > 0) {
             UpdateWrapper<User> wrapper = new UpdateWrapper<>();
             wrapper.eq("id", user.getId())
-                    .set("username", user.getUsername())
-                    .set("address", user.getAddress())
-                    .set("phone", user.getPhone())
-                    .set("city", user.getCity())
-                    .set("alias", user.getAlias())
-                    .set("province", user.getProvince())
-                    .set("zip", user.getZip())
-                    .set("Time", GetTime.getTime());
-            if (userMapper.EditUser(wrapper) > 0) {
+                    .eq("state",1);
+            if (userMapper.update(user,wrapper) > 0) {
                 return encrypt(queryById(user.getId()));
             } else {
                 return null;
@@ -125,23 +117,16 @@ public class UserService {
     }
 
     @Transactional
-    public int insertUser(UserDto userDto) {
-        User user_ = new User();
-        if (userDto.getRuleForm().getUsername() != null) {
+    public int insertUser(CipherDto cipherDto) throws Exception {
+        String string = new String(decrypt(cipherDto.getCiphertext(), cipherDto.getKey(), cipherDto.getIv()), StandardCharsets.UTF_8);
+        ObjectMapper objectMapper = new ObjectMapper();
+        User user = objectMapper.readValue(string, User.class);
+        if (user.getUsername() != null) {
             QueryWrapper<User> wrapper = new QueryWrapper<>();
-            wrapper.eq("username", userDto.getRuleForm().getUsername());
+            wrapper.eq("username", user.getUsername());
             List<User> user_lot = userMapper.findAll(wrapper);
             if (user_lot.size() == 0) {
-                user_.setUsername(userDto.getRuleForm().getUsername());
-                user_.setPassword(userDto.getRuleForm().getPassword());
-                user_.setAlias(userDto.getAlias());
-                user_.setCity(userDto.getCity());
-                user_.setPhone(userDto.getPhone());
-                user_.setProvince(userDto.getProvince());
-                user_.setZip(userDto.getZip());
-                user_.setTime(GetTime.getTime());
-                user_.setAddress(userDto.getAddress());
-                return userMapper.insert(user_);
+                return userMapper.insert(user);
             } else {
                 return -1;
             }
@@ -162,6 +147,7 @@ public class UserService {
 
     public String getName(CipherDto cipherDto) throws Exception {
         String token = new String(decrypt(cipherDto.getCiphertext(), cipherDto.getKey(), cipherDto.getIv()), StandardCharsets.UTF_8);
+        System.out.print(token);
         DecodedJWT verify = JWTUtils.verify(token);
         Map<String, Object> map = new HashMap<>();
         map.put("name", verify.getClaim("name").asString());

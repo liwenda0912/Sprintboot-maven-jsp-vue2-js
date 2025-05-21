@@ -33,6 +33,7 @@ var APPLE = new Vue({
              self.$data.index_show = false
              self.$data.test_case = false
              self.$data.test_data = false
+
          }
     },
     // 监听导航栏的跳转
