@@ -93,11 +93,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!--对jsp的支持-->
         <!--引入springBoot 内嵌的Tomcat对JSP的解析包-->
         <dependency>
@@ -226,6 +221,11 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
             <scope>true</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.10</version> <!-- Use the version compatible with your Spring framework -->
         </dependency>
     </dependencies>
 

@@ -92,7 +92,7 @@ public class TestCaseService {
             return 0;
         }
     }
-
+    @Transactional
     public String updateCase(CipherDto cipherDto) throws Exception{
         String string = new String(decrypt(cipherDto.getCiphertext(), cipherDto.getKey(), cipherDto.getIv()), StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -101,20 +101,18 @@ public class TestCaseService {
             UpdateWrapper<TestCaseExcel> wrapper = new UpdateWrapper<>();
             wrapper.eq("id", excel.getId())
                     .eq("state",1);
-            if (testCaseExcelMapper.update(excel,wrapper) > 0) {
-                return encrypt(queryById(excel.getId()));
-            } else {
-                return null;
-            }
+            System.out.print(testCaseExcelMapper.update(excel,wrapper));
+            return encrypt(queryById(excel.getId()));
         } else {
             return null;
         }
     }
+    @Transactional
     public String updateTestCaseDri(CipherDto cipherDto) throws Exception{
         String string = new String(decrypt(cipherDto.getCiphertext(), cipherDto.getKey(), cipherDto.getIv()), StandardCharsets.UTF_8);
         ObjectMapper objectMapper = new ObjectMapper();
         TestCaseDri testCaseDri = objectMapper.readValue(string,TestCaseDri.class);
-        if (testCaseDri.getTestcasedriid() > 0) {
+        if (testCaseDri.getTestcasedriid()!=null &&testCaseDri.getTestcasedriid() > 0 ) {
             UpdateWrapper<TestCaseDri> wrapper = new UpdateWrapper<>();
             wrapper.eq("test_case_dri_id", testCaseDri.getTestcasedriid() )
                     .eq("state",1);

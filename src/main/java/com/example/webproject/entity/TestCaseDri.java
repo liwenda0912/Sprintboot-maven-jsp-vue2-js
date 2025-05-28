@@ -13,7 +13,9 @@ import lombok.Data;
 public class TestCaseDri extends BaseModel {
     @TableId(type = IdType.AUTO)
     @JsonProperty("testCaseDrId")
+    @TableField(value = "test_case_dri_id")
     private Integer testcasedriid ;
+
     @JsonProperty("testCaseDriName")
     @TableField(value = "test_case_dri_name")
     private String testcasedriname;

@@ -77,7 +77,7 @@ public class UserService {
                 return userMapper.login(wrapper);
 
         }
-        throw new RuntimeException("用戶不存在或用户已被停用!");
+        throw new Exception("用戶不存在或用户已被停用!");
     }
 
     @Transactional
@@ -89,15 +89,15 @@ public class UserService {
             UpdateWrapper<User> wrapper = new UpdateWrapper<>();
             wrapper.eq("id", user.getId())
                     .eq("state",1);
-            if (userMapper.update(user,wrapper) > 0) {
-                return encrypt(queryById(user.getId()));
-            } else {
-                return null;
-            }
+            System.out.print(userMapper.update(user,wrapper)+"\n");
+
+            return encrypt(queryById(user.getId()));
         } else {
             return null;
         }
     }
+
+
 
     @Transactional
     public int editPassword(CipherDto cipherDto) throws Exception {

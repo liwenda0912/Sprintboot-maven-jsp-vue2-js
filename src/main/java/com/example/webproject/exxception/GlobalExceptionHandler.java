@@ -9,6 +9,7 @@ import com.example.webproject.core.common.CommonResult;
 import com.example.webproject.core.enums.ResultCode;
 import com.example.webproject.exxception.Exception;
 import com.sun.xml.internal.ws.handler.HandlerException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,8 +19,10 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import javax.servlet.ServletException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.BatchUpdateException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /***
  * #全局异常处理
@@ -57,11 +60,17 @@ public class GlobalExceptionHandler {
 //    }
     @ExceptionHandler(value = java.lang.Exception.class)
     public Exception<String> allException(java.lang.Exception e) {
-        return Exception.exception(e.hashCode(), ResultCode.EXCEPTION.getMessage(),null);
+        if (Objects.equals(e.getMessage(), "用戶不存在或用户已被停用!")){
+            return Exception.exception(ResultCode.NOTOKEN.getCode(), e.getMessage(),null);
+        }
+        else{
+            return Exception.exception(e.hashCode(), e.getMessage(),null);
+
+        }
     }
     @ExceptionHandler(value = TokenExpiredException.class)
     public CommonResult<Map<String, Object>> TokenExpired(TokenExpiredException e) {
-       return CommonResult.success(ResultCode.NOTOKEN.getCode(),mapUtils.getErrorToken(e.getMessage()),ResultCode.NOTOKEN.getMessage());
+       return CommonResult.success(ResultCode.NOTOKEN.getCode(),mapUtils.getErrorToken(e.getMessage()),null);
     }
     @ExceptionHandler(value = ArrayIndexOutOfBoundsException.class)
     public Exception<String> array(ArrayIndexOutOfBoundsException e){
@@ -81,15 +90,20 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(value = RuntimeException.class)
     public CommonResult<Map<String, Object>> RuntimeException(RuntimeException e){
+        System.out.print(e);
         return CommonResult.success( mapUtils.getErrorToken(e.getMessage()));
     }
-//    @ExceptionHandler(value = NullPointerException.class)
-//    public Exception<String> NullPointer(NullPointerException e){
-//        return Exception.exception(400,"缺少请求参数!",null);
-//    }
+    @ExceptionHandler(value = NullPointerException.class)
+    public Exception<String> NullPointer(NullPointerException e){
+        return Exception.exception(400,e.getMessage(),null);
+    }
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     public Exception<String> MissingServletRequestParameter(MissingServletRequestParameterException e){
         return Exception.exception(412,"缺少请求参数！",null);
+    }
+    @ExceptionHandler(value = DuplicateKeyException.class)
+    public Exception<String>DuplicateKeyException(DuplicateKeyException e){
+        return Exception.exception(ResultCode.FAILED.getCode(),"号码已注册！",null);
     }
     @ExceptionHandler(value = IllegalArgumentException.class)
     public Exception<String> IllegalArgument(IllegalArgumentException e){

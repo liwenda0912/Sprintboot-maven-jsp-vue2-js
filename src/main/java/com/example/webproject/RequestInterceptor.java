@@ -39,7 +39,6 @@ public class RequestInterceptor implements HandlerInterceptor {
         JSONObject map = new JSONObject();
         TokenHandleUtils tokenHandleUtils = new TokenHandleUtils();
         Enumeration<String> headerNames = request.getHeaderNames();
-        System.out.print(request.getHeader("Token"));
         while (headerNames.hasMoreElements()) {
             String key = headerNames.nextElement();
             String value = request.getHeader(key);

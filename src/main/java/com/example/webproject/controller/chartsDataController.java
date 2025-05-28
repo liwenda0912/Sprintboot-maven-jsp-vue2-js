@@ -19,7 +19,7 @@ public class chartsDataController {
 
     @RequestMapping(value = "/count", method = RequestMethod.POST)
     public CommonResult<JSONObject> count(@RequestBody String s){
-        return CommonResult.success(countUserNewService.count());
+         return CommonResult.success(countUserNewService.count());
     }
     @RequestMapping(value = "/countTest", method = RequestMethod.POST)
     public CommonResult<List<JSONObject>> countTest(@RequestBody String s){

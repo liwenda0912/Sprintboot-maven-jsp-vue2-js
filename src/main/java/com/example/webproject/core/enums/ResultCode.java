@@ -45,7 +45,7 @@ public enum ResultCode {
          * 无权限
          */
         FORBIDDEN(403, "没有相关权限"),
-        NOTOKEN(404,"Token 缺失、无效或过期"),
+        NOTOKEN(404,"请求的资源未找到"),
         /**
          * 无权限
          */
